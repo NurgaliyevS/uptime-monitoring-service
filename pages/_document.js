@@ -1,8 +1,9 @@
+import { customConfig } from "@/project.custom.config";
 import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
-    <Html lang="en">
+    <Html lang="en" data-theme={customConfig.dataTheme}>
       <Head>
         <meta
           name="keywords"

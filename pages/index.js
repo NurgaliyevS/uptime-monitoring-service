@@ -1,3 +1,5 @@
+import Header from "@/components/Header";
+import Main from "@/components/Main";
 import { Lato } from "next/font/google";
 
 const lato = Lato({
@@ -8,9 +10,8 @@ const lato = Lato({
 export default function Home() {
   return (
     <main className={`flex flex-col min-h-screen mx-auto ${lato.className}`}>
-      <h1 className="text-4xl font-bold text-center">
-        Uptime Friend is a simple uptime monitoring service
-      </h1>
+      <Header />
+      <Main />
     </main>
   );
 }

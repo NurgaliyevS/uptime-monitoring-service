@@ -9,11 +9,11 @@ function Main() {
         </h1>
         <h2 className="text-xl opacity-80 leading-relaxed">
           We monitor your site's uptime & notify you instantly via{" "}
-          <span className="relative text-accent">EMAIL, SMS. </span>
+          <span className="relative text-secondary">EMAIL, SMS. </span>
         </h2>
       </div>
 
-      <div className="relative max-md:-m-4 lg:w-1/2">
+      <div className="hidden lg:block relative max-md:-m-4 lg:w-1/2">
         <Image
           src={"/main.webp"}
           alt="Uptime 24/7 notify via SMS, EMAIL"

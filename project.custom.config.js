@@ -1,3 +1,3 @@
 export const customConfig = {
-    dataTheme: "fantasy",
+    dataTheme: "acid",
 }

@@ -11,6 +11,10 @@ function Main() {
           We monitor your site's uptime & notify you instantly via{" "}
           <span className="relative text-secondary">EMAIL, SMS. </span>
         </h2>
+
+        <button className="btn btn-error text-white btn-wide">
+          Get started
+        </button>
       </div>
 
       <div className="hidden lg:block relative max-md:-m-4 lg:w-1/2">

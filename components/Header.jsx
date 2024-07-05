@@ -18,6 +18,10 @@ const links = [
     href: "/#faq",
     label: "FAQ",
   },
+  {
+    href:"/api/auth/signin",
+    label: "Login",
+  },
 ];
 
 const Header = () => {
@@ -30,7 +34,7 @@ const Header = () => {
   }, [searchParams]);
 
   return (
-    <header className="">
+    <header className="py-10">
       <nav
         className="container flex items-center justify-between px-8 py-4 mx-auto"
         aria-label="Global"
@@ -94,7 +98,7 @@ const Header = () => {
 
         {/* CTA on large screens */}
         <div className="hidden lg:flex lg:justify-end lg:flex-1">
-          <button className="btn btn-error text-gray-100">Get started</button>
+          <button className="btn btn-error text-white w-40">Get started</button>
         </div>
       </nav>
 
@@ -162,7 +166,7 @@ const Header = () => {
             <div className="divider"></div>
             {/* Your CTA on small screens */}
             <div className="flex flex-col">
-              <button className="btn btn-error text-gray-100 w-full">Get started</button>
+              <button className="btn btn-error text-white w-full">Get started</button>
             </div>
           </div>
         </div>

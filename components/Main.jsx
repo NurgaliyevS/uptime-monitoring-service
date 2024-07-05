@@ -20,7 +20,7 @@ function Main() {
           width={1080}
           height={1080}
           className="w-full max-w-xl ml-auto"
-          fetchPriority="high"
+          priority={true}
         />
       </div>
     </section>

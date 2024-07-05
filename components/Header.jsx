@@ -44,17 +44,17 @@ const Header = () => {
           <Link
             className="flex items-center gap-2 shrink-0 "
             href="/"
-            title="Uptime Web Hosting - home page"
+            title="Uptime Friend - home page"
           >
             <Image
               src={"/favicon.ico"}
-              alt="Uptime Web Hosting logo"
+              alt="Uptime Friend logo"
               className="w-5 h-5"
               priority={true}
               width={24}
               height={24}
             />
-            <span className="font-extrabold text-lg">Uptime Web Hosting</span>
+            <span className="font-extrabold text-lg">Uptime Friend</span>
           </Link>
         </div>
         {/* Burger button to open menu on mobile */}
@@ -111,12 +111,12 @@ const Header = () => {
           <div className="flex items-center justify-between">
             <Link
               className="flex items-center gap-2 shrink-0 "
-              title="Uptime Web Hosting - home page"
+              title="Uptime Friend - home page"
               href="/"
             >
               <Image
                 src={"/favicon.ico"}
-                alt="Uptime Web Hosting logo"
+                alt="Uptime Friend logo"
                 className="w-5 h-5"
                 priority={true}
                 width={24}

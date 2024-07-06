@@ -98,7 +98,7 @@ const Header = () => {
 
         {/* CTA on large screens */}
         <div className="hidden lg:flex lg:justify-end lg:flex-1">
-          <button className="btn btn-error text-white w-40">Get started</button>
+          <button className="btn w-40 btn-secondary">Get started</button>
         </div>
       </nav>
 
@@ -166,7 +166,7 @@ const Header = () => {
             <div className="divider"></div>
             {/* Your CTA on small screens */}
             <div className="flex flex-col">
-              <button className="btn btn-error text-white w-full">Get started</button>
+              <button className="btn btn-secondary w-full">Get started</button>
             </div>
           </div>
         </div>

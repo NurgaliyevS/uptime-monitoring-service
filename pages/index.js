@@ -1,3 +1,5 @@
+import Ads from "@/components/Ads";
+import FeaturedOn from "@/components/FeaturedOn";
 import Header from "@/components/Header";
 import Main from "@/components/Main";
 import { Lato } from "next/font/google";
@@ -12,6 +14,8 @@ export default function Home() {
     <main className={`flex flex-col min-h-screen mx-auto ${lato.className}`}>
       <Header />
       <Main />
+      <FeaturedOn />
+      <Ads />
     </main>
   );
 }

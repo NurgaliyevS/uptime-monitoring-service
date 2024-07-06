@@ -10,10 +10,10 @@ function Main() {
               Uptime Web Hosting
             </span>
           </h1>
-          <h2 className="text-xl opacity-80 leading-relaxed">
+          <p className="text-xl opacity-80 leading-relaxed">
             We monitor your site's uptime & notify you instantly via{" "}
             <span className="relative text-secondary">EMAIL, SMS.</span>
-          </h2>
+          </p>
 
           <button className="btn btn-error text-white btn-wide">
             Get started

@@ -12,7 +12,8 @@ function Main() {
           </h1>
           <p className="text-xl opacity-80 leading-relaxed">
             We monitor your site's uptime & notify you instantly via{" "}
-            <span className="relative text-secondary">EMAIL, SMS.</span>
+            <strong className="relative text-orange-500">EMAIL, SMS</strong>
+            .
           </p>
 
           <button className="btn btn-error text-white btn-wide">

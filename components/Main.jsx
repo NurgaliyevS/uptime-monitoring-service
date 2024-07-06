@@ -7,16 +7,17 @@ function Main() {
         <div className="flex flex-col gap-10 lg:gap-14 items-center lg:items-start text-center lg:text-left w-full lg:w-2/3">
           <h1 className="font-extrabold text-4xl lg:text-6xl tracking-tight md:-mb-4 flex justify-center items-center">
             <span className="whitespace-nowrap relative">
-              Uptime Web Hosting
+            <strong className="relative text-secondary">Uptime </strong>
+              Web Hosting
             </span>
           </h1>
           <p className="text-xl opacity-80 leading-relaxed">
             We monitor your site's uptime & notify you instantly via{" "}
-            <strong className="relative text-orange-500">EMAIL, SMS</strong>
+            <strong className="relative text-secondary">EMAIL, SMS</strong>
             .
           </p>
 
-          <button className="btn btn-error text-white btn-wide">
+          <button className="btn btn-secondary btn-wide">
             Get started
           </button>
         </div>

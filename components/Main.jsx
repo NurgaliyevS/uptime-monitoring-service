@@ -8,7 +8,7 @@ function Main() {
           <h1 className="font-extrabold text-4xl lg:text-6xl tracking-tight md:-mb-4 flex justify-center items-center">
             <span className="whitespace-wrap relative">
             <strong className="relative text-secondary">Uptime </strong>
-              Web Hosting
+              Web Monitoring
             </span>
           </h1>
           <p className="text-xl opacity-80 leading-relaxed">

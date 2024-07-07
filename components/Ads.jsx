@@ -64,6 +64,10 @@ function Ads() {
             </div>
           </div>
         </div>
+
+        <div className="flex items-center justify-center mt-20">
+          <button className="btn btn-secondary btn-wide">Get started</button>
+        </div>
       </div>
     </section>
   );

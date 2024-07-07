@@ -6,9 +6,9 @@ function Main() {
       <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between w-full gap-16">
         <div className="flex flex-col gap-10 lg:gap-14 items-center lg:items-start text-center lg:text-left w-full lg:w-2/3">
           <h1 className="font-extrabold text-4xl lg:text-6xl tracking-tight md:-mb-4 flex justify-center items-center">
-            <span className="whitespace-wrap relative">
+            <span className="whitespace-wrap lg:whitespace-nowrap relative">
             <strong className="relative text-secondary">Uptime </strong>
-              Web Monitoring
+              Monitoring Service
             </span>
           </h1>
           <p className="text-xl opacity-80 leading-relaxed">

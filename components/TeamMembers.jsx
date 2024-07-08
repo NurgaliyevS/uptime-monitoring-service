@@ -4,7 +4,7 @@ function TeamMembers(props) {
   return (
     <section className="container max-w-7xl mx-auto flex flex-col items-center justify-between px-8 py-8 lg:py-20 gap-10">
       <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between w-full gap-16">
-        <div className="relative max-md:-m-4 lg:w-1/2">
+        <div className="relative w-80 lg:w-1/2">
           <div className="card bg-white w-full flex items-center justify-center shadow-xl p-10">
             <Image
               src={"/people.webp"}

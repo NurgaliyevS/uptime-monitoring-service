@@ -1,4 +1,5 @@
 import Ads from "@/components/Ads";
+import DownTime from "@/components/DownTime";
 import FeaturedOn from "@/components/FeaturedOn";
 import Header from "@/components/Header";
 import Main from "@/components/Main";
@@ -18,6 +19,7 @@ export default function Home() {
       <FeaturedOn />
       <Ads />
       <TeamMembers />
+      <DownTime />
     </main>
   );
 }

@@ -2,6 +2,7 @@ import Ads from "@/components/Ads";
 import FeaturedOn from "@/components/FeaturedOn";
 import Header from "@/components/Header";
 import Main from "@/components/Main";
+import TeamMembers from "@/components/TeamMembers";
 import { Lato } from "next/font/google";
 
 const lato = Lato({
@@ -16,6 +17,7 @@ export default function Home() {
       <Main />
       <FeaturedOn />
       <Ads />
+      <TeamMembers />
     </main>
   );
 }

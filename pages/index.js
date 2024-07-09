@@ -3,6 +3,7 @@ import DownTime from "@/components/DownTime";
 import FeaturedOn from "@/components/FeaturedOn";
 import Header from "@/components/Header";
 import Main from "@/components/Main";
+import Pricing from "@/components/Pricing";
 import TeamMembers from "@/components/TeamMembers";
 import { Lato } from "next/font/google";
 
@@ -20,6 +21,7 @@ export default function Home() {
       <Ads />
       <TeamMembers />
       <DownTime />
+      <Pricing />
     </main>
   );
 }

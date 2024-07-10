@@ -2,7 +2,10 @@ import Image from "next/image";
 
 function Pricing(props) {
   return (
-    <section className="bg-slate-800 text-gray-300 py-44 flex flex-col overflow-hidden" id="pricing">
+    <section
+      className="bg-slate-800 text-gray-300 py-44 flex flex-col overflow-hidden"
+      id="pricing"
+    >
       <div className="container max-w-7xl mx-auto">
         <div className="flex justify-center px-10 text-center mb-20 flex-col gap-10 lg:gap-14">
           <div>
@@ -23,7 +26,7 @@ function Pricing(props) {
           <div className="card bg-[#fafafa] w-80 shadow-xl text-[#151515] mx-auto lg:mx-0">
             <div className="flex flex-row justify-between items-center pl-8 pr-8 pt-8">
               <h3 className="font-bold text-2xl lg:text-3xl tracking-tight">
-                <strong className="relative text-secondary">Free</strong>
+                <strong className="relative">Free</strong>
               </h3>
               <Image
                 // src={"/team.svg"}
@@ -44,6 +47,10 @@ function Pricing(props) {
               <p className="text-neutral-500">
                 Made for your hobbies. <br /> No credit card needed!
               </p>
+
+              <button className="btn btn-wide rounded-full my-2">
+                Get started
+              </button>
 
               <h4 className="font-bold text-xl tracking-tight">5 monitors</h4>
 
@@ -128,7 +135,7 @@ function Pricing(props) {
           <div className="card bg-[#fafafa] w-80 shadow-xl text-[#151515] mx-auto lg:mx-0">
             <div className="flex flex-row justify-between items-center pl-8 pr-8 pt-8">
               <h3 className="font-bold text-2xl lg:text-3xl tracking-tight">
-                <strong className="relative text-secondary">Personal</strong>
+                <strong className="relative">Personal</strong>
               </h3>
               <Image
                 // src={"/team.svg"}
@@ -147,6 +154,10 @@ function Pricing(props) {
               </div>
 
               <p className="text-neutral-500">Ideal for small projects.</p>
+
+              <button className="btn btn-wide btn-secondary rounded-full my-2">
+                Subscribe now
+              </button>
 
               <h4 className="font-bold text-xl tracking-tight">10 monitors</h4>
 
@@ -231,7 +242,7 @@ function Pricing(props) {
           <div className="card bg-[#fafafa] w-80 shadow-xl text-[#151515] mx-auto lg:mx-0">
             <div className="flex flex-row justify-between items-center pl-8 pr-8 pt-8">
               <h3 className="font-bold text-2xl lg:text-3xl tracking-tight">
-                <strong className="relative text-secondary">Team</strong>
+                <strong className="relative">Team</strong>
               </h3>
               <Image
                 src={"/team.svg"}
@@ -249,6 +260,10 @@ function Pricing(props) {
               </div>
 
               <p className="text-neutral-500">Great for small teams.</p>
+
+              <button className="btn btn-wide btn-secondary rounded-full my-2">
+                Subscribe now
+              </button>
 
               <h4 className="font-bold text-xl tracking-tight">20 monitors</h4>
 
@@ -333,7 +348,7 @@ function Pricing(props) {
           <div className="card bg-[#fafafa] w-80 shadow-xl text-[#151515] mx-auto lg:mx-0">
             <div className="flex flex-row justify-between items-center pl-8 pr-8 pt-8">
               <h3 className="font-bold text-2xl lg:text-3xl tracking-tight">
-                <strong className="relative text-secondary">Enterprise</strong>
+                <strong className="relative">Enterprise</strong>
               </h3>
               <Image
                 src={"/team.svg"}
@@ -350,8 +365,11 @@ function Pricing(props) {
                 <p className="text-neutral-500 max-w-fit mt-auto">/ month</p>
               </div>
 
-              <p className="text-neutral-500">Best for large organizations</p>
+              <p className="text-neutral-500">Best for large organizations.</p>
 
+              <button className="btn btn-wide btn-secondary rounded-full my-2">
+                Subscribe now
+              </button>
 
               <h4 className="font-bold text-xl tracking-tight">50 monitors</h4>
 
@@ -369,7 +387,9 @@ function Pricing(props) {
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                  <span className="whitespace-nowrap">30-seconds monitoring interval</span>
+                  <span className="whitespace-nowrap">
+                    30-seconds monitoring interval
+                  </span>
                 </li>
 
                 <li className="flex items-center gap-2">

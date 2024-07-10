@@ -2,7 +2,7 @@ import Image from "next/image";
 
 function Pricing(props) {
   return (
-    <section className="bg-slate-800 text-gray-300 py-44 flex flex-col overflow-hidden">
+    <section className="bg-slate-800 text-gray-300 py-44 flex flex-col overflow-hidden" id="pricing">
       <div className="container max-w-7xl mx-auto">
         <div className="flex justify-center px-10 text-center mb-20 flex-col gap-10 lg:gap-14">
           <div>

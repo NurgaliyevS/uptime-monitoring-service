@@ -48,7 +48,7 @@ function Pricing(props) {
                 Made for your hobbies. <br /> No credit card needed!
               </p>
 
-              <button className="btn btn-wide rounded-full my-2">
+              <button className="btn rounded-full my-2">
                 Get started
               </button>
 
@@ -155,7 +155,7 @@ function Pricing(props) {
 
               <p className="text-neutral-500">Ideal for small projects.</p>
 
-              <button className="btn btn-wide btn-secondary rounded-full my-2">
+              <button className="btn btn-secondary rounded-full my-2">
                 Subscribe now
               </button>
 
@@ -261,7 +261,7 @@ function Pricing(props) {
 
               <p className="text-neutral-500">Great for small teams.</p>
 
-              <button className="btn btn-wide btn-secondary rounded-full my-2">
+              <button className="btn btn-secondary rounded-full my-2">
                 Subscribe now
               </button>
 
@@ -367,7 +367,7 @@ function Pricing(props) {
 
               <p className="text-neutral-500">Best for large organizations.</p>
 
-              <button className="btn btn-wide btn-secondary rounded-full my-2">
+              <button className="btn btn-secondary rounded-full my-2">
                 Subscribe now
               </button>
 

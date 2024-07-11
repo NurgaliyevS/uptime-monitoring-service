@@ -3,11 +3,15 @@ import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
-    <Html lang="en" data-theme={customConfig.dataTheme} className="scroll-smooth">
+    <Html
+      lang="en"
+      data-theme={customConfig.dataTheme}
+      className="scroll-smooth"
+    >
       <Head>
         <meta
           name="keywords"
-          content="uptime web hosting, monitoring saas, server monitoring saas, monitoring saas applications, uptime robot alternatives"
+          content="website monitoring, web monitoring, site downtime, website monitoring tools, website uptime monitoring, website monitoring services, site monitoring, server uptime, uptime web hosting, uptime robot alternative"
         />
       </Head>
       <body>

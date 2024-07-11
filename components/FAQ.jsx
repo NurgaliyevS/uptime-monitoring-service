@@ -83,7 +83,7 @@ const faqList = [
         maintain high uptime and reliability for your website.
       </p>
     ),
-  }
+  },
 ];
 
 const FaqItem = ({ item }) => {
@@ -162,6 +162,10 @@ function FAQ() {
             <FaqItem key={i} item={item} />
           ))}
         </ul>
+      </div>
+
+      <div className="flex items-center justify-center mt-20">
+        <button className="btn btn-secondary btn-wide">Get started</button>
       </div>
     </section>
   );

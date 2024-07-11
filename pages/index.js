@@ -17,9 +17,7 @@ const lato = Lato({
 export default function Home() {
   return (
     <>
-      <header
-        className={lato.className}
-      >
+      <header className={lato.className}>
         <Header />
       </header>
       <main className={`flex flex-col min-h-screen mx-auto ${lato.className}`}>
@@ -31,10 +29,8 @@ export default function Home() {
         <Pricing />
         <FAQ />
       </main>
-      <footer>
-        <Footer
-          className={lato.className}
-        />
+      <footer className={lato.className}>
+        <Footer />
       </footer>
     </>
   );

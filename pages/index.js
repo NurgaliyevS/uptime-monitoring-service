@@ -2,6 +2,7 @@ import Ads from "@/components/Ads";
 import DownTime from "@/components/DownTime";
 import FAQ from "@/components/FAQ";
 import FeaturedOn from "@/components/FeaturedOn";
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Main from "@/components/Main";
 import Pricing from "@/components/Pricing";
@@ -15,15 +16,26 @@ const lato = Lato({
 
 export default function Home() {
   return (
-    <main className={`flex flex-col min-h-screen mx-auto ${lato.className}`}>
-      <Header />
-      <Main />
-      <FeaturedOn />
-      <Ads />
-      <TeamMembers />
-      <DownTime />
-      <Pricing />
-      <FAQ />
-    </main>
+    <>
+      <header
+        className={lato.className}
+      >
+        <Header />
+      </header>
+      <main className={`flex flex-col min-h-screen mx-auto ${lato.className}`}>
+        <Main />
+        <FeaturedOn />
+        <Ads />
+        <TeamMembers />
+        <DownTime />
+        <Pricing />
+        <FAQ />
+      </main>
+      <footer>
+        <Footer
+          className={lato.className}
+        />
+      </footer>
+    </>
   );
 }

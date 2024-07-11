@@ -34,7 +34,7 @@ const Header = () => {
   }, [searchParams]);
 
   return (
-    <header className="container max-w-7xl flex items-center flex-wrap justify-between px-8 mx-auto py-10">
+    <div className="container max-w-7xl flex items-center flex-wrap justify-between px-8 mx-auto py-10">
       <nav
         className="container flex items-center justify-between mx-auto"
         aria-label="Global"
@@ -171,7 +171,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-    </header>
+    </div>
   );
 };
 

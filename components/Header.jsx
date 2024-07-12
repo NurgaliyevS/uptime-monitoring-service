@@ -4,23 +4,20 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { signIn } from "next-auth/react";
 
 const links = [
   {
     href: "/#pricing",
     label: "Pricing",
   },
-    // {
-    //   href: "/#reviews",
-    //   label: "Reviews",
-    // },
+  // {
+  //   href: "/#reviews",
+  //   label: "Reviews",
+  // },
   {
     href: "/#faq",
     label: "FAQ",
-  },
-  {
-    href:"/api/auth/signin",
-    label: "Login",
   },
 ];
 
@@ -98,7 +95,14 @@ const Header = () => {
 
         {/* CTA on large screens */}
         <div className="hidden lg:flex lg:justify-end lg:flex-1">
-          <button className="btn w-40 btn-secondary">Get started</button>
+          <button
+            className="btn btn-sm"
+            onClick={() => {
+              signIn(undefined, { callbackUrl: "/admin" });
+            }}
+          >
+            Login
+          </button>
         </div>
       </nav>
 
@@ -166,7 +170,14 @@ const Header = () => {
             <div className="divider"></div>
             {/* Your CTA on small screens */}
             <div className="flex flex-col">
-              <button className="btn btn-secondary w-full">Get started</button>
+              <button
+                className="btn btn-sm w-full"
+                onClick={() => {
+                  signIn(undefined, { callbackUrl: "/admin" });
+                }}
+              >
+                Login
+              </button>
             </div>
           </div>
         </div>

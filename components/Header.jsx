@@ -171,7 +171,7 @@ const Header = () => {
             {/* Your CTA on small screens */}
             <div className="flex flex-col">
               <button
-                className="btn btn-sm w-full"
+                className="btn btn-sm w-full btn-neutral"
                 onClick={() => {
                   signIn(undefined, { callbackUrl: "/admin" });
                 }}

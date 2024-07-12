@@ -5,7 +5,8 @@ export default function Document() {
   return (
     <Html
       lang="en"
-      data-theme={customConfig.dataTheme}
+      
+      data-theme={customConfig.colors.theme}
       className="scroll-smooth"
     >
       <Head>

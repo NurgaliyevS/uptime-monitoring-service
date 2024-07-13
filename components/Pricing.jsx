@@ -157,7 +157,7 @@ function Pricing(props) {
                 <div className="flex flex-col mb-1 text-lg">
                   <p className="relative opacity-80">
                     <span className="absolute bg-base-content h-[0.1em] inset-x-0 top-1/2"></span>
-                    <span className="text-base-content">$9.99</span>
+                    <span className="text-base-content">$9.98</span>
                   </p>
                 </div>
                 <span className="text-5xl tracking-tight font-extrabold">
@@ -274,7 +274,7 @@ function Pricing(props) {
                 <div className="flex flex-col mb-1 text-lg">
                   <p className="relative opacity-80">
                     <span className="absolute bg-base-content h-[0.1em] inset-x-0 top-1/2"></span>
-                    <span className="text-base-content">$19.99</span>
+                    <span className="text-base-content">$19.98</span>
                   </p>
                 </div>
                 <span className="text-5xl tracking-tight font-extrabold">
@@ -391,7 +391,7 @@ function Pricing(props) {
                 <div className="flex flex-col mb-1 text-lg">
                   <p className="relative opacity-80">
                     <span className="absolute bg-base-content h-[0.1em] inset-x-0 top-1/2"></span>
-                    <span className="text-base-content">$39.99</span>
+                    <span className="text-base-content">$39.98</span>
                   </p>
                 </div>
                 <span className="text-5xl tracking-tight font-extrabold">

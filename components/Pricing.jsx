@@ -153,10 +153,21 @@ function Pricing(props) {
               />
             </div>
             <div className="card-body">
-              <div className="flex">
-                <p className="text-neutral-500 max-w-fit">$</p>
-                <p className="max-w-fit font-bold text-5xl ml-1 mr-2">4.99 </p>
-                <p className="text-neutral-500 max-w-fit mt-auto">/ month</p>
+              <div className="flex items-end gap-2">
+                <div className="flex flex-col mb-1 text-lg">
+                  <p className="relative opacity-80">
+                    <span className="absolute bg-base-content h-[0.1em] inset-x-0 top-1/2"></span>
+                    <span className="text-base-content">$9.99</span>
+                  </p>
+                </div>
+                <span className="text-5xl tracking-tight font-extrabold">
+                  $4.99
+                </span>
+                <div className="flex flex-col mb-1">
+                  <p className="text-xs opacity-60 uppercase font-semibold">
+                    USD
+                  </p>
+                </div>
               </div>
 
               <p className="text-neutral-500">Ideal for small projects.</p>
@@ -259,10 +270,21 @@ function Pricing(props) {
               />
             </div>
             <div className="card-body">
-              <div className="flex">
-                <p className="text-neutral-500 max-w-fit">$</p>
-                <p className="max-w-fit font-bold text-5xl ml-1 mr-2">9.99 </p>
-                <p className="text-neutral-500 max-w-fit mt-auto">/ month</p>
+              <div className="flex items-end gap-2">
+                <div className="flex flex-col mb-1 text-lg">
+                  <p className="relative opacity-80">
+                    <span className="absolute bg-base-content h-[0.1em] inset-x-0 top-1/2"></span>
+                    <span className="text-base-content">$19.99</span>
+                  </p>
+                </div>
+                <span className="text-5xl tracking-tight font-extrabold">
+                  $9.99
+                </span>
+                <div className="flex flex-col mb-1">
+                  <p className="text-xs opacity-60 uppercase font-semibold">
+                    USD
+                  </p>
+                </div>
               </div>
 
               <p className="text-neutral-500">Great for small teams.</p>
@@ -365,10 +387,21 @@ function Pricing(props) {
               />
             </div>
             <div className="card-body">
-              <div className="flex">
-                <p className="text-neutral-500 max-w-fit">$</p>
-                <p className="max-w-fit font-bold text-5xl ml-1 mr-2">19.99 </p>
-                <p className="text-neutral-500 max-w-fit mt-auto">/ month</p>
+              <div className="flex items-end gap-2">
+                <div className="flex flex-col mb-1 text-lg">
+                  <p className="relative opacity-80">
+                    <span className="absolute bg-base-content h-[0.1em] inset-x-0 top-1/2"></span>
+                    <span className="text-base-content">$39.99</span>
+                  </p>
+                </div>
+                <span className="text-5xl tracking-tight font-extrabold">
+                  $19.99
+                </span>
+                <div className="flex flex-col mb-1">
+                  <p className="text-xs opacity-60 uppercase font-semibold">
+                    USD
+                  </p>
+                </div>
               </div>
 
               <p className="text-neutral-500">Best for large organizations.</p>

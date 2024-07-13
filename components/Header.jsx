@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { signIn } from "next-auth/react";
+import { handleSignIn } from "./handleSignIn";
 
 const links = [
   {
@@ -97,9 +97,7 @@ const Header = () => {
         <div className="hidden lg:flex lg:justify-end lg:flex-1">
           <button
             className="btn btn-sm"
-            onClick={() => {
-              signIn(undefined, { callbackUrl: "/admin" });
-            }}
+            onClick={handleSignIn}
           >
             Login
           </button>
@@ -172,9 +170,7 @@ const Header = () => {
             <div className="flex flex-col">
               <button
                 className="btn btn-sm w-full btn-neutral"
-                onClick={() => {
-                  signIn(undefined, { callbackUrl: "/admin" });
-                }}
+                onClick={handleSignIn}
               >
                 Login
               </button>

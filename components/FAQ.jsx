@@ -1,6 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Link from "next/link";
+import { handleSignIn } from "./handleSignIn";
 
 const faqList = [
   {
@@ -165,7 +167,11 @@ function FAQ() {
       </div>
 
       <div className="flex items-center justify-center mt-20">
-        <button className="btn btn-secondary btn-wide">Get started</button>
+        <Link href="#" className="btn btn-secondary btn-wide no-underline" 
+        onClick={handleSignIn}
+        >
+          Get Started
+        </Link>
       </div>
     </section>
   );

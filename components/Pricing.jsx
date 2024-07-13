@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import { handleSignIn } from "./handleSignIn";
 
 function Pricing(props) {
   return (
@@ -48,9 +50,13 @@ function Pricing(props) {
                 Made for your hobbies. <br /> No credit card needed!
               </p>
 
-              <button className="btn rounded-full my-2">
-                Get started
-              </button>
+              <Link
+                href="#"
+                className="btn rounded-full my-2 no-underline"
+                onClick={handleSignIn}
+              >
+                Get Started
+              </Link>
 
               <h4 className="font-bold text-xl tracking-tight">5 monitors</h4>
 

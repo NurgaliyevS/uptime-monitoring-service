@@ -11,10 +11,6 @@ export default async function handler(req, res) {
         .json({ success: false, message: "Product ID is required" });
     }
 
-    console.log(process.env.LEMON_SQEEZY_STORE_ID.toString(), 'store id');
-    console.log(process.env.LEMON_SQEEZY_VARIANT_PERSONAL.toString(), 'variant id');
-    console.log(request?.variantId, 'variant id');
-
     const response = await lemonSqueezyApiInstance.post("/checkouts", {
       data: {
         type: "checkouts",

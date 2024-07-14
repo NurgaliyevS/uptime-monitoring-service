@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema(
     receipt_link: String,
     variant_id: String,
     user_status: { type: String, default: 'inactive' },
-    variant_name: { type: String, default: 'Free' }, // Updated
+    variant_name: { type: String, default: 'free' }, // Updated
     customer_portal_url: String,
     subscription_renews_at: { type: String, default: null }, // Updated
     ends_at: { type: String, default: null }, // Updated

@@ -17,7 +17,7 @@ export const authOptions = {
           email: profile.email,
           image: profile.picture,
           createdAt: new Date(),
-          variant_name: "Free",
+          variant_name: "free",
         };
       },
     }),

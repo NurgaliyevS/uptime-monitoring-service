@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { handleSignIn } from "./handleSignIn";
+import { buyProduct } from "./buyProduct";
 
 function Pricing(props) {
   return (
@@ -172,7 +173,7 @@ function Pricing(props) {
 
               <p className="text-neutral-500">Ideal for small projects.</p>
 
-              <button className="btn btn-secondary rounded-full my-2">
+              <button className="btn btn-secondary rounded-full my-2" onClick={buyProduct}>
                 Subscribe now
               </button>
 
@@ -289,7 +290,10 @@ function Pricing(props) {
 
               <p className="text-neutral-500">Great for small teams.</p>
 
-              <button className="btn btn-secondary rounded-full my-2">
+              <button className="btn btn-secondary rounded-full my-2" onClick={(e) => {
+                e.preventDefault();
+                buyProduct("449166");
+              }}>
                 Subscribe now
               </button>
 
@@ -406,7 +410,10 @@ function Pricing(props) {
 
               <p className="text-neutral-500">Best for large organizations.</p>
 
-              <button className="btn btn-secondary rounded-full my-2">
+              <button className="btn btn-secondary rounded-full my-2" onClick={(e) => {
+                e.preventDefault();
+                buyProduct("449167");
+              }}>
                 Subscribe now
               </button>
 

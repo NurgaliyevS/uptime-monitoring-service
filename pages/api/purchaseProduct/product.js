@@ -1,4 +1,5 @@
 import { lemonSqueezyApiInstance } from "@/utils/axios";
+import { isDevelopment } from "@/utils/isDevelopment";
 
 export default async function handler(req, res) {
 
@@ -20,7 +21,7 @@ export default async function handler(req, res) {
               user_id: request?.userId || "123",
               email: request?.email || "123",
             },
-            discount_code: "AXMTYZNA"
+            discount_code: isDevelopment() ? "C4MJAXOQ" : "AXMTYZNA"
           },
         },
         relationships: {
@@ -33,7 +34,7 @@ export default async function handler(req, res) {
           variant: {
             data: {
               type: "variants",
-              id: request?.variantId || process.env.LEMON_SQEEZY_VARIANT_PERSONAL.toString(),
+              id: request?.variantId || isDevelopment() ? "449882" : process.env.LEMON_SQEEZY_VARIANT_PERSONAL.toString(),
             },
           },
         },

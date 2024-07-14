@@ -1,11 +1,12 @@
 "use client";
 
+import { isDevelopment } from "@/utils/isDevelopment";
 import axios from "axios";
 
 export async function buyProduct(variantId) {
   try {
     const payload = {
-      productId: "310762",
+      productId: isDevelopment() ? "311180" : "310762",
     };
 
     if (typeof variantId === 'string') {

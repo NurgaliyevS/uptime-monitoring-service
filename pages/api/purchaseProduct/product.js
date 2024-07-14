@@ -34,7 +34,7 @@ export default async function handler(req, res) {
           variant: {
             data: {
               type: "variants",
-              id: request?.variantId || isDevelopment() ? "449882" : process.env.LEMON_SQEEZY_VARIANT_PERSONAL.toString(),
+              id: isDevelopment() ? "449882" : request?.variantId || process.env.LEMON_SQEEZY_VARIANT_PERSONAL.toString(),
             },
           },
         },

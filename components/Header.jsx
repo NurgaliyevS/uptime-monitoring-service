@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { handleSignIn } from "./handleSignIn";
+import { useSession } from "next-auth/react";
 
 const links = [
   {
@@ -24,6 +25,10 @@ const links = [
 const Header = () => {
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
+
+  const { data: session } = useSession();
+
+  console.log(session);
 
   // setIsOpen(false) when the route changes (i.e: when the user clicks on a link on mobile)
   useEffect(() => {
@@ -94,14 +99,24 @@ const Header = () => {
         </div>
 
         {/* CTA on large screens */}
-        <div className="hidden lg:flex lg:justify-end lg:flex-1">
-          <button
-            className="btn btn-sm"
-            onClick={handleSignIn}
-          >
-            Login
-          </button>
-        </div>
+        {!session?.user ? (
+          <div className="hidden lg:flex lg:justify-end lg:flex-1">
+            <button className="btn btn-sm" onClick={handleSignIn}>
+              Login
+            </button>
+          </div>
+        ) : (
+          <div className="hidden lg:flex lg:justify-end lg:flex-1">
+            <Link
+              href="/admin"
+              className="btn btn-sm"
+              title="Admin page"
+              rel="nofollow"
+            >
+              {session?.user?.email}
+            </Link>
+          </div>
+        )}
       </nav>
 
       {/* Mobile menu, show/hide based on menu state. */}
@@ -167,14 +182,27 @@ const Header = () => {
             </div>
             <div className="divider"></div>
             {/* Your CTA on small screens */}
-            <div className="flex flex-col">
-              <button
-                className="btn btn-sm w-full btn-neutral"
-                onClick={handleSignIn}
-              >
-                Login
-              </button>
-            </div>
+            {!session?.user ? (
+              <div className="flex flex-col">
+                <button
+                  className="btn btn-sm w-full btn-neutral"
+                  onClick={handleSignIn}
+                >
+                  Login
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col">
+                <Link
+                  href="/admin"
+                  className="btn btn-sm w-full btn-neutral"
+                  title="Admin page"
+                  rel="nofollow"
+                >
+                  {session?.user?.email}
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>

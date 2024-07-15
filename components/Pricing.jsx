@@ -13,7 +13,7 @@ function Pricing(props) {
         <div className="flex justify-center px-10 text-center mb-20 flex-col gap-10 lg:gap-14">
           <div>
             <div className="badge animate-bounce whitespace-nowrap badge-secondary">
-              ✨ LAUNCH discount — 50% OFF ✨
+              ✨ LAUNCH discount — 50% OFF 3 months ✨
             </div>
           </div>
           <h2 className="font-extrabold text-4xl lg:text-6xl tracking-tight md:-mb-4">
@@ -173,7 +173,10 @@ function Pricing(props) {
 
               <p className="text-neutral-500">Ideal for small projects.</p>
 
-              <button className="btn btn-secondary rounded-full my-2" onClick={buyProduct}>
+              <button
+                className="btn btn-secondary rounded-full my-2"
+                onClick={buyProduct}
+              >
                 Subscribe now
               </button>
 
@@ -290,10 +293,13 @@ function Pricing(props) {
 
               <p className="text-neutral-500">Great for small teams.</p>
 
-              <button className="btn btn-secondary rounded-full my-2" onClick={(e) => {
-                e.preventDefault();
-                buyProduct("449166");
-              }}>
+              <button
+                className="btn btn-secondary rounded-full my-2"
+                onClick={(e) => {
+                  e.preventDefault();
+                  buyProduct("449166");
+                }}
+              >
                 Subscribe now
               </button>
 
@@ -410,10 +416,13 @@ function Pricing(props) {
 
               <p className="text-neutral-500">Best for large organizations.</p>
 
-              <button className="btn btn-secondary rounded-full my-2" onClick={(e) => {
-                e.preventDefault();
-                buyProduct("449167");
-              }}>
+              <button
+                className="btn btn-secondary rounded-full my-2"
+                onClick={(e) => {
+                  e.preventDefault();
+                  buyProduct("449167");
+                }}
+              >
                 Subscribe now
               </button>
 

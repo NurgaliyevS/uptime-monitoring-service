@@ -11,6 +11,22 @@ export default async function handler(req, res) {
       try {
         // Check if a user ID is provided in the request URL
         const userId = req.query.id;
+        const email = req.query.email;
+
+        if (email) {
+          // Find the user with the provided email
+          const user = await User.findOne({ email
+          });
+          if (!user) {
+            return res
+              .status(404)
+              .json({ success: false, message: "User not found" });
+          }
+          return res
+            .status(200)
+            .json({ success: true, message: "User found", data: user });
+        }
+
         if (userId) {
           // Find the user with the provided ID
           const user = await User.findById(userId);

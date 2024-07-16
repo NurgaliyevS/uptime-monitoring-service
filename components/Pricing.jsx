@@ -5,10 +5,7 @@ import { buyProduct } from "./buyProduct";
 
 function Pricing(props) {
   return (
-    <section
-      className="bg-slate-800 text-gray-300 py-44 flex flex-col overflow-hidden"
-      id="pricing"
-    >
+    <section className="bg-slate-800 text-gray-300 py-44 flex flex-col overflow-hidden">
       <div className="container max-w-7xl mx-auto">
         <div className="flex justify-center px-10 text-center mb-20 flex-col gap-10 lg:gap-14">
           <div>
@@ -16,7 +13,10 @@ function Pricing(props) {
               ✨ LAUNCH discount — 50% OFF 3 months ✨
             </div>
           </div>
-          <h2 className="font-extrabold text-4xl lg:text-6xl tracking-tight md:-mb-4">
+          <h2
+            className="font-extrabold text-4xl lg:text-6xl tracking-tight md:-mb-4"
+            id="pricing"
+          >
             <strong className="relative text-secondary">Pricing</strong>
           </h2>
           {/* <p className="text-xl opacity-80 leading-relaxed">
@@ -132,6 +132,48 @@ function Pricing(props) {
                     5 emails{" "}
                     <strong className="relative text-secondary">
                       per month
+                    </strong>
+                  </span>
+                </li>
+
+                <li className="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-4 h-4 opacity-1 fill-emerald-500 shrink"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                  <span>
+                    1 phone number{" "}
+                    <strong className="relative text-secondary">
+                      for alerts
+                    </strong>
+                  </span>
+                </li>
+
+                <li className="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-4 h-4 opacity-1 fill-emerald-500 shrink"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                  <span>
+                    1 email address{" "}
+                    <strong className="relative text-secondary">
+                      for alerts
                     </strong>
                   </span>
                 </li>
@@ -253,6 +295,48 @@ function Pricing(props) {
                     100 Emails{" "}
                     <strong className="relative text-secondary">
                       per month
+                    </strong>
+                  </span>
+                </li>
+
+                <li className="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-4 h-4 opacity-1 fill-emerald-500 shrink"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                  <span>
+                    3 phone number{" "}
+                    <strong className="relative text-secondary">
+                      for alerts
+                    </strong>
+                  </span>
+                </li>
+
+                <li className="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-4 h-4 opacity-1 fill-emerald-500 shrink"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                  <span>
+                    3 email address{" "}
+                    <strong className="relative text-secondary">
+                      for alerts
                     </strong>
                   </span>
                 </li>
@@ -379,6 +463,48 @@ function Pricing(props) {
                     </strong>
                   </span>
                 </li>
+
+                <li className="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-4 h-4 opacity-1 fill-emerald-500 shrink"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                  <span>
+                    5 phone number{" "}
+                    <strong className="relative text-secondary">
+                      for alerts
+                    </strong>
+                  </span>
+                </li>
+
+                <li className="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-4 h-4 opacity-1 fill-emerald-500 shrink"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                  <span>
+                    5 email address{" "}
+                    <strong className="relative text-secondary">
+                      for alerts
+                    </strong>
+                  </span>
+                </li>
               </ul>
             </div>
           </div>
@@ -501,6 +627,48 @@ function Pricing(props) {
                     500 Emails{" "}
                     <strong className="relative text-secondary">
                       per month
+                    </strong>
+                  </span>
+                </li>
+
+                <li className="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-4 h-4 opacity-1 fill-emerald-500 shrink"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                  <span>
+                    10 phone number{" "}
+                    <strong className="relative text-secondary">
+                      for alerts
+                    </strong>
+                  </span>
+                </li>
+
+                <li className="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-4 h-4 opacity-1 fill-emerald-500 shrink"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                  <span>
+                    10 email address{" "}
+                    <strong className="relative text-secondary">
+                      for alerts
                     </strong>
                   </span>
                 </li>

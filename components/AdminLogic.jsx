@@ -103,6 +103,8 @@ function AdminLogic() {
     return re.test(String(email).toLowerCase());
   };
 
+  const allIntervals = [30, 60, 180, 300];
+
   return (
     <main className="container mx-auto py-10">
       <div className="flex justify-between m-4">
@@ -208,13 +210,15 @@ function AdminLogic() {
               value={interval}
               onChange={(e) => setInterval(Number(e.target.value))}
             >
-              {Object.entries(planLimits)
-                .filter(([, limits]) => limits.interval >= interval)
-                .map(([plan, limits]) => (
-                  <option key={plan} value={limits.interval}>
-                    {limits.interval / 60}m
-                  </option>
-                ))}
+              {allIntervals.map((intv) => (
+                <option
+                  key={intv}
+                  value={intv}
+                  disabled={intv < currentLimits.interval}
+                >
+                  {intv / 60}m {intv < currentLimits.interval ? "(Paid feature)" : ""}
+                </option>
+              ))}
             </select>
             <p className="text-sm mt-1">
               Your monitor will be checked every {interval / 60} minutes. We

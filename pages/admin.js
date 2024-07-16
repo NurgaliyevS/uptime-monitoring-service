@@ -8,7 +8,9 @@ function Admin() {
       <Head>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
-      <AdminLogic />
+      <div className="bg-slate-800 text-base-300">
+        <AdminLogic />
+      </div>
     </>
   );
 }

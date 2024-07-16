@@ -5,6 +5,20 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import Modal from "react-modal";
+
+Modal.setAppElement("#__next"); // Specify the root element for accessibility
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
 
 function AdminLogic() {
   const { data: session } = useSession();
@@ -91,14 +105,16 @@ function AdminLogic() {
 
   return (
     <main className="container mx-auto py-10">
-      <div className="flex justify-between">
+      <div className="flex justify-between m-4">
         <h1 className="text-2xl font-bold mb-4">Add Monitor</h1>
-        <Link href="/" alt="Go back" className="">Home</Link>
+        <Link href="/" alt="Go back" className="">
+          Home
+        </Link>
       </div>
-      <h2 className="leading-relaxed text-lg font-medium pb-5">
+      <h2 className="leading-relaxed text-lg font-medium pb-5 m-4">
         Your current plan -<strong> {userPlan.toUpperCase()}</strong>
       </h2>
-      <section className="card bg-base-100 w-full shadow-xl p-10">
+      <section className="card bg-base-100 lg:w-full shadow-xl p-10">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="label">
@@ -145,7 +161,7 @@ function AdminLogic() {
             <label className="label">
               <span className="label-text">How will we notify you?</span>
             </label>
-            <div className="flex gap-10">
+            <div className="flex flex-col lg:flex-row gap-10">
               <button
                 type="button"
                 className="btn btn-success btn-wide"
@@ -161,19 +177,25 @@ function AdminLogic() {
                 SMS message
               </button>
             </div>
-            <div className="mt-4">
-              <h3 className="text-lg font-bold">Added Emails</h3>
-              <ul>
-                {emails.map((email, index) => (
-                  <li key={index}>{email}</li>
-                ))}
-              </ul>
-              <h3 className="text-lg font-bold mt-4">Added Phone Numbers</h3>
-              <ul>
-                {phones.map((phone, index) => (
-                  <li key={index}>{phone}</li>
-                ))}
-              </ul>
+            <div className="mt-4 flex flex-col lg:flex-row gap-10">
+              <div className="flex flex-col">
+                <h3 className="text-lg font-bold text-black btn-wide">Added Emails</h3>
+                <ul className="text-black">
+                  {emails.map((email, index) => (
+                    <li key={index}>{email}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="flex flex-col">
+                <h3 className="text-lg font-bold text-black btn-wide">
+                  Added Phone Numbers
+                </h3>
+                <ul className="text-black">
+                  {phones.map((phone, index) => (
+                    <li key={index}>{phone}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
 
@@ -186,13 +208,13 @@ function AdminLogic() {
               value={interval}
               onChange={(e) => setInterval(Number(e.target.value))}
             >
-              {Object.keys(planLimits).map((plan) => {
-                return planLimits[plan].interval <= interval ? (
-                  <option key={plan} value={planLimits[plan].interval}>
-                    {planLimits[plan].interval / 60}m
+              {Object.entries(planLimits)
+                .filter(([, limits]) => limits.interval >= interval)
+                .map(([plan, limits]) => (
+                  <option key={plan} value={limits.interval}>
+                    {limits.interval / 60}m
                   </option>
-                ) : null;
-              })}
+                ))}
             </select>
             <p className="text-sm mt-1">
               Your monitor will be checked every {interval / 60} minutes. We
@@ -211,64 +233,62 @@ function AdminLogic() {
             ></textarea>
           </div>
 
-          <button type="submit" className="btn btn-success">
+          <button type="submit" className="btn btn-secondary btn-wide">
             Add Monitor
           </button>
         </form>
 
-        {showEmailModal && (
-          <div className="modal modal-open">
-            <div className="modal-box">
-              <h3 className="font-bold text-lg">Add Email</h3>
-              <input
-                type="email"
-                placeholder="Enter email"
-                className="input input-bordered w-full mt-2"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <p className="mt-2">No delay, no repeat</p>
-              <div className="modal-action">
-                <button
-                  className="btn"
-                  onClick={() => setShowEmailModal(false)}
-                >
-                  Close
-                </button>
-                <button className="btn btn-success" onClick={handleAddEmail}>
-                  Add
-                </button>
-              </div>
-            </div>
+        <Modal
+          isOpen={showEmailModal}
+          onRequestClose={() => setShowEmailModal(false)}
+          contentLabel="Add Email"
+          className={`modal-box ${customStyles.content} w-full p-4 shadow-xl rounded-xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`}
+          customStyles={customStyles.content}
+        >
+          <h3 className="font-bold text-lg">Add Email</h3>
+          <input
+            type="email"
+            placeholder="Enter email"
+            className="input input-bordered w-full mt-2"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <p className="mt-2">No delay, no repeat</p>
+          <div className="modal-action">
+            <button className="btn" onClick={() => setShowEmailModal(false)}>
+              Close
+            </button>
+            <button className="btn btn-success" onClick={handleAddEmail}>
+              Add
+            </button>
           </div>
-        )}
+        </Modal>
 
-        {showPhoneModal && (
-          <div className="modal modal-open">
-            <div className="modal-box">
-              <h3 className="font-bold text-lg">Add Phone Number</h3>
-              <input
-                type="tel"
-                placeholder="Enter phone number"
-                className="input input-bordered w-full mt-2"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-              <p className="mt-2">No delay, no repeat</p>
-              <div className="modal-action">
-                <button
-                  className="btn"
-                  onClick={() => setShowPhoneModal(false)}
-                >
-                  Close
-                </button>
-                <button className="btn btn-success" onClick={handleAddPhone}>
-                  Add
-                </button>
-              </div>
-            </div>
+        <Modal
+          isOpen={showPhoneModal}
+          onRequestClose={() => setShowPhoneModal(false)}
+          contentLabel="Add Phone Number"
+          className={`modal-box ${customStyles.content} w-full p-4 shadow-xl rounded-xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`}
+          customStyles={customStyles.content}
+        >
+          <h3 className="font-bold text-lg">Add Phone Number</h3>
+          <input
+            type="tel"
+            placeholder="Enter phone number"
+            className="input input-bordered w-full mt-2"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+          <p className="mt-2">No delay, no repeat</p>
+          <div className="modal-action">
+            <button className="btn" onClick={() => setShowPhoneModal(false)}>
+              Close
+            </button>
+            <button className="btn btn-success" onClick={handleAddPhone}>
+              Add
+            </button>
           </div>
-        )}
+        </Modal>
       </section>
     </main>
   );

@@ -1,4 +1,4 @@
-import AdminLogic from "@/components/AdminLogic";
+import Monitors from "@/components/Monitors";
 import withAuth from "@/components/withAuth";
 import Head from "next/head";
 
@@ -9,7 +9,7 @@ function Admin() {
         <meta name="robots" content="noindex, nofollow" />
       </Head>
       <div className="bg-slate-800 text-base-300">
-        <AdminLogic />
+        <Monitors />
       </div>
     </>
   );

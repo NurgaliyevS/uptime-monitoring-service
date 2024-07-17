@@ -111,8 +111,8 @@ function AdminLogic() {
     <main className="container mx-auto py-10">
       <div className="flex justify-between m-4">
         <h1 className="text-2xl font-bold mb-4">Add Monitor</h1>
-        <Link href="/" alt="Go back" className="">
-          Home
+        <Link href="/admin" alt="Go back" className="">
+          Monitoring
         </Link>
       </div>
       <h2 className="leading-relaxed text-lg font-medium pb-5 m-4">

@@ -8,14 +8,14 @@ const IncidentSchema = new mongoose.Schema({
 });
 
 const MonitorSchema = new mongoose.Schema({
-  userEmail: { type: String, required: true },
-  monitorType: { type: String, enum: ['http', 'ping'], required: true },
-  urlOrIp: { type: String, required: true },
-  notificationEmails: [String],
-  notificationPhones: [String],
+  user_email: { type: String, required: true },
+  monitor_type: { type: String, enum: ['http', 'ping'], required: true },
+  url_or_ip: { type: String, required: true },
+  notification_emails: [String],
+  notification_phones: [String],
   interval: { type: Number, required: true },
   note: String,
-  latestIncident: IncidentSchema,
+  latest_incident: IncidentSchema,
   incidents24h: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },

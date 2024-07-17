@@ -7,7 +7,7 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 import Modal from "react-modal";
 
-Modal.setAppElement("#__next"); // Specify the root element for accessibility
+Modal.setAppElement("#__next");
 
 const customStyles = {
   content: {
@@ -20,15 +20,15 @@ const customStyles = {
   },
 };
 
-function AdminLogic() {
+function AdminMonitor() {
   const { data: session } = useSession();
   const [monitorType, setMonitorType] = useState("http");
   const [urlOrIp, setUrlOrIp] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [emails, setEmails] = useState([]); // New state to store emails
-  const [phones, setPhones] = useState([]); // New state to store phone numbers
-  const [interval, setInterval] = useState(300); // 5 minutes default
+  const [emails, setEmails] = useState([]);
+  const [phones, setPhones] = useState([]);
+  const [interval, setInterval] = useState(300);
   const [note, setNote] = useState("");
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [showPhoneModal, setShowPhoneModal] = useState(false);
@@ -39,15 +39,18 @@ function AdminLogic() {
   useEffect(() => {
     const fetchUserPlan = async () => {
       if (session?.user?.email) {
-        const response = await axios.get(
-          "/api/users/user?email=" + session.user.email
-        );
-        if (response.data?.success && response.data?.data) {
-          const user = response.data.data;
-          const variantName = user.variant_name.toLowerCase();
-          const email = user.email;
-          setUserPlan(variantName);
-          setEmails([email]);
+        try {
+          const response = await axios.get(`/api/users/user?email=${session.user.email}`);
+          if (response.data?.success && response.data?.data) {
+            const user = response.data.data;
+            const variantName = user.variant_name.toLowerCase();
+            const email = user.email;
+            setUserPlan(variantName);
+            setEmails([email]);
+          }
+        } catch (error) {
+          console.error("Error fetching user plan:", error);
+          toast.error("Failed to fetch user plan");
         }
       }
     };
@@ -65,16 +68,34 @@ function AdminLogic() {
 
   const currentLimits = planLimits[userPlan];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ monitorType, urlOrIp, email, phone, interval, note });
+    try {
+      const monitorData = {
+        user_email: session.user.email,
+        monitor_type: monitorType,
+        url_or_ip: urlOrIp,
+        notification_emails: emails,
+        notification_phones: phones,
+        interval,
+        note,
+      };
+      const response = await axios.post("/api/core/monitors", monitorData);
+      if (response.data.success) {
+        toast.success("Monitor added successfully");
+        // Reset form or redirect to monitors list
+      } else {
+        toast.error("Failed to add monitor");
+      }
+    } catch (error) {
+      console.error("Error adding monitor:", error);
+      toast.error("An error occurred while adding the monitor");
+    }
   };
 
   const handleAddEmail = () => {
     if (emails.length >= currentLimits.emails) {
-      toast.error(
-        `You have reached the limit of ${currentLimits.emails} emails for your plan.`
-      );
+      toast.error(`You have reached the limit of ${currentLimits.emails} emails for your plan.`);
       return;
     }
     if (!validateEmail(email)) {
@@ -89,9 +110,7 @@ function AdminLogic() {
 
   const handleAddPhone = () => {
     if (phones.length >= currentLimits.sms) {
-      toast.error(
-        `You have reached the limit of ${currentLimits.sms} phone numbers for your plan.`
-      );
+      toast.error(`You have reached the limit of ${currentLimits.sms} phone numbers for your plan.`);
       return;
     }
     setPhones([...phones, phone]);
@@ -109,9 +128,7 @@ function AdminLogic() {
 
   return (
     <>
-      <div className="flex justify-end pr-10 pt-10">
-      &nbsp;
-      </div>
+      <div className="flex justify-end pr-10 pt-10">&nbsp;</div>
       <main className="container mx-auto py-10">
         <div className="flex justify-between m-4">
           <h1 className="text-2xl font-bold mb-4">Add Monitor</h1>
@@ -120,10 +137,11 @@ function AdminLogic() {
           </Link>
         </div>
         <h2 className="leading-relaxed text-lg font-medium pb-5 m-4">
-          Your current plan -<strong> {userPlan.toUpperCase()}</strong>
+          Your current plan - <strong>{userPlan.toUpperCase()}</strong>
         </h2>
         <section className="card bg-base-100 lg:w-full shadow-xl p-10">
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Monitor Type */}
             <div>
               <label className="label">
                 <span className="label-text">Monitor Type</span>
@@ -143,12 +161,11 @@ function AdminLogic() {
               </p>
             </div>
 
+            {/* URL or IP */}
             <div>
               <label className="label">
                 <span className="label-text">
-                  {monitorType === "http"
-                    ? "URL to monitor"
-                    : "IP or host to monitor"}
+                  {monitorType === "http" ? "URL to monitor" : "IP or host to monitor"}
                 </span>
               </label>
               <input
@@ -156,15 +173,12 @@ function AdminLogic() {
                 className="input input-bordered w-full text-black"
                 value={urlOrIp}
                 onChange={(e) => setUrlOrIp(e.target.value)}
-                placeholder={
-                  monitorType === "http"
-                    ? "https://example.com"
-                    : "example.com or 192.168.1.1"
-                }
+                placeholder={monitorType === "http" ? "https://example.com" : "example.com or 192.168.1.1"}
                 required
               />
             </div>
 
+            {/* Notification Methods */}
             <div>
               <label className="label">
                 <span className="label-text">How will we notify you?</span>
@@ -193,9 +207,7 @@ function AdminLogic() {
               </div>
               <div className="mt-4 flex flex-col lg:flex-row gap-10">
                 <div className="flex flex-col">
-                  <h3 className="text-lg font-bold text-black btn-wide">
-                    Added Emails
-                  </h3>
+                  <h3 className="text-lg font-bold text-black btn-wide">Added Emails</h3>
                   <ul className="text-black">
                     {emails.map((email, index) => (
                       <li key={index}>{email}</li>
@@ -203,9 +215,7 @@ function AdminLogic() {
                   </ul>
                 </div>
                 <div className="flex flex-col">
-                  <h3 className="text-lg font-bold text-black btn-wide">
-                    Added Phone Numbers
-                  </h3>
+                  <h3 className="text-lg font-bold text-black btn-wide">Added Phone Numbers</h3>
                   <ul className="text-black">
                     {phones.map((phone, index) => (
                       <li key={index}>{phone}</li>
@@ -215,6 +225,7 @@ function AdminLogic() {
               </div>
             </div>
 
+            {/* Monitor Interval */}
             <div>
               <label className="label">
                 <span className="label-text">Monitor interval</span>
@@ -225,23 +236,17 @@ function AdminLogic() {
                 onChange={(e) => setInterval(Number(e.target.value))}
               >
                 {allIntervals.map((intv) => (
-                  <option
-                    key={intv}
-                    value={intv}
-                    disabled={intv < currentLimits.interval}
-                  >
-                    {intv / 60}m{" "}
-                    {intv < currentLimits.interval ? "(Paid feature)" : ""}
+                  <option key={intv} value={intv} disabled={intv < currentLimits.interval}>
+                    {intv / 60}m {intv < currentLimits.interval ? "(Paid feature)" : ""}
                   </option>
                 ))}
               </select>
               <p className="text-sm mt-1">
-                Your monitor will be checked every {interval / 60} minutes. We
-                recommend to use at least 1-minute checks available in paid
-                plans.
+                Your monitor will be checked every {interval / 60} minutes. We recommend using at least 1-minute checks available in paid plans.
               </p>
             </div>
 
+            {/* Note */}
             <div>
               <label className="label">
                 <span className="label-text">Note (Optional)</span>
@@ -258,12 +263,13 @@ function AdminLogic() {
             </button>
           </form>
 
+          {/* Email Modal */}
           <Modal
             isOpen={showEmailModal}
             onRequestClose={() => setShowEmailModal(false)}
             contentLabel="Add Email"
             className={`modal-box ${customStyles.content} w-full p-4 shadow-xl rounded-xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`}
-            customStyles={customStyles.content}
+            style={customStyles.content}
           >
             <h3 className="font-bold text-lg">Add Email</h3>
             <input
@@ -284,12 +290,13 @@ function AdminLogic() {
             </div>
           </Modal>
 
+          {/* Phone Modal */}
           <Modal
             isOpen={showPhoneModal}
             onRequestClose={() => setShowPhoneModal(false)}
             contentLabel="Add Phone Number"
             className={`modal-box ${customStyles.content} w-full p-4 shadow-xl rounded-xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`}
-            customStyles={customStyles.content}
+            style={customStyles.content}
           >
             <h3 className="font-bold text-lg">Add Phone Number</h3>
             <input
@@ -315,4 +322,4 @@ function AdminLogic() {
   );
 }
 
-export default AdminLogic;
+export default AdminMonitor;

@@ -45,7 +45,9 @@ function AdminLogic() {
         if (response.data?.success && response.data?.data) {
           const user = response.data.data;
           const variantName = user.variant_name.toLowerCase();
+          const email = user.email;
           setUserPlan(variantName);
+          setEmails([email]);
         }
       }
     };
@@ -55,10 +57,10 @@ function AdminLogic() {
   }, [session]);
 
   const planLimits = {
-    free: { monitors: 5, interval: 300, sms: 5, emails: 5 },
-    personal: { monitors: 10, interval: 180, sms: 50, emails: 100 },
-    team: { monitors: 20, interval: 60, sms: 100, emails: 200 },
-    enterprise: { monitors: 50, interval: 30, sms: 200, emails: 500 },
+    free: { monitors: 5, interval: 300, sms: 1, emails: 1 },
+    personal: { monitors: 10, interval: 180, sms: 3, emails: 3 },
+    team: { monitors: 20, interval: 60, sms: 5, emails: 5 },
+    enterprise: { monitors: 50, interval: 30, sms: 10, emails: 10 },
   };
 
   const currentLimits = planLimits[userPlan];
@@ -164,24 +166,32 @@ function AdminLogic() {
               <span className="label-text">How will we notify you?</span>
             </label>
             <div className="flex flex-col lg:flex-row gap-10">
-              <button
-                type="button"
-                className="btn btn-success btn-wide"
-                onClick={() => setShowEmailModal(true)}
-              >
-                E-mail
-              </button>
-              <button
-                type="button"
-                className="btn btn-info btn-wide"
-                onClick={() => setShowPhoneModal(true)}
-              >
-                SMS message
-              </button>
+              <div className="tooltip" data-tip="Paid Feature">
+                <button
+                  type="button"
+                  className="btn btn-success btn-wide"
+                  onClick={() => setShowEmailModal(true)}
+                  disabled={emails.length >= currentLimits.emails}
+                >
+                  E-mail
+                </button>
+              </div>
+              <div className="tooltip" data-tip="Paid Feature">
+                <button
+                  type="button"
+                  className="btn btn-info btn-wide"
+                  onClick={() => setShowPhoneModal(true)}
+                  disabled={phones.length >= currentLimits.sms}
+                >
+                  SMS message
+                </button>
+              </div>
             </div>
             <div className="mt-4 flex flex-col lg:flex-row gap-10">
               <div className="flex flex-col">
-                <h3 className="text-lg font-bold text-black btn-wide">Added Emails</h3>
+                <h3 className="text-lg font-bold text-black btn-wide">
+                  Added Emails
+                </h3>
                 <ul className="text-black">
                   {emails.map((email, index) => (
                     <li key={index}>{email}</li>
@@ -216,7 +226,8 @@ function AdminLogic() {
                   value={intv}
                   disabled={intv < currentLimits.interval}
                 >
-                  {intv / 60}m {intv < currentLimits.interval ? "(Paid feature)" : ""}
+                  {intv / 60}m{" "}
+                  {intv < currentLimits.interval ? "(Paid feature)" : ""}
                 </option>
               ))}
             </select>

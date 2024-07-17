@@ -98,6 +98,18 @@ export default async function handler(req, res) {
       } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
       }
+    
+      case "DELETE":
+        try {
+          const { id } = req.query;
+          const monitor = await Monitor.findByIdAndDelete(id);
+          if (!monitor) {
+            return res.status(404).json({ success: false, message: "Monitor not found" });
+          }
+          return res.status(200).json({ success: true, data: {} });
+        } catch (error) {
+          return res.status(500).json({ success: false, message: error.message });
+        }
 
     default:
       res.setHeader('Allow', ['GET', 'POST', 'PUT', 'PATCH']);

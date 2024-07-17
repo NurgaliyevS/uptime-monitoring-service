@@ -181,14 +181,14 @@ function AdminMonitor() {
   return (
     <>
       <div className="flex justify-end pr-10 pt-10">&nbsp;</div>
-      <main className="container mx-auto py-10">
-        <div className="flex justify-between m-4">
+      <main className="container mx-auto py-10 m-4">
+        <div className="flex justify-between">
           <h1 className="text-2xl font-bold mb-4">Add Monitor</h1>
           <Link href="/admin" alt="Go back" className="">
             Monitoring
           </Link>
         </div>
-        <h2 className="leading-relaxed text-lg font-medium pb-5 m-4">
+        <h2 className="leading-relaxed text-lg font-medium pb-5 my-4">
           Your current plan - <strong>{userPlan.toUpperCase()}</strong>
         </h2>
         <section className="card bg-base-100 lg:w-full shadow-xl p-10">

@@ -35,6 +35,7 @@ function AdminMonitor() {
   const [showPhoneModal, setShowPhoneModal] = useState(false);
   const [userPlan, setUserPlan] = useState("free");
   const [availableMonitors, setAvailableMonitors] = useState(0);
+  const [isUrlOrIpValid, setIsUrlOrIpValid] = useState(true);
 
   const didMountRef = useRef(false);
   const didMountRef2 = useRef(false);
@@ -95,8 +96,28 @@ function AdminMonitor() {
 
   const currentLimits = planLimits[userPlan];
 
+  const validateUrlOrIp = (value) => {
+    if (monitorType === "http") {
+      const urlPattern =
+        /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+      return urlPattern.test(value);
+    } else {
+      const ipPattern =
+        /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+      const hostPattern =
+        /^([a-zA-Z0-9]+([a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+      return ipPattern.test(value) || hostPattern.test(value);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateUrlOrIp(urlOrIp)) {
+      setIsUrlOrIpValid(false);
+      toast.error("Please enter a valid URL or IP address.");
+      return;
+    }
+    setIsUrlOrIpValid(true);
     try {
       const monitorData = {
         user_email: session.user.email,
@@ -203,16 +224,27 @@ function AdminMonitor() {
               </label>
               <input
                 type={monitorType === "http" ? "url" : "text"}
-                className="input input-bordered w-full text-black"
+                className={`input input-bordered w-full text-black ${
+                  isUrlOrIpValid ? "" : "input-error"
+                }`}
                 value={urlOrIp}
-                onChange={(e) => setUrlOrIp(e.target.value)}
+                onChange={(e) => {
+                  setUrlOrIp(e.target.value);
+                  setIsUrlOrIpValid(validateUrlOrIp(e.target.value));
+                }}
                 placeholder={
                   monitorType === "http"
                     ? "https://example.com"
-                    : "example.com or 192.168.1.1"
+                    : "192.168.0.1 or example.com"
                 }
-                required
               />
+              {!isUrlOrIpValid && (
+                <p className="text-red-500 text-sm">
+                  {monitorType === "http"
+                    ? "Please enter a valid URL."
+                    : "Please enter a valid IP address or host."}
+                </p>
+              )}
             </div>
 
             {/* Notification Methods */}
@@ -307,9 +339,11 @@ function AdminMonitor() {
             </div>
 
             <div className="tooltip" data-tip="Paid Feature to add more">
-              <button type="submit" className="btn btn-secondary btn-wide" disabled={
-                availableMonitors >= currentLimits.monitors
-              }>
+              <button
+                type="submit"
+                className="btn btn-secondary btn-wide"
+                disabled={availableMonitors >= currentLimits.monitors}
+              >
                 Add Monitor
               </button>
             </div>

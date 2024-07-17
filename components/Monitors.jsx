@@ -10,7 +10,7 @@ function Monitors() {
   const { data: session } = useSession();
   const [monitors, setMonitors] = useState([]);
   const [selectedMonitors, setSelectedMonitors] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -29,7 +29,7 @@ function Monitors() {
       }
     };
     fetchMonitors();
-  }, [session]);
+  }, []);
 
   const handleCheckboxChange = (monitorId) => {
     setSelectedMonitors(prev => 
@@ -41,7 +41,7 @@ function Monitors() {
 
   const handleDeleteSelected = async () => {
     try {
-      await axios.post('/api/core/monitors/delete', { ids: selectedMonitors });
+      await axios.delete('/api/core/monitors', { ids: selectedMonitors });
       setMonitors(prev => prev.filter(monitor => !selectedMonitors.includes(monitor._id)));
       setSelectedMonitors([]);
     } catch (error) {
@@ -92,7 +92,7 @@ function Monitors() {
         {monitors.length > 0 ? (
           <div className="space-y-4">
             {selectedMonitors.length > 0 && (
-              <button onClick={handleDeleteSelected} className={`btn btn-error ${isLoading ? "btn-neutral" : ""}`} disabled={
+              <button onClick={handleDeleteSelected} className={`btn btn-error`} disabled={
                 isLoading || selectedMonitors.length === 0
               }>
                 Delete Selected

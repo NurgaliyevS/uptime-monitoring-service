@@ -6,6 +6,7 @@ import axios from "axios";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import Modal from "react-modal";
+import { useRouter } from "next/navigation";
 
 Modal.setAppElement("#__next");
 
@@ -33,14 +34,19 @@ function AdminMonitor() {
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [showPhoneModal, setShowPhoneModal] = useState(false);
   const [userPlan, setUserPlan] = useState("free");
+  const [availableMonitors, setAvailableMonitors] = useState(0);
 
   const didMountRef = useRef(false);
+  const didMountRef2 = useRef(false);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchUserPlan = async () => {
       if (session?.user?.email) {
         try {
-          const response = await axios.get(`/api/users/user?email=${session.user.email}`);
+          const response = await axios.get(
+            `/api/users/user?email=${session.user.email}`
+          );
           if (response.data?.success && response.data?.data) {
             const user = response.data.data;
             const variantName = user.variant_name.toLowerCase();
@@ -57,6 +63,27 @@ function AdminMonitor() {
 
     if (didMountRef.current) fetchUserPlan();
     else didMountRef.current = true;
+  }, [session]);
+
+  useEffect(() => {
+    // fetch user monitor have right now
+    const fetchUserMonitors = async () => {
+      if (session?.user?.email) {
+        try {
+          const response = await axios.get(
+            `/api/core/monitors?email=${session.user.email}`
+          );
+          if (response.data?.success && response.data?.data) {
+            const monitors = response.data.data;
+            setAvailableMonitors(monitors.length);
+          }
+        } catch (error) {
+          console.error("Error fetching user monitors:", error);
+        }
+      }
+    };
+    if (didMountRef2.current) fetchUserMonitors();
+    else didMountRef2.current = true;
   }, [session]);
 
   const planLimits = {
@@ -83,7 +110,7 @@ function AdminMonitor() {
       const response = await axios.post("/api/core/monitors", monitorData);
       if (response.data.success) {
         toast.success("Monitor added successfully");
-        // Reset form or redirect to monitors list
+        router.push("/admin");
       } else {
         toast.error("Failed to add monitor");
       }
@@ -95,7 +122,9 @@ function AdminMonitor() {
 
   const handleAddEmail = () => {
     if (emails.length >= currentLimits.emails) {
-      toast.error(`You have reached the limit of ${currentLimits.emails} emails for your plan.`);
+      toast.error(
+        `You have reached the limit of ${currentLimits.emails} emails for your plan.`
+      );
       return;
     }
     if (!validateEmail(email)) {
@@ -110,7 +139,9 @@ function AdminMonitor() {
 
   const handleAddPhone = () => {
     if (phones.length >= currentLimits.sms) {
-      toast.error(`You have reached the limit of ${currentLimits.sms} phone numbers for your plan.`);
+      toast.error(
+        `You have reached the limit of ${currentLimits.sms} phone numbers for your plan.`
+      );
       return;
     }
     setPhones([...phones, phone]);
@@ -165,7 +196,9 @@ function AdminMonitor() {
             <div>
               <label className="label">
                 <span className="label-text">
-                  {monitorType === "http" ? "URL to monitor" : "IP or host to monitor"}
+                  {monitorType === "http"
+                    ? "URL to monitor"
+                    : "IP or host to monitor"}
                 </span>
               </label>
               <input
@@ -173,7 +206,11 @@ function AdminMonitor() {
                 className="input input-bordered w-full text-black"
                 value={urlOrIp}
                 onChange={(e) => setUrlOrIp(e.target.value)}
-                placeholder={monitorType === "http" ? "https://example.com" : "example.com or 192.168.1.1"}
+                placeholder={
+                  monitorType === "http"
+                    ? "https://example.com"
+                    : "example.com or 192.168.1.1"
+                }
                 required
               />
             </div>
@@ -207,7 +244,9 @@ function AdminMonitor() {
               </div>
               <div className="mt-4 flex flex-col lg:flex-row gap-10">
                 <div className="flex flex-col">
-                  <h3 className="text-lg font-bold text-black btn-wide">Added Emails</h3>
+                  <h3 className="text-lg font-bold text-black btn-wide">
+                    Added Emails
+                  </h3>
                   <ul className="text-black">
                     {emails.map((email, index) => (
                       <li key={index}>{email}</li>
@@ -215,7 +254,9 @@ function AdminMonitor() {
                   </ul>
                 </div>
                 <div className="flex flex-col">
-                  <h3 className="text-lg font-bold text-black btn-wide">Added Phone Numbers</h3>
+                  <h3 className="text-lg font-bold text-black btn-wide">
+                    Added Phone Numbers
+                  </h3>
                   <ul className="text-black">
                     {phones.map((phone, index) => (
                       <li key={index}>{phone}</li>
@@ -236,13 +277,20 @@ function AdminMonitor() {
                 onChange={(e) => setInterval(Number(e.target.value))}
               >
                 {allIntervals.map((intv) => (
-                  <option key={intv} value={intv} disabled={intv < currentLimits.interval}>
-                    {intv / 60}m {intv < currentLimits.interval ? "(Paid feature)" : ""}
+                  <option
+                    key={intv}
+                    value={intv}
+                    disabled={intv < currentLimits.interval}
+                  >
+                    {intv / 60}m{" "}
+                    {intv < currentLimits.interval ? "(Paid feature)" : ""}
                   </option>
                 ))}
               </select>
               <p className="text-sm mt-1">
-                Your monitor will be checked every {interval / 60} minutes. We recommend using at least 1-minute checks available in paid plans.
+                Your monitor will be checked every {interval / 60} minutes. We
+                recommend using at least 1-minute checks available in paid
+                plans.
               </p>
             </div>
 
@@ -258,9 +306,13 @@ function AdminMonitor() {
               ></textarea>
             </div>
 
-            <button type="submit" className="btn btn-secondary btn-wide">
-              Add Monitor
-            </button>
+            <div className="tooltip" data-tip="Paid Feature to add more">
+              <button type="submit" className="btn btn-secondary btn-wide" disabled={
+                availableMonitors >= currentLimits.monitors
+              }>
+                Add Monitor
+              </button>
+            </div>
           </form>
 
           {/* Email Modal */}

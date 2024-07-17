@@ -18,7 +18,7 @@ async function getMonitorById(id) {
 }
 
 async function getMonitorsByUserEmail(userEmail) {
-  const monitors = await Monitor.find({ userEmail });
+  const monitors = await Monitor.find({ user_email: userEmail });
   return monitors;
 }
 

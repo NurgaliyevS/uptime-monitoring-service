@@ -108,204 +108,210 @@ function AdminLogic() {
   const allIntervals = [30, 60, 180, 300];
 
   return (
-    <main className="container mx-auto py-10">
-      <div className="flex justify-between m-4">
-        <h1 className="text-2xl font-bold mb-4">Add Monitor</h1>
-        <Link href="/admin" alt="Go back" className="">
-          Monitoring
-        </Link>
+    <>
+      <div className="flex justify-end pr-10 pt-10">
+      &nbsp;
       </div>
-      <h2 className="leading-relaxed text-lg font-medium pb-5 m-4">
-        Your current plan -<strong> {userPlan.toUpperCase()}</strong>
-      </h2>
-      <section className="card bg-base-100 lg:w-full shadow-xl p-10">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="label">
-              <span className="label-text">Monitor Type</span>
-            </label>
-            <select
-              className="select select-bordered w-full text-black"
-              value={monitorType}
-              onChange={(e) => setMonitorType(e.target.value)}
-            >
-              <option value="http">HTTP / Website Monitoring</option>
-              <option value="ping">Ping Monitoring</option>
-            </select>
-            <p className="text-sm mt-1">
-              {monitorType === "http"
-                ? "Use HTTP(S) monitor to monitor your website, API endpoint, or anything running on HTTP."
-                : "Make sure your server or any device in the network is always available."}
-            </p>
-          </div>
-
-          <div>
-            <label className="label">
-              <span className="label-text">
+      <main className="container mx-auto py-10">
+        <div className="flex justify-between m-4">
+          <h1 className="text-2xl font-bold mb-4">Add Monitor</h1>
+          <Link href="/admin" alt="Go back" className="">
+            Monitoring
+          </Link>
+        </div>
+        <h2 className="leading-relaxed text-lg font-medium pb-5 m-4">
+          Your current plan -<strong> {userPlan.toUpperCase()}</strong>
+        </h2>
+        <section className="card bg-base-100 lg:w-full shadow-xl p-10">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="label">
+                <span className="label-text">Monitor Type</span>
+              </label>
+              <select
+                className="select select-bordered w-full text-black"
+                value={monitorType}
+                onChange={(e) => setMonitorType(e.target.value)}
+              >
+                <option value="http">HTTP / Website Monitoring</option>
+                <option value="ping">Ping Monitoring</option>
+              </select>
+              <p className="text-sm mt-1">
                 {monitorType === "http"
-                  ? "URL to monitor"
-                  : "IP or host to monitor"}
-              </span>
-            </label>
+                  ? "Use HTTP(S) monitor to monitor your website, API endpoint, or anything running on HTTP."
+                  : "Make sure your server or any device in the network is always available."}
+              </p>
+            </div>
+
+            <div>
+              <label className="label">
+                <span className="label-text">
+                  {monitorType === "http"
+                    ? "URL to monitor"
+                    : "IP or host to monitor"}
+                </span>
+              </label>
+              <input
+                type={monitorType === "http" ? "url" : "text"}
+                className="input input-bordered w-full text-black"
+                value={urlOrIp}
+                onChange={(e) => setUrlOrIp(e.target.value)}
+                placeholder={
+                  monitorType === "http"
+                    ? "https://example.com"
+                    : "example.com or 192.168.1.1"
+                }
+                required
+              />
+            </div>
+
+            <div>
+              <label className="label">
+                <span className="label-text">How will we notify you?</span>
+              </label>
+              <div className="flex flex-col lg:flex-row gap-10">
+                <div className="tooltip" data-tip="Paid Feature">
+                  <button
+                    type="button"
+                    className="btn btn-success btn-wide"
+                    onClick={() => setShowEmailModal(true)}
+                    disabled={emails.length >= currentLimits.emails}
+                  >
+                    E-mail
+                  </button>
+                </div>
+                <div className="tooltip" data-tip="Paid Feature">
+                  <button
+                    type="button"
+                    className="btn btn-info btn-wide"
+                    onClick={() => setShowPhoneModal(true)}
+                    disabled={phones.length >= currentLimits.sms}
+                  >
+                    SMS message
+                  </button>
+                </div>
+              </div>
+              <div className="mt-4 flex flex-col lg:flex-row gap-10">
+                <div className="flex flex-col">
+                  <h3 className="text-lg font-bold text-black btn-wide">
+                    Added Emails
+                  </h3>
+                  <ul className="text-black">
+                    {emails.map((email, index) => (
+                      <li key={index}>{email}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="flex flex-col">
+                  <h3 className="text-lg font-bold text-black btn-wide">
+                    Added Phone Numbers
+                  </h3>
+                  <ul className="text-black">
+                    {phones.map((phone, index) => (
+                      <li key={index}>{phone}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="label">
+                <span className="label-text">Monitor interval</span>
+              </label>
+              <select
+                className="select select-bordered w-full text-black"
+                value={interval}
+                onChange={(e) => setInterval(Number(e.target.value))}
+              >
+                {allIntervals.map((intv) => (
+                  <option
+                    key={intv}
+                    value={intv}
+                    disabled={intv < currentLimits.interval}
+                  >
+                    {intv / 60}m{" "}
+                    {intv < currentLimits.interval ? "(Paid feature)" : ""}
+                  </option>
+                ))}
+              </select>
+              <p className="text-sm mt-1">
+                Your monitor will be checked every {interval / 60} minutes. We
+                recommend to use at least 1-minute checks available in paid
+                plans.
+              </p>
+            </div>
+
+            <div>
+              <label className="label">
+                <span className="label-text">Note (Optional)</span>
+              </label>
+              <textarea
+                className="textarea textarea-bordered w-full text-black"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+              ></textarea>
+            </div>
+
+            <button type="submit" className="btn btn-secondary btn-wide">
+              Add Monitor
+            </button>
+          </form>
+
+          <Modal
+            isOpen={showEmailModal}
+            onRequestClose={() => setShowEmailModal(false)}
+            contentLabel="Add Email"
+            className={`modal-box ${customStyles.content} w-full p-4 shadow-xl rounded-xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`}
+            customStyles={customStyles.content}
+          >
+            <h3 className="font-bold text-lg">Add Email</h3>
             <input
-              type={monitorType === "http" ? "url" : "text"}
-              className="input input-bordered w-full text-black"
-              value={urlOrIp}
-              onChange={(e) => setUrlOrIp(e.target.value)}
-              placeholder={
-                monitorType === "http"
-                  ? "https://example.com"
-                  : "example.com or 192.168.1.1"
-              }
-              required
+              type="email"
+              placeholder="Enter email"
+              className="input input-bordered w-full mt-2"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
-          </div>
-
-          <div>
-            <label className="label">
-              <span className="label-text">How will we notify you?</span>
-            </label>
-            <div className="flex flex-col lg:flex-row gap-10">
-              <div className="tooltip" data-tip="Paid Feature">
-                <button
-                  type="button"
-                  className="btn btn-success btn-wide"
-                  onClick={() => setShowEmailModal(true)}
-                  disabled={emails.length >= currentLimits.emails}
-                >
-                  E-mail
-                </button>
-              </div>
-              <div className="tooltip" data-tip="Paid Feature">
-                <button
-                  type="button"
-                  className="btn btn-info btn-wide"
-                  onClick={() => setShowPhoneModal(true)}
-                  disabled={phones.length >= currentLimits.sms}
-                >
-                  SMS message
-                </button>
-              </div>
+            <p className="mt-2">No delay, no repeat</p>
+            <div className="modal-action">
+              <button className="btn" onClick={() => setShowEmailModal(false)}>
+                Close
+              </button>
+              <button className="btn btn-success" onClick={handleAddEmail}>
+                Add
+              </button>
             </div>
-            <div className="mt-4 flex flex-col lg:flex-row gap-10">
-              <div className="flex flex-col">
-                <h3 className="text-lg font-bold text-black btn-wide">
-                  Added Emails
-                </h3>
-                <ul className="text-black">
-                  {emails.map((email, index) => (
-                    <li key={index}>{email}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="flex flex-col">
-                <h3 className="text-lg font-bold text-black btn-wide">
-                  Added Phone Numbers
-                </h3>
-                <ul className="text-black">
-                  {phones.map((phone, index) => (
-                    <li key={index}>{phone}</li>
-                  ))}
-                </ul>
-              </div>
+          </Modal>
+
+          <Modal
+            isOpen={showPhoneModal}
+            onRequestClose={() => setShowPhoneModal(false)}
+            contentLabel="Add Phone Number"
+            className={`modal-box ${customStyles.content} w-full p-4 shadow-xl rounded-xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`}
+            customStyles={customStyles.content}
+          >
+            <h3 className="font-bold text-lg">Add Phone Number</h3>
+            <input
+              type="tel"
+              placeholder="Enter phone number"
+              className="input input-bordered w-full mt-2"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+            <p className="mt-2">No delay, no repeat</p>
+            <div className="modal-action">
+              <button className="btn" onClick={() => setShowPhoneModal(false)}>
+                Close
+              </button>
+              <button className="btn btn-success" onClick={handleAddPhone}>
+                Add
+              </button>
             </div>
-          </div>
-
-          <div>
-            <label className="label">
-              <span className="label-text">Monitor interval</span>
-            </label>
-            <select
-              className="select select-bordered w-full text-black"
-              value={interval}
-              onChange={(e) => setInterval(Number(e.target.value))}
-            >
-              {allIntervals.map((intv) => (
-                <option
-                  key={intv}
-                  value={intv}
-                  disabled={intv < currentLimits.interval}
-                >
-                  {intv / 60}m{" "}
-                  {intv < currentLimits.interval ? "(Paid feature)" : ""}
-                </option>
-              ))}
-            </select>
-            <p className="text-sm mt-1">
-              Your monitor will be checked every {interval / 60} minutes. We
-              recommend to use at least 1-minute checks available in paid plans.
-            </p>
-          </div>
-
-          <div>
-            <label className="label">
-              <span className="label-text">Note (Optional)</span>
-            </label>
-            <textarea
-              className="textarea textarea-bordered w-full text-black"
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-            ></textarea>
-          </div>
-
-          <button type="submit" className="btn btn-secondary btn-wide">
-            Add Monitor
-          </button>
-        </form>
-
-        <Modal
-          isOpen={showEmailModal}
-          onRequestClose={() => setShowEmailModal(false)}
-          contentLabel="Add Email"
-          className={`modal-box ${customStyles.content} w-full p-4 shadow-xl rounded-xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`}
-          customStyles={customStyles.content}
-        >
-          <h3 className="font-bold text-lg">Add Email</h3>
-          <input
-            type="email"
-            placeholder="Enter email"
-            className="input input-bordered w-full mt-2"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <p className="mt-2">No delay, no repeat</p>
-          <div className="modal-action">
-            <button className="btn" onClick={() => setShowEmailModal(false)}>
-              Close
-            </button>
-            <button className="btn btn-success" onClick={handleAddEmail}>
-              Add
-            </button>
-          </div>
-        </Modal>
-
-        <Modal
-          isOpen={showPhoneModal}
-          onRequestClose={() => setShowPhoneModal(false)}
-          contentLabel="Add Phone Number"
-          className={`modal-box ${customStyles.content} w-full p-4 shadow-xl rounded-xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`}
-          customStyles={customStyles.content}
-        >
-          <h3 className="font-bold text-lg">Add Phone Number</h3>
-          <input
-            type="tel"
-            placeholder="Enter phone number"
-            className="input input-bordered w-full mt-2"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-          <p className="mt-2">No delay, no repeat</p>
-          <div className="modal-action">
-            <button className="btn" onClick={() => setShowPhoneModal(false)}>
-              Close
-            </button>
-            <button className="btn btn-success" onClick={handleAddPhone}>
-              Add
-            </button>
-          </div>
-        </Modal>
-      </section>
-    </main>
+          </Modal>
+        </section>
+      </main>
+    </>
   );
 }
 

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 
 function Monitors() {
@@ -14,53 +14,70 @@ function Monitors() {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchMonitors = async () => {
-      if (session) {
-        try {
-          const email = session.user.email;
-          const response = await axios.get(`/api/core/monitors?email=${email}`);
-          if (response.data?.success && response.data?.data) {
-            setMonitors(response.data.data);
-            console.log("Monitors:", response.data.data);
-          }
-        } catch (error) {
-          console.error("Error fetching monitors:", error);
-        }
-      }
-    };
     fetchMonitors();
   }, []);
 
+  const fetchMonitors = async () => {
+    if (session) {
+      try {
+        const email = session.user.email;
+        const response = await axios.get(`/api/core/monitors?email=${email}`);
+        if (response.data?.success && response.data?.data) {
+          setMonitors(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching monitors:", error);
+      }
+    }
+  };
+
   const handleCheckboxChange = (monitorId) => {
-    setSelectedMonitors(prev => 
+    setSelectedMonitors((prev) =>
       prev.includes(monitorId)
-        ? prev.filter(id => id !== monitorId)
+        ? prev.filter((id) => id !== monitorId)
         : [...prev, monitorId]
     );
   };
 
   const handleDeleteSelected = async () => {
+    setIsLoading(true);
     try {
-      await axios.delete('/api/core/monitors', { ids: selectedMonitors });
-      setMonitors(prev => prev.filter(monitor => !selectedMonitors.includes(monitor._id)));
-      setSelectedMonitors([]);
+      const response = await axios.delete(
+        `/api/core/monitors?ids=${selectedMonitors.join(",")}`
+      );
+      if (response.data?.success) {
+        setMonitors((prev) =>
+          prev.filter((monitor) => !selectedMonitors.includes(monitor._id))
+        );
+        setSelectedMonitors([]);
+        fetchMonitors();
+        toast.success(
+          `Successfully deleted ${response.data.data.deletedCount} monitor(s)`
+        );
+      } else {
+        toast.error("Failed to delete selected monitors");
+      }
     } catch (error) {
       console.error("Error deleting monitors:", error);
+      toast.error("An error occurred while deleting monitors");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleDeleteMonitor = async (id) => {
     setIsLoading(true);
     try {
-      const response =  await axios.delete(`/api/core/monitors?id=${id}`);
+      const response = await axios.delete(`/api/core/monitors?id=${id}`);
       if (!response.data?.success) {
         console.error("Error deleting monitor:", response.data?.message);
         return;
       }
       if (response.data?.success) {
         toast.success("Monitor deleted successfully");
+        fetchMonitors();
       }
-      setMonitors(prev => prev.filter(monitor => monitor._id !== id));
+      setMonitors((prev) => prev.filter((monitor) => monitor._id !== id));
     } catch (error) {
       console.error("Error deleting monitor:", error);
     } finally {
@@ -92,9 +109,11 @@ function Monitors() {
         {monitors.length > 0 ? (
           <div className="space-y-4">
             {selectedMonitors.length > 0 && (
-              <button onClick={handleDeleteSelected} className={`btn btn-error`} disabled={
-                isLoading || selectedMonitors.length === 0
-              }>
+              <button
+                onClick={handleDeleteSelected}
+                className={`btn btn-error`}
+                disabled={isLoading || selectedMonitors.length === 0}
+              >
                 Delete Selected
               </button>
             )}
@@ -108,20 +127,33 @@ function Monitors() {
                     onChange={() => handleCheckboxChange(monitor._id)}
                   />
                   <div className="flex-grow ml-4">
-                    <h2 className="card-title text-black">{monitor.url_or_ip}</h2>
-                    <p className={`text-${monitor.latest_incident?.status === 'down' ? 'error' : 'success'} text-black`}>
-                      {monitor.latest_incident?.status === 'down' ? 'Down' : 'Up'} 
-                      {monitor.latest_incident?.started && ` - ${new Date(monitor.latest_incident.started).toLocaleString()}`}
+                    <h2 className="card-title text-black">
+                      {monitor.url_or_ip}
+                    </h2>
+                    <p
+                      className={`text-${
+                        monitor.latest_incident?.status === "down"
+                          ? "error"
+                          : "success"
+                      } text-black`}
+                    >
+                      {monitor.latest_incident?.status === "down"
+                        ? "Down"
+                        : "Up"}
+                      {monitor.latest_incident?.started &&
+                        ` - ${new Date(
+                          monitor.latest_incident.started
+                        ).toLocaleString()}`}
                     </p>
                   </div>
                   <div className="card-actions justify-end">
-                    <button 
+                    <button
                       className="btn btn-primary"
                       onClick={() => navigateToMonitor(monitor._id)}
                     >
                       View Details
                     </button>
-                    <button 
+                    <button
                       className="btn btn-error"
                       onClick={() => handleDeleteMonitor(monitor._id)}
                     >

@@ -1,7 +1,7 @@
-// pages/admin/monitor/[id].js
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import AdminMonitor from "@/components/AdminMonitor";
 
 export default function MonitorDetails() {
   const router = useRouter();
@@ -27,12 +27,8 @@ export default function MonitorDetails() {
   if (!monitor) return <div>Loading...</div>;
 
   return (
-    <div className="container mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-4">{monitor.url_or_ip}</h1>
-      <p>Type: {monitor.monitor_type}</p>
-      <p>Interval: {monitor.interval} seconds</p>
-      <p>Status: {monitor.latest_incident?.status || 'Unknown'}</p>
-      {/* Add more details as needed */}
+    <div className="bg-slate-800 text-base-300">
+      <AdminMonitor isEdit={true} monitor={monitor} />
     </div>
   );
 }

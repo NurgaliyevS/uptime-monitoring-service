@@ -21,7 +21,7 @@ const customStyles = {
   },
 };
 
-function AdminMonitor() {
+function AdminMonitor({ isEdit, monitor }) {
   const { data: session } = useSession();
   const [monitorType, setMonitorType] = useState("http");
   const [urlOrIp, setUrlOrIp] = useState("");
@@ -36,9 +36,11 @@ function AdminMonitor() {
   const [userPlan, setUserPlan] = useState("free");
   const [availableMonitors, setAvailableMonitors] = useState(0);
   const [isUrlOrIpValid, setIsUrlOrIpValid] = useState(true);
+  const [title, setTitle] = useState("Add");
 
   const didMountRef = useRef(false);
   const didMountRef2 = useRef(false);
+  const didMountRef3 = useRef(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -53,7 +55,9 @@ function AdminMonitor() {
             const variantName = user.variant_name.toLowerCase();
             const email = user.email;
             setUserPlan(variantName);
-            setEmails([email]);
+            if (!isEdit) {
+              setEmails([email]);
+            }
           }
         } catch (error) {
           console.error("Error fetching user plan:", error);
@@ -86,6 +90,37 @@ function AdminMonitor() {
     if (didMountRef2.current) fetchUserMonitors();
     else didMountRef2.current = true;
   }, [session]);
+
+  useEffect(() => {
+    const editMode = () => {
+      if (isEdit) {
+        setTitle("Edit");
+      }
+      if (monitor) {
+        setUrlOrIp(monitor.url_or_ip);
+        const emailsBackend = monitor.notification_emails;
+        const notificationPhones = monitor.notification_phones;
+
+        console.log(emailsBackend, "emailsBackend");
+        console.log(notificationPhones, "phonesBackend");
+
+        if (emailsBackend.length) {
+          setEmails(emailsBackend);
+        }
+
+        if (notificationPhones.length) {
+          setPhones(notificationPhones);
+        }
+
+        if (monitor.note) {
+          setNote(monitor.note);
+        }
+      }
+    };
+
+    if (didMountRef3.current) editMode();
+    else didMountRef3.current = true;
+  }, [isEdit, monitor]);
 
   const planLimits = {
     free: { monitors: 5, interval: 300, sms: 1, emails: 1 },
@@ -128,18 +163,34 @@ function AdminMonitor() {
         interval,
         note,
       };
-      const response = await axios.post("/api/core/monitors", monitorData);
-      if (response.data.success) {
-        toast.success("Monitor added successfully");
-        router.push("/admin");
+
+      if (isEdit) {
+        console.log(monitor, "monitor");
+        console.log(monitorData, "monitor data");
+        monitorData["id"] = monitor._id;
+        const response = await axios.put("/api/core/monitors", monitorData);
+        if (response.data.success) {
+          toast.success("Monitor updated successfully");
+          router.push("/admin");
+        } else {
+          toast.error("Failed to add monitor");
+        }
       } else {
-        toast.error("Failed to add monitor");
+        const response = await axios.post("/api/core/monitors", monitorData);
+        if (response.data.success) {
+          toast.success("Monitor added successfully");
+          router.push("/admin");
+        } else {
+          toast.error("Failed to add monitor");
+        }
       }
     } catch (error) {
       console.error("Error adding monitor:", error);
       toast.error("An error occurred while adding the monitor");
     }
   };
+
+  const handleUpdateForm = async (e) => {};
 
   const handleAddEmail = () => {
     if (emails.length >= currentLimits.emails) {
@@ -183,13 +234,16 @@ function AdminMonitor() {
       <div className="flex justify-end pr-10 pt-10">&nbsp;</div>
       <main className="container mx-auto py-10 m-4">
         <div className="flex justify-between">
-          <h1 className="text-2xl font-bold mb-4">Add Monitor</h1>
+          <h1 className="text-2xl font-bold mb-4">{title} Monitor</h1>
           <Link href="/admin" alt="Go back" className="">
             Monitoring
           </Link>
         </div>
         <h2 className="leading-relaxed text-lg font-medium pb-5 my-4">
-          Your current plan - <strong>{userPlan.toUpperCase()}</strong>
+          Your current plan -{" "}
+          <strong className="relative text-secondary">
+            {userPlan.toUpperCase()}
+          </strong>
         </h2>
         <section className="card bg-base-100 lg:w-full shadow-xl p-10">
           <form onSubmit={handleSubmit} className="space-y-4">

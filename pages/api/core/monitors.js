@@ -8,7 +8,9 @@ async function saveMonitor(monitorData) {
 }
 
 async function updateMonitor(id, updateData) {
-  const updatedMonitor = await Monitor.findByIdAndUpdate(id, updateData, { new: true });
+  const updatedMonitor = await Monitor.findByIdAndUpdate(id, updateData, {
+    new: true,
+  });
   return updatedMonitor;
 }
 
@@ -52,7 +54,9 @@ export default async function handler(req, res) {
         if (id) {
           const monitor = await getMonitorById(id);
           if (!monitor) {
-            return res.status(404).json({ success: false, message: "Monitor not found" });
+            return res
+              .status(404)
+              .json({ success: false, message: "Monitor not found" });
           }
           return res.status(200).json({ success: true, data: monitor });
         }
@@ -62,7 +66,9 @@ export default async function handler(req, res) {
           return res.status(200).json({ success: true, data: monitors });
         }
 
-        return res.status(400).json({ success: false, message: "Missing id or email parameter" });
+        return res
+          .status(400)
+          .json({ success: false, message: "Missing id or email parameter" });
       } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
       }
@@ -80,7 +86,9 @@ export default async function handler(req, res) {
         const { id, ...updateData } = req.body;
         const updatedMonitor = await updateMonitor(id, updateData);
         if (!updatedMonitor) {
-          return res.status(404).json({ success: false, message: "Monitor not found" });
+          return res
+            .status(404)
+            .json({ success: false, message: "Monitor not found" });
         }
         return res.status(200).json({ success: true, data: updatedMonitor });
       } catch (error) {
@@ -92,30 +100,66 @@ export default async function handler(req, res) {
         const { id, incidentData } = req.body;
         const updatedMonitor = await updateIncident(id, incidentData);
         if (!updatedMonitor) {
-          return res.status(404).json({ success: false, message: "Monitor not found" });
+          return res
+            .status(404)
+            .json({ success: false, message: "Monitor not found" });
         }
         return res.status(200).json({ success: true, data: updatedMonitor });
       } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
       }
-    
-      case "DELETE":
-        try {
-          const { id } = req.query;
+
+    case "DELETE":
+      try {
+        const { id, ids } = req.query;
+
+        if (id) {
+          // Delete single monitor
           const monitor = await Monitor.findByIdAndDelete(id);
           if (!monitor) {
-            return res.status(404).json({ success: false, message: "Monitor not found" });
+            return res
+              .status(404)
+              .json({ success: false, message: "Monitor not found" });
           }
           return res.status(200).json({ success: true, data: {} });
-        } catch (error) {
-          return res.status(500).json({ success: false, message: error.message });
+        } else if (ids) {
+          // Delete multiple monitors
+          const idsArray = ids.split(",");
+          const result = await Monitor.deleteMany({ _id: { $in: idsArray } });
+          if (result.deletedCount === 0) {
+            return res
+              .status(404)
+              .json({ success: false, message: "No monitors found" });
+          }
+          return res
+            .status(200)
+            .json({
+              success: true,
+              data: { deletedCount: result.deletedCount },
+            });
+        } else {
+          return res
+            .status(400)
+            .json({ success: false, message: "Missing id or ids parameter" });
         }
+      } catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+      }
 
     default:
-      res.setHeader('Allow', ['GET', 'POST', 'PUT', 'PATCH']);
-      return res.status(405).json({ success: false, message: `Method ${method} Not Allowed` });
+      res.setHeader("Allow", ["GET", "POST", "PUT", "PATCH"]);
+      return res
+        .status(405)
+        .json({ success: false, message: `Method ${method} Not Allowed` });
   }
 }
 
 // Export actions for use in other parts of your application if needed
-export { saveMonitor, updateMonitor, getMonitorById, getMonitorsByUserEmail, updateIncident, resetIncidents24h };
+export {
+  saveMonitor,
+  updateMonitor,
+  getMonitorById,
+  getMonitorsByUserEmail,
+  updateIncident,
+  resetIncidents24h,
+};

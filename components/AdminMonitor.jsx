@@ -53,11 +53,7 @@ function AdminMonitor({ isEdit, monitor }) {
           if (response.data?.success && response.data?.data) {
             const user = response.data.data;
             const variantName = user.variant_name.toLowerCase();
-            const email = user.email;
             setUserPlan(variantName);
-            if (!isEdit) {
-              setEmails([email]);
-            }
           }
         } catch (error) {
           console.error("Error fetching user plan:", error);
@@ -73,7 +69,7 @@ function AdminMonitor({ isEdit, monitor }) {
   useEffect(() => {
     // fetch user monitor have right now
     const fetchUserMonitors = async () => {
-      if (session?.user?.email) {
+      if (session?.user?.email && !!availableMonitors) {
         try {
           const response = await axios.get(
             `/api/core/monitors?email=${session.user.email}`
@@ -100,9 +96,6 @@ function AdminMonitor({ isEdit, monitor }) {
         setUrlOrIp(monitor.url_or_ip);
         const emailsBackend = monitor.notification_emails;
         const notificationPhones = monitor.notification_phones;
-
-        console.log(emailsBackend, "emailsBackend");
-        console.log(notificationPhones, "phonesBackend");
 
         if (emailsBackend.length) {
           setEmails(emailsBackend);
@@ -165,8 +158,6 @@ function AdminMonitor({ isEdit, monitor }) {
       };
 
       if (isEdit) {
-        console.log(monitor, "monitor");
-        console.log(monitorData, "monitor data");
         monitorData["id"] = monitor._id;
         const response = await axios.put("/api/core/monitors", monitorData);
         if (response.data.success) {
@@ -189,8 +180,6 @@ function AdminMonitor({ isEdit, monitor }) {
       toast.error("An error occurred while adding the monitor");
     }
   };
-
-  const handleUpdateForm = async (e) => {};
 
   const handleAddEmail = () => {
     if (emails.length >= currentLimits.emails) {

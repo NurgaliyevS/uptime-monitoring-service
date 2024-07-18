@@ -1,8 +1,12 @@
 import { MongoClient } from "mongodb";
+import { isDevelopment } from "@/utils/isDevelopment";
 
-const uri = process.env.MONGODB_URI;
+const uri = isDevelopment()
+  ? process.env.MONGODB_URI_DEV
+  : process.env.MONGODB_URI;
+
 if (!uri) {
-  throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
+  throw new Error("Please define the MONGODB_URI environment variable inside .env.local or .env.production");
 }
 
 const options = {
@@ -13,15 +17,13 @@ const options = {
 let client;
 let clientPromise;
 
-if (process.env.NODE_ENV === "development") {
-  // In development mode, use a global variable so the MongoClient is not constantly re-initialized
+if (isDevelopment()) {
   if (!global._mongoClientPromise) {
     client = new MongoClient(uri, options);
     global._mongoClientPromise = client.connect();
   }
   clientPromise = global._mongoClientPromise;
 } else {
-  // In production mode, it's best to not use a global variable
   client = new MongoClient(uri, options);
   clientPromise = client.connect();
 }

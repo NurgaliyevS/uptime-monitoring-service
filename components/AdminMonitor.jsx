@@ -205,15 +205,31 @@ function AdminMonitor({ isEdit, monitor }) {
       );
       return;
     }
+    if (!validatePhoneNumber(phone) || phone.trim() === '') {
+      toast.error("Please enter a valid phone number.");
+      return;
+    }
     setPhones([...phones, phone]);
     setPhone("");
     setShowPhoneModal(false);
     toast.success("Phone number added successfully!");
   };
-
+  
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
+  };
+
+  const validatePhoneNumber = (value) => {
+    const phoneRegex = /^[0-9+\-\(\)\s]*$/;
+    return phoneRegex.test(value);
+  };
+
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    if (validatePhoneNumber(value)) {
+      setPhone(value);
+    }
   };
 
   const allIntervals = [30, 60, 180, 300];
@@ -433,7 +449,7 @@ function AdminMonitor({ isEdit, monitor }) {
               placeholder="Enter phone number"
               className="input input-bordered w-full mt-2"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={handlePhoneChange}
             />
             <p className="mt-2">No delay, no repeat</p>
             <div className="modal-action">

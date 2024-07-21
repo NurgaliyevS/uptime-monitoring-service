@@ -1,6 +1,9 @@
+import connectMongoDB from "@/backend/mongodb";
 import { checkAllMonitors } from "../../../utils/monitoringService";
 
 export default async function handler(req, res) {
+  await connectMongoDB();
+
   if (req.method === "POST") {
     // Optional: Add some basic authentication
     const apiKey = req.headers["x-api-key"];

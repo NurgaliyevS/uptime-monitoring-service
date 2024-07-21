@@ -19,7 +19,9 @@ const MonitorSchema = new mongoose.Schema({
   incidents24h: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
-  lastChecked: { type: String }
+  lastChecked: { type: String },
+  successfulChecks: { type: Number, default: 0 },
+  failedChecks: { type: Number, default: 0}
 });
 
 const Monitor = mongoose.models.Monitor || mongoose.model('Monitor', MonitorSchema);

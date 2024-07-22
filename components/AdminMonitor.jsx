@@ -88,7 +88,11 @@ function AdminMonitor({ isEdit, monitor }) {
   }, [session]);
 
   useEffect(() => {
+    console.log(isEdit, 'isEdit');
+    console.log(monitor, 'monitor');
+
     const editMode = () => {
+      console.log('hey');
       if (isEdit) {
         setTitle("Edit");
       }

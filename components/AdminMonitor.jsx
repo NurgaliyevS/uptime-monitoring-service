@@ -145,6 +145,11 @@ function AdminMonitor({ isEdit, monitor }) {
       toast.error("Please enter a valid URL or IP address.");
       return;
     }
+    if (emails.length === 0 && phones.length === 0) {
+      toast.error("Please add at least one email or phone number.");
+      return;
+    }
+
     setIsUrlOrIpValid(true);
     try {
       const monitorData = {

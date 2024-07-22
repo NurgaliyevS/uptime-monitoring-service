@@ -22,7 +22,8 @@ const MonitorSchema = new mongoose.Schema({
   lastChecked: { type: String },
   successfulChecks: { type: Number, default: 0 },
   failedChecks: { type: Number, default: 0},
-  status: { type: String }
+  status: { type: String },
+  cronJobId: String,
 });
 
 const Monitor = mongoose.models.Monitor || mongoose.model('Monitor', MonitorSchema);

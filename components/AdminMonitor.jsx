@@ -115,8 +115,10 @@ function AdminMonitor({ isEdit, monitor }) {
       }
     };
 
-    if (didMountRef3.current) editMode();
-    else didMountRef3.current = true;
+    if (!didMountRef3.current && (isEdit || (monitor && Object.keys(monitor).length > 0))) {
+      editMode();
+      didMountRef3.current = true;
+    }
   }, [isEdit, monitor]);
 
   const planLimits = {

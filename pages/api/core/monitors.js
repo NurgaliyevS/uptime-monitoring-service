@@ -1,5 +1,6 @@
 import Monitor from "@/backend/monitor";
 import connectMongoDB from "@/backend/mongodb";
+import { createOrUpdateCronJob, deleteCronJob } from "@/utils/cronJobManager";
 
 async function saveMonitor(monitorData) {
   const monitor = new Monitor(monitorData);
@@ -76,6 +77,7 @@ export default async function handler(req, res) {
     case "POST":
       try {
         const monitor = await saveMonitor(req.body);
+        await createOrUpdateCronJob(monitor._id, monitor.interval);
         return res.status(201).json({ success: true, data: monitor });
       } catch (error) {
         return res.status(400).json({ success: false, message: error.message });
@@ -115,6 +117,7 @@ export default async function handler(req, res) {
 
         if (id) {
           // Delete single monitor
+          await deleteCronJob(id);
           const monitor = await Monitor.findByIdAndDelete(id);
           if (!monitor) {
             return res
@@ -125,6 +128,10 @@ export default async function handler(req, res) {
         } else if (ids) {
           // Delete multiple monitors
           const idsArray = ids.split(",");
+          // call deleteCronJob for each id
+          for (const id of idsArray) {
+            await deleteCronJob(id);
+          }
           const result = await Monitor.deleteMany({ _id: { $in: idsArray } });
           if (result.deletedCount === 0) {
             return res

@@ -20,9 +20,9 @@ export async function createOrUpdateCronJob(monitorId, interval) {
 
   try {
     // Check if the job already exists
-    console.log(api, 'api');
+    console.log(api.baseURL, 'base url');
 
-    const existingJobs = await api.get('/jobs', { params: { search: jobName } });
+    const existingJobs = await api.get('/jobs/' + monitorId);
 
     console.log(existingJobs, 'existingJobs');
     console.log(jobUrl, 'job url');

@@ -12,6 +12,9 @@ const api = axios.create({
 });
 
 export async function createCronJob(interval, urlOrIp, monitorId){
+    console.log(interval, "interval");
+    console.log(urlOrIp, "urlOrIp");
+    console.log(monitorId, "monitorId");
     try {
         const response = await api.put("/jobs", {
         job: {

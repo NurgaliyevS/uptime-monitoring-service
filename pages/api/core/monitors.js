@@ -77,6 +77,7 @@ export default async function handler(req, res) {
     case "POST":
       try {
         const monitor = await saveMonitor(req.body);
+        console.log(monitor, 'monitor in POST')
         await createOrUpdateCronJob(monitor._id, monitor.interval);
         return res.status(201).json({ success: true, data: monitor });
       } catch (error) {

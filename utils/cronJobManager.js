@@ -20,10 +20,10 @@ export async function createCronJob(interval, urlOrIp, monitorId){
         job: {
             url: `https://uptimefriend.com/api/cron/${monitorId}/check`,
             title: urlOrIp,
-            schedule: `*/${interval} * * * *`,
             requestMethod: 1, // POST
             saveResponses: false,
             enabled: true,
+            schedule: `*/${interval / 60} * * * *`
         },
         });
         console.log(`Created cron job for Uptime Friend`);

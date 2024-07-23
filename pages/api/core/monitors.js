@@ -78,11 +78,9 @@ export default async function handler(req, res) {
       try {
         const monitor = await saveMonitor(req.body);
         const { _id } = monitor;
-        console.log(_id, "monitor id");
         const response = await createCronJob(req.body.interval, req.body.url_or_ip, _id);
-        console.log(response, "response");
-        // const { jobId } = response;
-        // await Monitor.findByIdAndUpdate(_id, { cronJobId: jobId });
+        const { jobId } = response;
+        await Monitor.findByIdAndUpdate(_id, { cronJobId: jobId });
         return res.status(201).json({ success: true, data: monitor });
       } catch (error) {
         return res.status(400).json({ success: false, message: error.message });

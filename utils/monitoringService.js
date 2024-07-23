@@ -6,7 +6,7 @@ export async function checkMonitor(monitor) {
     const startTime = Date.now();
     let response;
 
-    console.log(monitor, 'monitor')
+    console.log(monitor, 'check monitor')
 
     if (monitor.monitor_type === 'http') {
       response = await axios.get(monitor.url_or_ip, { timeout: monitor.interval });

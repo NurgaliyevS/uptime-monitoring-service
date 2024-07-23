@@ -15,11 +15,17 @@ export async function createOrUpdateCronJob(monitorId, interval) {
   const jobUrl = `https://uptimefriend.com/api/cron/${monitorId}/check`;
   const jobName = `Monitor ${monitorId}`;
 
+  console.log(interval, 'interval');
+  console.log(monitorId, 'monitorid')
+
   try {
     // Check if the job already exists
+    console.log(api, 'api');
+
     const existingJobs = await api.get('/jobs', { params: { search: jobName } });
 
     console.log(existingJobs, 'existingJobs');
+    console.log(jobUrl, 'job url');
     
     if (existingJobs.data.jobs.length > 0) {
       // Update existing job

@@ -10,6 +10,7 @@ export default async function handler(req, res) {
 
     try {
       const monitor = await Monitor.findById(id);
+      console.log(monitor, 'monitor check in cron by id')
       if (!monitor) {
         return res.status(404).json({ success: false, message: "Monitor not found" });
       }

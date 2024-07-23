@@ -1,6 +1,6 @@
 import Monitor from "@/backend/monitor";
 import connectMongoDB from "@/backend/mongodb";
-import { createOrUpdateCronJob, deleteCronJob } from "@/utils/cronJobManager";
+import { createCronJob, deleteCronJob } from "@/utils/cronJobManager";
 
 async function saveMonitor(monitorData) {
   const monitor = new Monitor(monitorData);
@@ -77,8 +77,12 @@ export default async function handler(req, res) {
     case "POST":
       try {
         const monitor = await saveMonitor(req.body);
-        console.log(monitor, 'monitor in POST')
-        await createOrUpdateCronJob(monitor._id, monitor.interval);
+        const { _id } = monitor;
+        console.log(_id, "monitor id");
+        const response = await createCronJob(interval, url_or_ip, _id);
+        console.log(response, "response");
+        const { jobId } = response;
+        await Monitor.findByIdAndUpdate(_id, { cronJobId: jobId });
         return res.status(201).json({ success: true, data: monitor });
       } catch (error) {
         return res.status(400).json({ success: false, message: error.message });

@@ -11,7 +11,29 @@ const api = axios.create({
   },
 });
 
-export async function createOrUpdateCronJob(monitorId, interval) {
+export async function createCronJob(interval, urlOrIp, monitorId){
+    try {
+        const response = await api.put("/jobs", {
+        job: {
+            url: `https://uptimefriend.com/api/cron/${monitorId}/check`,
+            title: urlOrIp,
+            schedule: `*/${interval} * * * *`,
+            requestMethod: 1, // POST
+            saveResponses: false,
+            enabled: true,
+        },
+        });
+        console.log(`Created cron job for Uptime Friend`);
+        return response?.data;
+    } catch (error) {
+        console.error(
+        `Error creating cron job for Uptime Friend:`,
+        error.response?.data || error.message
+        );
+    }
+}
+
+export async function updateCronJob(monitorId, interval) {
   const jobUrl = `https://uptimefriend.com/api/cron/${monitorId}/check`;
   const jobName = `Monitor ${monitorId}`;
 
@@ -37,32 +59,8 @@ export async function createOrUpdateCronJob(monitorId, interval) {
         },
       });
       console.log(`Updated cron job for monitor ${monitorId}`);
-    } else {
-      // Create new job
-      await api.put("/jobs", {
-        job: {
-          url: jobUrl,
-          title: jobName,
-          schedule: `*/${interval} * * * *`,
-          requestMethod: 1, // POST
-          saveResponses: false,
-          enabled: true,
-        },
-      });
-      console.log(`Created cron job for monitor ${monitorId}`);
     }
   } catch (error) {
-    await api.put("/jobs", {
-      job: {
-        url: jobUrl,
-        title: jobName,
-        schedule: `*/${interval} * * * *`,
-        requestMethod: 1, // POST
-        saveResponses: false,
-        enabled: true,
-      },
-    });
-
     console.error(
       `Error managing cron job for monitor ${monitorId}:`,
       error.response?.data || error.message

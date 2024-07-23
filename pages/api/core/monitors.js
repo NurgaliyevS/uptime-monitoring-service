@@ -79,7 +79,7 @@ export default async function handler(req, res) {
         const monitor = await saveMonitor(req.body);
         const { _id } = monitor;
         console.log(_id, "monitor id");
-        const response = await createCronJob(interval, url_or_ip, _id);
+        const response = await createCronJob(req.body.interval, req.body.url_or_ip, _id);
         console.log(response, "response");
         // const { jobId } = response;
         // await Monitor.findByIdAndUpdate(_id, { cronJobId: jobId });

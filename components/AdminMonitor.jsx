@@ -37,6 +37,7 @@ function AdminMonitor({ isEdit, monitor }) {
   const [availableMonitors, setAvailableMonitors] = useState(0);
   const [isUrlOrIpValid, setIsUrlOrIpValid] = useState(true);
   const [title, setTitle] = useState("Add");
+  const [isLoading, setIsLoading] = useState(false);
 
   const didMountRef = useRef(false);
   const didMountRef2 = useRef(false);
@@ -153,6 +154,7 @@ function AdminMonitor({ isEdit, monitor }) {
     }
 
     setIsUrlOrIpValid(true);
+    setIsLoading(true);
     try {
       const monitorData = {
         user_email: session.user.email,
@@ -185,6 +187,8 @@ function AdminMonitor({ isEdit, monitor }) {
     } catch (error) {
       console.error("Error adding monitor:", error);
       toast.error("An error occurred while adding the monitor");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -408,7 +412,7 @@ function AdminMonitor({ isEdit, monitor }) {
               <button
                 type="submit"
                 className="btn btn-secondary btn-wide"
-                disabled={availableMonitors >= currentLimits.monitors}
+                disabled={availableMonitors >= currentLimits.monitors || isLoading}
               >
                 Add Monitor
               </button>

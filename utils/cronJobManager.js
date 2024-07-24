@@ -30,7 +30,9 @@ export async function createCronJob(interval, urlOrIp, monitorId) {
       //     }
       // },
       job: {
+        title: urlOrIp,
         url: `https://uptimefriend.com/api/cron/${monitorId}/check`,
+        requestMethod: 1,
         enabled: "true",
         saveResponses: true,
         schedule: {
@@ -38,7 +40,8 @@ export async function createCronJob(interval, urlOrIp, monitorId) {
           expiresAt: 0,
           hours: [-1],
           mdays: [-1],
-          minutes: [-1],
+          //   minutes: [-1],
+          minutes: [-interval / 60],
           months: [-1],
           wdays: [-1],
         },

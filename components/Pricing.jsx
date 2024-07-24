@@ -238,7 +238,7 @@ function Pricing(props) {
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                  <span>3-minute monitoring interval</span>
+                  <span>2-minute monitoring interval</span>
                 </li>
 
                 <li className="flex items-center gap-2">
@@ -569,7 +569,7 @@ function Pricing(props) {
                     ></path>
                   </svg>
                   <span className="whitespace-nowrap">
-                    30-seconds monitoring interval
+                    1-minute monitoring interval
                   </span>
                 </li>
 

@@ -12,21 +12,32 @@ const api = axios.create({
 });
 
 export async function createCronJob(interval, urlOrIp, monitorId) {
-  console.log(interval / 60, "interval / 60");
-  console.log(-interval / 60, "-interval / 60");
+  let schedule;
+
+  // Convert interval from seconds to minutes
+  const intervalMinutes = interval / 60;
+
+  switch (intervalMinutes) {
+    case 1:
+      schedule = { minutes: [-1] }; // Every 1 minute
+      break;
+    case 3:
+      schedule = {
+        minutes: [
+          0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45, 48, 51,
+          54, 57,
+        ],
+      }; // Every 3 minutes
+      break;
+    case 5:
+      schedule = { minutes: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55] }; // Every 5 minutes
+      break;
+    default:
+      throw new Error(`Unsupported interval: ${intervalMinutes} minutes`);
+  }
+
   try {
     const response = await api.put("/jobs", {
-      // job: {
-      //     url: `https://uptimefriend.com/api/cron/${monitorId}/check`,
-      //     title: urlOrIp,
-      //     requestMethod: 1, // POST
-      //     saveResponses: false,
-      //     enabled: true,
-      //     schedule: {
-      //         // minutes: [5]
-      //         minutes:[-1]
-      //     }
-      // },
       job: {
         title: urlOrIp,
         url: `https://uptimefriend.com/api/cron/${monitorId}/check`,
@@ -38,10 +49,9 @@ export async function createCronJob(interval, urlOrIp, monitorId) {
           expiresAt: 0,
           hours: [-1],
           mdays: [-1],
-          //   minutes: [-1],
-          minutes: [-2],
           months: [-1],
           wdays: [-1],
+          ...schedule,
         },
       },
     });

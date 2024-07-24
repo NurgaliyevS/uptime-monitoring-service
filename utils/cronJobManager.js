@@ -11,33 +11,47 @@ const api = axios.create({
   },
 });
 
-export async function createCronJob(interval, urlOrIp, monitorId){
-    console.log(interval, "interval");
-    console.log(urlOrIp, "urlOrIp");
-    console.log(monitorId, "monitorId");
-    console.log(interval / 60, "interval / 60");
-    try {
-        const response = await api.put("/jobs", {
-        job: {
-            url: `https://uptimefriend.com/api/cron/${monitorId}/check`,
-            title: urlOrIp,
-            requestMethod: 1, // POST
-            saveResponses: false,
-            enabled: true,
-            schedule: {
-                // minutes: [5]
-                minutes:[-1]
-            }
+export async function createCronJob(interval, urlOrIp, monitorId) {
+  console.log(interval, "interval");
+  console.log(urlOrIp, "urlOrIp");
+  console.log(monitorId, "monitorId");
+  console.log(interval / 60, "interval / 60");
+  try {
+    const response = await api.put("/jobs", {
+      // job: {
+      //     url: `https://uptimefriend.com/api/cron/${monitorId}/check`,
+      //     title: urlOrIp,
+      //     requestMethod: 1, // POST
+      //     saveResponses: false,
+      //     enabled: true,
+      //     schedule: {
+      //         // minutes: [5]
+      //         minutes:[-1]
+      //     }
+      // },
+      job: {
+        url: `https://uptimefriend.com/api/cron/${monitorId}/check`,
+        enabled: "true",
+        saveResponses: true,
+        schedule: {
+          timezone: "Europe/Berlin",
+          expiresAt: 0,
+          hours: [-1],
+          mdays: [-1],
+          minutes: [-1],
+          months: [-1],
+          wdays: [-1],
         },
-        });
-        console.log(`Created cron job for Uptime Friend`);
-        return response?.data;
-    } catch (error) {
-        console.error(
-        `Error creating cron job for Uptime Friend:`,
-        error.response?.data || error.message
-        );
-    }
+      },
+    });
+    console.log(`Created cron job for Uptime Friend`);
+    return response?.data;
+  } catch (error) {
+    console.error(
+      `Error creating cron job for Uptime Friend:`,
+      error.response?.data || error.message
+    );
+  }
 }
 
 export async function updateCronJob(monitorId, interval) {

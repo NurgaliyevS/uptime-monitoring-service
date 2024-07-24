@@ -84,8 +84,11 @@ function AdminMonitor({ isEdit, monitor }) {
         }
       }
     };
-    if (didMountRef2.current) fetchUserMonitors();
-    else didMountRef2.current = true;
+
+    if (!didMountRef2.current && session?.user?.email) {
+      fetchUserMonitors();
+      didMountRef2.current = true;
+    }
   }, [session]);
 
   useEffect(() => {

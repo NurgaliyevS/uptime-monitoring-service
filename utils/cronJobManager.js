@@ -55,7 +55,10 @@ export async function createCronJob(interval, urlOrIp, monitorId) {
         },
       },
     });
-    console.log(`Created cron job for Uptime Friend`);
+
+    console.log(
+      `Created cron job for Uptime Friend with ${intervalMinutes}-minute interval`
+    );
     return response?.data;
   } catch (error) {
     console.error(

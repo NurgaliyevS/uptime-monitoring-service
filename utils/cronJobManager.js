@@ -39,7 +39,7 @@ export async function createCronJob(interval, urlOrIp, monitorId) {
           hours: [-1],
           mdays: [-1],
           //   minutes: [-1],
-          minutes: [-interval / 60],
+          minutes: [-5],
           months: [-1],
           wdays: [-1],
         },

@@ -24,7 +24,9 @@ export async function createCronJob(interval, urlOrIp, monitorId){
             requestMethod: 1, // POST
             saveResponses: false,
             enabled: true,
-            schedule: `00/5 * * * *`
+            schedule: {
+                minutes: [5]
+            }
         },
         });
         console.log(`Created cron job for Uptime Friend`);

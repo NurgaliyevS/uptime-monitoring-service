@@ -63,12 +63,13 @@ function AdminMonitor({ isEdit, monitor }) {
       }
     };
 
-    if (didMountRef.current) fetchUserPlan();
-    else didMountRef.current = true;
+    if (!didMountRef.current && session?.user?.email) {
+      fetchUserPlan();
+      didMountRef.current = true;
+    }
   }, [session]);
 
   useEffect(() => {
-    // fetch user monitor have right now
     const fetchUserMonitors = async () => {
       if (session?.user?.email && !!availableMonitors) {
         try {

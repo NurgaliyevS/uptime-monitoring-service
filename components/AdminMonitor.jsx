@@ -243,7 +243,7 @@ function AdminMonitor({ isEdit, monitor }) {
     }
   };
 
-  const allIntervals = [30, 60, 180, 300];
+  const allIntervals = [30, 60, 120, 300];
 
   return (
     <>

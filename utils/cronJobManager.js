@@ -25,7 +25,8 @@ export async function createCronJob(interval, urlOrIp, monitorId){
             saveResponses: false,
             enabled: true,
             schedule: {
-                minutes: [5]
+                // minutes: [5]
+                minutes:[-1]
             }
         },
         });

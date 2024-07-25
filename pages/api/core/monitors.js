@@ -79,11 +79,16 @@ export default async function handler(req, res) {
       try {
         const monitor = await saveMonitor(req.body);
         const { _id } = monitor;
-        if (isDevelopment() === false) {
-          await createCronJob(req.body.interval, req.body.url_or_ip, _id);
+        if (!isDevelopment()) {
+          const cronJobResult = await createCronJob(req.body.interval, req.body.url_or_ip, _id);
+          
+          if (cronJobResult) {
+            await Monitor.findByIdAndUpdate(_id, { cronJobId: cronJobResult });
+          } else {
+            console.error("Failed to create cron job or get jobId");
+          }
         }
-        await Monitor.findByIdAndUpdate(_id, { cronJobId: monitor });
-        return res.status(201).json({ success: true, data: monitor });
+        return res.status(201).json({ success: true, data: "Added succesfully" });
       } catch (error) {
         return res.status(400).json({ success: false, message: error.message });
       }

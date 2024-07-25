@@ -71,13 +71,14 @@ function AdminMonitor({ isEdit, monitor }) {
 
   useEffect(() => {
     const fetchUserMonitors = async () => {
-      if (session?.user?.email && !!availableMonitors) {
+      if (session?.user?.email && availableMonitors === 0) {
         try {
           const response = await axios.get(
             `/api/core/monitors?email=${session.user.email}`
           );
           if (response.data?.success && response.data?.data) {
             const monitors = response.data.data;
+            console.log(monitors.length, "monitors");
             setAvailableMonitors(monitors.length);
           }
         } catch (error) {
@@ -123,7 +124,7 @@ function AdminMonitor({ isEdit, monitor }) {
   }, [isEdit, monitor]);
 
   const planLimits = {
-    free: { monitors: 5, interval: 300, sms: 1, emails: 1 },
+    free: { monitors: 1, interval: 300, sms: 1, emails: 1 },
     personal: { monitors: 10, interval: 120, sms: 3, emails: 3 },
     team: { monitors: 20, interval: 60, sms: 5, emails: 5 },
     enterprise: { monitors: 50, interval: 60, sms: 10, emails: 10 },

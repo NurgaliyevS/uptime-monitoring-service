@@ -79,7 +79,7 @@ export default async function handler(req, res) {
       try {
         const monitor = await saveMonitor(req.body);
         const { _id } = monitor;
-        if (!isDevelopment()) {
+        if (isDevelopment() === false) {
           await createCronJob(req.body.interval, req.body.url_or_ip, _id);
         }
         await Monitor.findByIdAndUpdate(_id, { cronJobId: monitor });
@@ -137,7 +137,7 @@ export default async function handler(req, res) {
           // Fetch monitors from the database
           const monitors = await Monitor.find({ _id: { $in: idsArray } });
 
-          if (!isDevelopment()) {
+          if (isDevelopment() === false) {
             for (const monitor of monitors) {
               console.log(monitor, "monitor");
               // Try to delete by stored cronJobId

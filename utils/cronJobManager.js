@@ -68,22 +68,22 @@ export async function createCronJob(interval, urlOrIp, monitorId) {
   }
 }
 
-export async function updateCronJob(monitorId, interval) {
+export async function updateCronJob(monitorId, interval, cronJobId) {
   const jobUrl = `https://uptimefriend.com/api/cron/${monitorId}/check`;
-  const jobName = `Monitor ${monitorId}`;
 
   console.log(interval, "interval");
   console.log(monitorId, "monitorid");
+  console.log(cronJobId, "cronJobId");
 
   try {
     const existingJobs = await api.get("/jobs/" + monitorId);
 
     console.log(existingJobs, "existingJobs");
-    console.log(jobUrl, "job url");
 
-    if (existingJobs.data.jobs.length > 0) {
+    if (Object.keys(existingJobs?.data).length === 0) {
       // Update existing job
-      const jobId = existingJobs.data.jobs[0].jobId;
+      const jobId = existingJobs.data?.jobDetails?.jobId
+      console.log(jobId, "jobId");
       await api.patch(`/jobs/${jobId}`, {
         job: {
           url: jobUrl,
@@ -103,19 +103,10 @@ export async function updateCronJob(monitorId, interval) {
   }
 }
 
-export async function deleteCronJob(monitorId) {
-  const jobName = `Monitor ${monitorId}`;
-
+export async function deleteCronJob(jobId) {
   try {
-    const existingJobs = await api.get("/jobs", {
-      params: { search: jobName },
-    });
-
-    if (existingJobs.data.jobs.length > 0) {
-      const jobId = existingJobs.data.jobs[0].jobId;
-      await api.delete(`/jobs/${jobId}`);
-      console.log(`Deleted cron job for monitor ${monitorId}`);
-    }
+    const response = await api.delete(`/jobs/${jobId}`);
+    return response?.data;
   } catch (error) {
     console.error(
       `Error deleting cron job for monitor ${monitorId}:`,

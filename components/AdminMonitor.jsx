@@ -177,21 +177,16 @@ function AdminMonitor({ isEdit, monitor }) {
         if (response.data.success) {
           toast.success("Monitor updated successfully");
           router.push("/admin");
-        } else {
-          toast.error("Failed to add monitor");
         }
       } else {
         const response = await axios.post("/api/core/monitors", monitorData);
         if (response.data.success) {
           toast.success("Monitor added successfully");
           router.push("/admin");
-        } else {
-          toast.error("Failed to add monitor");
         }
       }
     } catch (error) {
       console.error("Error adding monitor:", error);
-      toast.error("An error occurred while adding the monitor");
     } finally {
       setIsLoading(false);
     }

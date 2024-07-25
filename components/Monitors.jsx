@@ -137,13 +137,8 @@ function Monitors() {
                           : "success"
                       } text-black`}
                     >
-                      {monitor.latest_incident?.status === "down"
-                        ? "Down"
-                        : "Up"}
-                      {monitor.latest_incident?.started &&
-                        ` - ${new Date(
-                          monitor.latest_incident.started
-                        ).toLocaleString()}`}
+                      {monitor.status === "down" ? "Down" : "Up"}
+                      {monitor.lastChecked ? ` - Today at ${new Date(monitor.lastChecked).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true })}` : ""}
                     </p>
                   </div>
                   <div className="card-actions justify-end">

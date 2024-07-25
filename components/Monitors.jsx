@@ -146,7 +146,7 @@ function Monitors() {
                       className="btn btn-primary"
                       onClick={() => navigateToMonitor(monitor._id)}
                     >
-                      View Details
+                      Edit Details
                     </button>
                     <button
                       className="btn btn-error"

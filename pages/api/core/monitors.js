@@ -1,6 +1,7 @@
 import Monitor from "@/backend/monitor";
 import connectMongoDB from "@/backend/mongodb";
 import { createCronJob, deleteCronJob } from "@/utils/cronJobManager";
+import { isDevelopment } from "@/utils/isDevelopment";
 
 async function saveMonitor(monitorData) {
   const monitor = new Monitor(monitorData);
@@ -78,13 +79,14 @@ export default async function handler(req, res) {
       try {
         const monitor = await saveMonitor(req.body);
         const { _id } = monitor;
-        const response = await createCronJob(
+        if (!isDevelopment()) {
+        await createCronJob(
           req.body.interval,
           req.body.url_or_ip,
           _id
         );
-        const { jobId } = response;
-        await Monitor.findByIdAndUpdate(_id, { cronJobId: jobId });
+      }
+        await Monitor.findByIdAndUpdate(_id, { cronJobId: monitor });
         return res.status(201).json({ success: true, data: monitor });
       } catch (error) {
         return res.status(400).json({ success: false, message: error.message });
@@ -137,12 +139,14 @@ export default async function handler(req, res) {
           // Fetch monitors from the database
           const monitors = await Monitor.find({ _id: { $in: idsArray } });
 
+          if (!isDevelopment()){
           for (const monitor of monitors) {
+            console.log(monitor, 'monitor');
             // Try to delete by stored cronJobId
             if (monitor.cronJobId) {
               await deleteCronJob(monitor.cronJobId);
             }
-          }
+          }}
 
           // Delete monitors from the database
           await Monitor.deleteMany({ _id: { $in: idsArray } });

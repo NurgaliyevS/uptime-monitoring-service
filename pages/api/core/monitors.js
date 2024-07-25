@@ -78,7 +78,11 @@ export default async function handler(req, res) {
       try {
         const monitor = await saveMonitor(req.body);
         const { _id } = monitor;
-        const response = await createCronJob(req.body.interval, req.body.url_or_ip, _id);
+        const response = await createCronJob(
+          req.body.interval,
+          req.body.url_or_ip,
+          _id
+        );
         const { jobId } = response;
         await Monitor.findByIdAndUpdate(_id, { cronJobId: jobId });
         return res.status(201).json({ success: true, data: monitor });
@@ -120,8 +124,8 @@ export default async function handler(req, res) {
 
         if (id) {
           // Delete single monitor
-          await deleteCronJob(id);
           const monitor = await Monitor.findByIdAndDelete(id);
+          await deleteCronJob(monitor.cronJobId);
           if (!monitor) {
             return res
               .status(404)
@@ -129,24 +133,23 @@ export default async function handler(req, res) {
           }
           return res.status(200).json({ success: true, data: {} });
         } else if (ids) {
-          // Delete multiple monitors
           const idsArray = ids.split(",");
-          // call deleteCronJob for each id
-          for (const id of idsArray) {
-            await deleteCronJob(id);
+          // Fetch monitors from the database
+          const monitors = await Monitor.find({ _id: { $in: idsArray } });
+
+          for (const monitor of monitors) {
+            // Try to delete by stored cronJobId
+            if (monitor.cronJobId) {
+              await deleteCronJob(monitor.cronJobId);
+            }
           }
-          const result = await Monitor.deleteMany({ _id: { $in: idsArray } });
-          if (result.deletedCount === 0) {
-            return res
-              .status(404)
-              .json({ success: false, message: "No monitors found" });
-          }
-          return res
-            .status(200)
-            .json({
-              success: true,
-              data: { deletedCount: result.deletedCount },
-            });
+
+          // Delete monitors from the database
+          await Monitor.deleteMany({ _id: { $in: idsArray } });
+          return res.status(200).json({
+            success: true,
+            data: { deletedCount: result.deletedCount },
+          });
         } else {
           return res
             .status(400)

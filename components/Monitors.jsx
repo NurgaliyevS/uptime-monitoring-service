@@ -62,6 +62,7 @@ function Monitors() {
       toast.error("An error occurred while deleting monitors");
     } finally {
       setIsLoading(false);
+      fetchMonitors();
     }
   };
 
@@ -82,6 +83,7 @@ function Monitors() {
       console.error("Error deleting monitor:", error);
     } finally {
       setIsLoading(false);
+      fetchMonitors();
     }
   };
 

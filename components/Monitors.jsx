@@ -131,14 +131,21 @@ function Monitors() {
                       {monitor.url_or_ip}
                     </h2>
                     <p
-                      className={`text-${
-                        monitor.latest_incident?.status === "down"
-                          ? "error"
-                          : "success"
-                      } text-black`}
+                      className={"text-black"}
                     >
                       {monitor.status === "down" ? "Down" : "Up"}
-                      {monitor.lastChecked ? ` - Today at ${new Date(monitor.lastChecked).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true })}` : ""}
+                    </p>
+                    <p className="text text-black">
+                      {monitor.lastChecked
+                        ? ` - Today at ${new Date(
+                            monitor.lastChecked
+                          ).toLocaleTimeString("en-US", {
+                            hour: "numeric",
+                            minute: "numeric",
+                            second: "numeric",
+                            hour12: true,
+                          })}`
+                        : ""}
                     </p>
                   </div>
                   <div className="card-actions justify-end">

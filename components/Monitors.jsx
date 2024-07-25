@@ -54,12 +54,9 @@ function Monitors() {
         toast.success(
           `Successfully deleted ${response.data.data.deletedCount} monitor(s)`
         );
-      } else {
-        toast.error("Failed to delete selected monitors");
       }
     } catch (error) {
       console.error("Error deleting monitors:", error);
-      toast.error("An error occurred while deleting monitors");
     } finally {
       setIsLoading(false);
       fetchMonitors();

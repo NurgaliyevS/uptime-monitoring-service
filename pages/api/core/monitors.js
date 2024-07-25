@@ -80,12 +80,8 @@ export default async function handler(req, res) {
         const monitor = await saveMonitor(req.body);
         const { _id } = monitor;
         if (!isDevelopment()) {
-        await createCronJob(
-          req.body.interval,
-          req.body.url_or_ip,
-          _id
-        );
-      }
+          await createCronJob(req.body.interval, req.body.url_or_ip, _id);
+        }
         await Monitor.findByIdAndUpdate(_id, { cronJobId: monitor });
         return res.status(201).json({ success: true, data: monitor });
       } catch (error) {
@@ -127,7 +123,9 @@ export default async function handler(req, res) {
         if (id) {
           // Delete single monitor
           const monitor = await Monitor.findByIdAndDelete(id);
-          await deleteCronJob(monitor.cronJobId);
+          if (!isDevelopment()) {
+            await deleteCronJob(monitor.cronJobId);
+          }
           if (!monitor) {
             return res
               .status(404)
@@ -139,14 +137,15 @@ export default async function handler(req, res) {
           // Fetch monitors from the database
           const monitors = await Monitor.find({ _id: { $in: idsArray } });
 
-          if (!isDevelopment()){
-          for (const monitor of monitors) {
-            console.log(monitor, 'monitor');
-            // Try to delete by stored cronJobId
-            if (monitor.cronJobId) {
-              await deleteCronJob(monitor.cronJobId);
+          if (!isDevelopment()) {
+            for (const monitor of monitors) {
+              console.log(monitor, "monitor");
+              // Try to delete by stored cronJobId
+              if (monitor.cronJobId) {
+                await deleteCronJob(monitor.cronJobId);
+              }
             }
-          }}
+          }
 
           // Delete monitors from the database
           await Monitor.deleteMany({ _id: { $in: idsArray } });

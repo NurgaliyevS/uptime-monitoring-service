@@ -105,8 +105,6 @@ export async function updateCronJob(monitorId, interval, cronJobId) {
 
 export async function deleteCronJob(jobId) {
   try {
-    const get = await api.get(`/jobs`);
-    console.log(get, 'get');
     const response = await api.delete(`/jobs/${jobId}`);
     return response?.data;
   } catch (error) {

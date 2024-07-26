@@ -1,6 +1,7 @@
 # *
 User-agent: *
 Disallow: /admin
+Disallow: /blocked
 Allow: /
 
 # Host

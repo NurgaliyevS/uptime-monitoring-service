@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { customConfig } from "@/project.custom.config";
+import EmailProvider from "next-auth/providers/email";
 import clientPromise from "@/backend/mongodbClient";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 
@@ -21,6 +21,14 @@ export const authOptions = {
         };
       },
     }),
+    ...(clientPromise
+      ? [
+          EmailProvider({
+            server: process.env.EMAIL_SERVER,
+            from: "noreply@mg.uptimefriend.com",
+          }),
+        ]
+      : []),
   ],
   adapter: MongoDBAdapter(clientPromise),
 

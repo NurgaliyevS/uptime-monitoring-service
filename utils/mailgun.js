@@ -27,7 +27,6 @@ export const sendEmail = async ({
     subject,
     text,
     html,
-    ...(replyTo && { "h:Reply-To": replyTo }),
   };
 
   try {

@@ -50,10 +50,17 @@ export async function checkMonitor(monitor) {
     });
 
     for (let email of monitor.notification_emails) {
-      console.error(email, 'email')
+      console.error(email, "email");
       await sendEmail({
         to: email,
         subject: `Monitor ${monitor.name || monitor._id} is down`,
+        text: `
+          Monitor: ${monitor.name || monitor._id}
+          URL/IP: ${monitor.url_or_ip}
+          Status: DOWN
+          Error: ${error.message}
+          Time: ${new Date().toISOString()}
+        `,
         html: `
           <div>
             <p><b>Monitor:</b> ${monitor.name || monitor._id}</p>
@@ -62,7 +69,7 @@ export async function checkMonitor(monitor) {
             <p><b>Error:</b> ${error.message}</p>
             <p><b>Time:</b> ${new Date().toISOString()}</p>
           </div>
-        `
+        `,
       });
     }
 

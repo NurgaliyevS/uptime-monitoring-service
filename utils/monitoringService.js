@@ -27,6 +27,8 @@ export async function checkMonitor(monitor) {
   } catch (error) {
     console.error(`Error checking monitor ${monitor._id}:`, error.message);
 
+    console.log(monitor, 'monitor');
+
     const newIncident = {
       status: 'down',
       rootCause: error.message,

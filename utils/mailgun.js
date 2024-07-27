@@ -18,15 +18,9 @@ export const sendEmail = async ({
   text,
   html,
   replyTo,
-}
-// : {
-//   to: string;
-//   subject: string;
-//   text?: string;
-//   html?: string;
-//   replyTo?: string;
-// }
-) => {
+}) => {
+  console.log(`Attempting to send email to ${to} with subject: ${subject}`);
+  
   const data = {
     from: customConfig.mailgun.fromAdmin,
     to: [to],
@@ -36,9 +30,15 @@ export const sendEmail = async ({
     ...(replyTo && { "h:Reply-To": replyTo }),
   };
 
-  await mg.messages.create(
-    (customConfig.mailgun.subdomain ? `${customConfig.mailgun.subdomain}.` : "") +
-        customConfig.domainName,
-    data
-  );
+  try {
+    const domain = (customConfig.mailgun.subdomain ? `${customConfig.mailgun.subdomain}.` : "") + customConfig.domainName;
+    console.log(`Sending email via Mailgun to domain: ${domain}`);
+    
+    const result = await mg.messages.create(domain, data);
+    console.log("Email sent successfully:", result);
+    return result;
+  } catch (error) {
+    console.error("Failed to send email:", error);
+    throw error;
+  }
 };

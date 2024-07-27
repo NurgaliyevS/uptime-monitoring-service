@@ -44,13 +44,14 @@ export async function checkMonitor(monitor) {
       console.error(email, 'email')
       await sendEmail({
         to: email,
-        subject: `Monitor ${monitor.name} is down`,
+        subject: `Monitor ${monitor.name || monitor._id} is down`,
         html: `
           <div>
-            <p><b>- Subject:</b> Monitor ${monitor.name} is down</p>
-            <p><b>- From:</b> ${monitor.url_or_ip}</p>
-            <p><b>- Content:</b></p>
-            <div>${error.message}</div>
+            <p><b>Monitor:</b> ${monitor.name || monitor._id}</p>
+            <p><b>URL/IP:</b> ${monitor.url_or_ip}</p>
+            <p><b>Status:</b> DOWN</p>
+            <p><b>Error:</b> ${error.message}</p>
+            <p><b>Time:</b> ${new Date().toISOString()}</p>
           </div>
         `
       });

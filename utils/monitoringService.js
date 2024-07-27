@@ -40,8 +40,20 @@ export async function checkMonitor(monitor) {
       duration: 0,
     };
 
+    let counter = 0;
+
     for (let email of monitor.notification_emails) {
       console.error(email, "email");
+
+      const date = new Date();
+      const formattedDate = date.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+      const formattedTime = date.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        hour12: false,
+      });
+
       await sendEmail({
         to: email,
         subject: `Monitor ${monitor.name || monitor._id} is down`,
@@ -50,7 +62,8 @@ export async function checkMonitor(monitor) {
           URL/IP: ${monitor.url_or_ip}
           Status: DOWN
           Error: ${error.message}
-          Time: ${new Date().toISOString()}
+          Date: ${formattedDate}
+          Time: ${formattedTime}
         `,
         html: `
           <div>
@@ -58,19 +71,13 @@ export async function checkMonitor(monitor) {
             <p><b>URL/IP:</b> ${monitor.url_or_ip}</p>
             <p><b>Status:</b> DOWN</p>
             <p><b>Error:</b> ${error.message}</p>
-            <p><b>Time:</b> ${new Date().toLocaleTimeString("en-US", {
-              hour: "numeric",
-              minute: "numeric",
-              second: "numeric",
-              hour12: true,
-            })}</p>
+            <p><b>Date:</b> ${formattedDate}</p>
+            <p><b>Time:</b> ${formattedTime}</p>
           </div>
         `,
       });
       counter++;
     }
-
-    let counter = 0;
 
     await Monitor.findByIdAndUpdate(monitor._id, {
       $set: {

@@ -40,6 +40,15 @@ export async function checkMonitor(monitor) {
       duration: 0,
     };
 
+    await Monitor.findByIdAndUpdate(monitor._id, {
+      $set: {
+        status: "down",
+        lastChecked: new Date(),
+        latest_incident: newIncident,
+      },
+      $inc: { incidents24h: 1, failedChecks: 1 },
+    });
+
     for (let email of monitor.notification_emails) {
       console.error(email, 'email')
       await sendEmail({
@@ -56,22 +65,6 @@ export async function checkMonitor(monitor) {
         `
       });
     }
-
-    // await sendEmail({
-    //   to: config.mailgun.forwardRepliesTo,
-    //   subject: `${config?.appName} | ${subject}`,
-    //   html: `<div><p><b>- Subject:</b> ${subject}</p><p><b>- From:</b> ${sender}</p><p><b>- Content:</b></p><div>${html}</div></div>`,
-    //   replyTo: String(sender),
-    // });
-
-    await Monitor.findByIdAndUpdate(monitor._id, {
-      $set: {
-        status: "down",
-        lastChecked: new Date(),
-        latest_incident: newIncident,
-      },
-      $inc: { incidents24h: 1, failedChecks: 1 },
-    });
 
     // TODO: Implement notification logic here (email, SMS)
   }

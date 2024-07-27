@@ -56,7 +56,7 @@ export async function checkMonitor(monitor) {
 
       await sendEmail({
         to: email,
-        subject: `Monitor ${monitor.name || monitor._id} is down`,
+        subject: `Monitor ${monitor.url_or_ip} is down`,
         text: `
           Monitor: ${monitor.name || monitor._id}
           URL/IP: ${monitor.url_or_ip}

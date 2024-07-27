@@ -1,4 +1,4 @@
-import customConfig from "../project.custom.config.js";
+import {customConfig} from "../project.custom.config";
 const formData = require("form-data");
 const Mailgun = require("mailgun.js");
 const mailgun = new Mailgun(formData);

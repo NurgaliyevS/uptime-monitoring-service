@@ -15,7 +15,7 @@ export const customConfig = {
     // REQUIRED — Email 'From' field to be used when sending magic login links
     fromNoReply: `UptimeFriend <noreply@mg.uptimefriend.com>`,
     // REQUIRED — Email 'From' field to be used when sending other emails, like abandoned carts, updates etc..
-    fromAdmin: `Sabyr at UptimeFriend <nurgasab@mg.uptimefriend.com>`,
+    fromAdmin: `UptimeFriend <nurgasab@mg.uptimefriend.com>`,
     // Email shown to customer if need support. Leave empty if not needed => if empty, set up Crisp above, otherwise you won't be able to offer customer support."
     supportEmail: "nurgasab@uptimefriend.com",
     // When someone replies to supportEmail sent by the app, forward it to the email below (otherwise it's lost). If you set supportEmail to empty, this will be ignored.

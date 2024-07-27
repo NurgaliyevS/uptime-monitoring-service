@@ -58,7 +58,12 @@ export async function checkMonitor(monitor) {
             <p><b>URL/IP:</b> ${monitor.url_or_ip}</p>
             <p><b>Status:</b> DOWN</p>
             <p><b>Error:</b> ${error.message}</p>
-            <p><b>Time:</b> ${new Date().toISOString()}</p>
+            <p><b>Time:</b> ${new Date().toLocaleTimeString("en-US", {
+              hour: "numeric",
+              minute: "numeric",
+              second: "numeric",
+              hour12: true,
+            })}</p>
           </div>
         `,
       });

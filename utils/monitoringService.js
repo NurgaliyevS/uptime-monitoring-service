@@ -1,5 +1,6 @@
 import Monitor from '@/backend/monitor';
 import axios from 'axios';
+import { sendEmail } from './mailgun';
 
 export async function checkMonitor(monitor) {
   try {
@@ -32,6 +33,13 @@ export async function checkMonitor(monitor) {
       started: new Date(),
       duration: 0
     };
+
+    sendEmail({
+      to: monitor.user_email,
+      subject: `Monitor ${monitor.name} is down`,
+      text: `Monitor ${monitor.name} is down. Error: ${error.message}`,
+      html: `Monitor ${monitor.name} is down. Error: ${error.message}`,
+    })
 
     await Monitor.findByIdAndUpdate(monitor._id, {
       $set: { 

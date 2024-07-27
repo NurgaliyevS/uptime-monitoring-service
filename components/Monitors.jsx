@@ -136,7 +136,7 @@ function Monitors() {
                     </p>
                     <p className="text text-black">
                       {monitor.lastChecked
-                        ? ` - Today at ${new Date(
+                        ? `Today at ${new Date(
                             monitor.lastChecked
                           ).toLocaleTimeString("en-US", {
                             hour: "numeric",

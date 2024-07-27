@@ -24,6 +24,7 @@ const MonitorSchema = new mongoose.Schema({
   failedChecks: { type: Number, default: 0},
   status: { type: String },
   cronJobId: String,
+  email_sent_count: { type: Number, default: 0 },
 });
 
 const Monitor = mongoose.models.Monitor || mongoose.model('Monitor', MonitorSchema);

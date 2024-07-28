@@ -7,6 +7,7 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 import Modal from "react-modal";
 import { useRouter } from "next/navigation";
+import { usePlausible } from "next-plausible";
 
 Modal.setAppElement("#__next");
 
@@ -22,6 +23,7 @@ const customStyles = {
 };
 
 function AdminMonitor({ isEdit, monitor }) {
+  const plausible = usePlausible();
   const { data: session } = useSession();
   const [monitorType, setMonitorType] = useState("http");
   const [urlOrIp, setUrlOrIp] = useState("");
@@ -413,6 +415,9 @@ function AdminMonitor({ isEdit, monitor }) {
                 type="submit"
                 className="btn btn-secondary btn-wide"
                 disabled={availableMonitors >= currentLimits?.monitors || isLoading}
+                onClick={() => {
+                  plausible("ADD_MONITOR");
+                }}
               >
                 Add Monitor
               </button>

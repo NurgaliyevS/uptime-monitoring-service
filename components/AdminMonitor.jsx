@@ -125,9 +125,9 @@ function AdminMonitor({ isEdit, monitor }) {
 
   const planLimits = {
     free: { monitors: 0, interval: 300, sms: 1, emails: 1 },
-    personal: { monitors: 10, interval: 120, sms: 3, emails: 3 },
-    team: { monitors: 20, interval: 60, sms: 5, emails: 5 },
-    enterprise: { monitors: 50, interval: 60, sms: 10, emails: 10 },
+    personal: { monitors: 5, interval: 120, sms: 3, emails: 3 },
+    team: { monitors: 10, interval: 60, sms: 5, emails: 5 },
+    enterprise: { monitors: 20, interval: 60, sms: 10, emails: 10 },
   };
 
   const currentLimits = planLimits[userPlan];

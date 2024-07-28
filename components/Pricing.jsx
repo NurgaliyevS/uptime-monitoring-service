@@ -224,7 +224,7 @@ function Pricing(props) {
                 Subscribe now
               </button>
 
-              <h4 className="font-bold text-xl tracking-tight">10 monitors</h4>
+              <h4 className="font-bold text-xl tracking-tight">5 monitors</h4>
 
               <ul className="space-y-2.5 leading-relaxed text-base flex-1">
                 <li className="flex items-center gap-2">
@@ -389,7 +389,7 @@ function Pricing(props) {
                 Subscribe now
               </button>
 
-              <h4 className="font-bold text-xl tracking-tight">20 monitors</h4>
+              <h4 className="font-bold text-xl tracking-tight">10 monitors</h4>
 
               <ul className="space-y-2.5 leading-relaxed text-base flex-1">
                 <li className="flex items-center gap-2">
@@ -554,7 +554,7 @@ function Pricing(props) {
                 Subscribe now
               </button>
 
-              <h4 className="font-bold text-xl tracking-tight">50 monitors</h4>
+              <h4 className="font-bold text-xl tracking-tight">20 monitors</h4>
 
               <ul className="space-y-2.5 leading-relaxed text-base flex-1">
                 <li className="flex items-center gap-2">

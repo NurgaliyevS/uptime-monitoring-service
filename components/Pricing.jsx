@@ -2,8 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { handleSignIn } from "./handleSignIn";
 import { buyProduct } from "./buyProduct";
+import { usePlausible } from "next-plausible";
 
 function Pricing(props) {
+  const plausible = usePlausible();
   return (
     <section className="bg-slate-800 text-gray-300 py-44 flex flex-col overflow-hidden">
       <div className="container max-w-7xl mx-auto">
@@ -219,7 +221,11 @@ function Pricing(props) {
 
               <button
                 className="btn btn-secondary rounded-full my-2"
-                onClick={buyProduct}
+                onClick={(e) => {
+                  e.preventDefault();
+                  plausible("SUBSCRIBE_NOW_PERSONAL");
+                  buyProduct();
+                }}
               >
                 Subscribe now
               </button>
@@ -383,6 +389,7 @@ function Pricing(props) {
                 className="btn btn-secondary rounded-full my-2"
                 onClick={(e) => {
                   e.preventDefault();
+                  plausible("SUBSCRIBE_NOW_TEAM");
                   buyProduct("449166");
                 }}
               >
@@ -548,6 +555,7 @@ function Pricing(props) {
                 className="btn btn-secondary rounded-full my-2"
                 onClick={(e) => {
                   e.preventDefault();
+                  plausible("SUBSCRIBE_NOW_ENTERPRISE");
                   buyProduct("449167");
                 }}
               >

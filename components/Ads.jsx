@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { handleSignIn } from "./handleSignIn";
+import { usePlausible } from "next-plausible";
 
 function Ads() {
+  const plausible = usePlausible();
   return (
     <section className="bg-slate-800 text-gray-300 py-44 flex flex-col overflow-hidden">
       <div className="container max-w-7xl mx-auto">
@@ -72,7 +74,10 @@ function Ads() {
           <Link
             href="#"
             className="btn btn-secondary btn-wide no-underline"
-            onClick={handleSignIn}
+            onClick={(e) => {
+              handleSignIn(e);
+              plausible("GET_STARTED_ADS");
+            }}
           >
             Get Started
           </Link>

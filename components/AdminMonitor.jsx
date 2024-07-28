@@ -124,7 +124,7 @@ function AdminMonitor({ isEdit, monitor }) {
   }, [isEdit, monitor]);
 
   const planLimits = {
-    free: { monitors: 1, interval: 300, sms: 1, emails: 1 },
+    free: { monitors: 0, interval: 300, sms: 1, emails: 1 },
     personal: { monitors: 10, interval: 120, sms: 3, emails: 3 },
     team: { monitors: 20, interval: 60, sms: 5, emails: 5 },
     enterprise: { monitors: 50, interval: 60, sms: 10, emails: 10 },
@@ -328,7 +328,7 @@ function AdminMonitor({ isEdit, monitor }) {
                     type="button"
                     className="btn btn-success btn-wide"
                     onClick={() => setShowEmailModal(true)}
-                    disabled={emails.length >= currentLimits.emails}
+                    disabled={emails.length >= currentLimits?.emails}
                   >
                     E-mail
                   </button>
@@ -338,7 +338,7 @@ function AdminMonitor({ isEdit, monitor }) {
                     type="button"
                     className="btn btn-info btn-wide"
                     onClick={() => setShowPhoneModal(true)}
-                    disabled={phones.length >= currentLimits.sms}
+                    disabled={phones.length >= currentLimits?.sms}
                   >
                     SMS message
                   </button>
@@ -382,10 +382,10 @@ function AdminMonitor({ isEdit, monitor }) {
                   <option
                     key={intv}
                     value={intv}
-                    disabled={intv < currentLimits.interval}
+                    disabled={intv < currentLimits?.interval}
                   >
                     {intv / 60}m{" "}
-                    {intv < currentLimits.interval ? "(Paid feature)" : ""}
+                    {intv < currentLimits?.interval ? "(Paid feature)" : ""}
                   </option>
                 ))}
               </select>
@@ -412,7 +412,7 @@ function AdminMonitor({ isEdit, monitor }) {
               <button
                 type="submit"
                 className="btn btn-secondary btn-wide"
-                disabled={availableMonitors >= currentLimits.monitors || isLoading}
+                disabled={availableMonitors >= currentLimits?.monitors || isLoading}
               >
                 Add Monitor
               </button>

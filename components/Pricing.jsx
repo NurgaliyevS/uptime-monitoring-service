@@ -26,7 +26,9 @@ function Pricing(props) {
         </div>
 
         <div className="flex flex-col lg:flex-row justify-between gap-5">
-          <div className="card bg-[#fafafa] w-80 shadow-xl text-[#151515] mx-auto lg:mx-0">
+
+          {/* free removed */}
+          {/* <div className="card bg-[#fafafa] w-80 shadow-xl text-[#151515] mx-auto lg:mx-0">
             <div className="flex flex-row justify-between items-center pl-8 pr-8 pt-8">
               <h3 className="font-bold text-2xl lg:text-3xl tracking-tight">
                 <strong className="relative">Free</strong>
@@ -179,7 +181,7 @@ function Pricing(props) {
                 </li>
               </ul>
             </div>
-          </div>
+          </div> */}
 
           <div className="card bg-[#fafafa] w-80 shadow-xl text-[#151515] mx-auto lg:mx-0">
             <div className="flex flex-row justify-between items-center pl-8 pr-8 pt-8">

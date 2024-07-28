@@ -122,6 +122,9 @@ const Header = () => {
               className="btn btn-sm"
               title="Admin page"
               rel="nofollow"
+              onClick={() => {
+                plausible("ADMIN_PAGE");
+              }}
             >
               {session?.user?.email}
             </Link>

@@ -1,7 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
+import { usePlausible } from "next-plausible";
 
 function Footer() {
+  const plausible = usePlausible();
   return (
     <div className="bg-slate-800 text-gray-300 overflow-hidden border-t border-base-content/50">
       <div className="max-w-7xl mx-auto px-8 py-24">
@@ -33,7 +35,7 @@ function Footer() {
                 target="_blank"
                 title="X tech_nurgaliyev"
                 onClick={() => {
-                  //   plausible("X");
+                  plausible("X");
                 }}
               >
                 <Image
@@ -49,7 +51,7 @@ function Footer() {
                 target="_blank"
                 title="Linkedin sabyr-nurgaliyev"
                 onClick={() => {
-                  //   plausible("Linkedin");
+                    plausible("LINKEDIN");
                 }}
               >
                 <Image
@@ -65,7 +67,7 @@ function Footer() {
                 target="_blank"
                 title="ProductHunt tech_nurgaliyeev"
                 onClick={() => {
-                  //   plausible("ProductHunt");
+                    plausible("PRODUCT_HUNT");
                 }}
               >
                 <Image
@@ -89,6 +91,9 @@ function Footer() {
                   className="link link-hover"
                   href="#pricing"
                   title="Uptime Friend - home page"
+                  onClick={() => {
+                    plausible("PRICING");
+                  }}
                 >
                   Pricing
                 </Link>
@@ -96,21 +101,30 @@ function Footer() {
                   className="link link-hover"
                   href="mailto:nurgasab@gmail.com"
                   title="Uptime Friend - home page"
+                  onClick={() => {
+                    plausible("CONTACT_US");
+                  }}
                 >
                   Contact Us
                 </Link>
-                <Link
+                {/* <Link
                   className="link link-hover"
                   href="#blog"
                   target="_blank"
                   title="Uptime Friend - home page"
+                  onClick={() => {
+                    plausible("BLOG");
+                  }}
                 >
                   Blog
-                </Link>
+                </Link> */}
                 <Link
                   className="link link-hover"
                   href="#faq"
                   title="Uptime Friend - home page"
+                  onClick={() => {
+                    plausible("FAQ");
+                  }}
                 >
                   FAQ
                 </Link>
@@ -126,6 +140,9 @@ function Footer() {
                   href="https://tripplanss.com/"
                   target="_blank"
                   title="Uptime Friend - home page"
+                  onClick={() => {
+                    plausible("TRIPPLANSS");
+                  }}
                 >
                   TripPlanss
                 </Link>
@@ -134,6 +151,9 @@ function Footer() {
                   href="http://weeealth.com/"
                   target="_blank"
                   title="Uptime Friend - home page"
+                  onClick={() => {
+                    plausible("WEEEALTH");
+                  }}
                 >
                   Weeealth
                 </Link>

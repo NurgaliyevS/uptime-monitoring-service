@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { handleSignIn } from "./handleSignIn";
 import { useSession } from "next-auth/react";
+import { usePlausible } from "next-plausible";
 
 const links = [
   {
@@ -23,6 +24,7 @@ const links = [
 ];
 
 const Header = () => {
+  const plausible = usePlausible();
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -92,6 +94,14 @@ const Header = () => {
               key={link.href}
               className="link link-hover"
               title={link.label}
+              onClick={() => {
+                if (link.label === "Pricing") {
+                  plausible("PRICING");
+                }
+                if (link.label === "FAQ") {
+                  plausible("FAQ");
+                }
+              }}
             >
               {link.label}
             </Link>

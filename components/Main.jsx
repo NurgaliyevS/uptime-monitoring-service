@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { handleSignIn } from "./handleSignIn";
+import { usePlausible } from "next-plausible";
 
 function Main() {
+  const plausible = usePlausible();
   return (
     <section className="container max-w-7xl mx-auto flex flex-col items-center justify-between px-8 py-8 lg:py-20 gap-10">
       <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between w-full gap-16">
@@ -20,7 +22,11 @@ function Main() {
           <Link
             href="#"
             className="btn btn-secondary btn-wide no-underline"
-            onClick={handleSignIn}
+            onClick={(e) => {
+              e.preventDefault();
+              plausible("GET_STARTED_MAIN");
+              handleSignIn(e);
+            }}
           >
             Get Started
           </Link>

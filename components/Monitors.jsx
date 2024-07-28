@@ -5,8 +5,10 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import { usePlausible } from "next-plausible";
 
 function Monitors() {
+  const plausible = usePlausible();
   const { data: session } = useSession();
   const [monitors, setMonitors] = useState([]);
   const [selectedMonitors, setSelectedMonitors] = useState([]);
@@ -100,7 +102,13 @@ function Monitors() {
       <main className="container mx-auto py-10 min-h-screen m-4">
         <div className="flex justify-between">
           <h1 className="text-2xl font-bold">Monitors</h1>
-          <Link href="/admin/newMonitor" className="btn btn-lg lg:btn-wide">
+          <Link
+            href="/admin/newMonitor"
+            className="btn btn-lg lg:btn-wide"
+            onClick={() => {
+              plausible("NEW_MONITOR");
+            }}
+          >
             New monitor
           </Link>
         </div>
@@ -129,9 +137,7 @@ function Monitors() {
                     <h2 className="card-title text-black">
                       {monitor.url_or_ip}
                     </h2>
-                    <p
-                      className={"text-black"}
-                    >
+                    <p className={"text-black"}>
                       {monitor.status === "down" ? "Down" : "Up"}
                     </p>
                     <p className="text text-black">

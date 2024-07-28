@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { handleSignIn } from "./handleSignIn";
+import { usePlausible } from "next-plausible";
 
 const faqList = [
   {
@@ -147,6 +148,7 @@ const FaqItem = ({ item }) => {
 };
 
 function FAQ() {
+  const plausible = usePlausible();
   return (
     <section
       className="bg-slate-800 text-gray-300 py-44 overflow-hidden"
@@ -168,7 +170,10 @@ function FAQ() {
 
       <div className="flex items-center justify-center mt-20">
         <Link href="#" className="btn btn-secondary btn-wide no-underline" 
-        onClick={handleSignIn}
+        onClick={(e) => {
+          handleSignIn(e);
+          plausible("GET_STARTED_FAQ");
+        }}
         >
           Get Started
         </Link>

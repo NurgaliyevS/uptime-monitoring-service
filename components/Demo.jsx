@@ -19,15 +19,15 @@ function Demo() {
                 <path
                   d="M17 17L6 6"
                   stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
                 />
                 <path
                   d="M11 17.8685C11 17.8685 16.6335 18.3434 17.4885 17.4885C18.3434 16.6336 17.8684 11 17.8684 11"
                   stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             </div>
@@ -38,9 +38,9 @@ function Demo() {
                   className="absolute inset-0 w-full h-full"
                   src="https://www.youtube.com/embed/MYrYUQcLA7A?si=D38a_cFygdQGxoIa"
                   title="UptimeFriend Demo"
-                  frameborder="0"
+                  frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
+                  allowFullScreen
                 ></iframe>
               </div>
             </div>

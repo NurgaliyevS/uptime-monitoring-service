@@ -1,4 +1,5 @@
 import Ads from "@/components/Ads";
+import Demo from "@/components/Demo";
 import DownTime from "@/components/DownTime";
 import FAQ from "@/components/FAQ";
 import FeaturedOn from "@/components/FeaturedOn";
@@ -25,6 +26,7 @@ export default function Home() {
         <FeaturedOn />
         <Ads />
         <TeamMembers />
+        <Demo />
         <DownTime />
         <Pricing />
         <FAQ />

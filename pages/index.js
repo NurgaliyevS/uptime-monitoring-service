@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>UptimeFriend - Monitor your website, and server</title>
+        <title>Monitor your website, and server | UptimeFriend.com</title>
       </Head>
       <header className={lato.className}>
         <Header />

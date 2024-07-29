@@ -9,6 +9,7 @@ import Main from "@/components/Main";
 import Pricing from "@/components/Pricing";
 import TeamMembers from "@/components/TeamMembers";
 import { Lato } from "next/font/google";
+import Head from "next/head";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -18,6 +19,9 @@ const lato = Lato({
 export default function Home() {
   return (
     <>
+      <Head>
+        <title>UptimeFriend - Monitor your website, and server</title>
+      </Head>
       <header className={lato.className}>
         <Header />
       </header>

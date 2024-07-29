@@ -15,7 +15,7 @@ function Footer() {
               title="Uptime Friend - home page"
             >
               <Image
-                src={"/favicon.ico"}
+                src={"/logo.webp"}
                 alt="Uptime Friend logo"
                 className="w-5 h-5"
                 priority={true}

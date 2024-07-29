@@ -335,12 +335,13 @@ function AdminMonitor({ isEdit, monitor }) {
                     E-mail
                   </button>
                 </div>
-                <div className="tooltip" data-tip="Paid Feature">
+                <div className="tooltip" data-tip="IN PROGRESS">
                   <button
                     type="button"
                     className="btn btn-info btn-wide"
                     onClick={() => setShowPhoneModal(true)}
-                    disabled={phones.length >= currentLimits?.sms}
+                    // disabled={phones.length >= currentLimits?.sms}
+                    disabled={true}
                   >
                     SMS message
                   </button>

@@ -5,7 +5,7 @@ function FeaturedOn() {
     <section className="p-8 md:p-12 flex flex-wrap items-center justify-center gap-4 md:gap-8">
       <span className="text-xs text-[10px] opacity-50">Featured on</span>
       <Link
-        href="#HackerNews"
+        href="https://news.ycombinator.com/item?id=41106325"
         target="_blank"
         title="Featured on Hackers New - UptimeFriend"
         className="cursor-not-allowed"

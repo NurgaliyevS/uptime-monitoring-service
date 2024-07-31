@@ -47,7 +47,7 @@ function FeaturedOn() {
         </svg>
       </Link>
       <Link
-        href="#ProductHunt"
+        href="https://www.producthunt.com/posts/uptimefriend"
         target="_blank"
         title="Featured on Product Hunt - UptimeFriend"
         className="cursor-not-allowed"

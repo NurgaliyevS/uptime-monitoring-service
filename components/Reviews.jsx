@@ -28,10 +28,13 @@ function Reviews() {
               </a>
             </div>
             <div className="divider"></div>
-            <p className="leading-relaxed">
-              We've all been there with tricky monitoring tools that make our
-              heads spin. Love the simplicity of this tool!
-            </p>
+            <span className="leading-relaxed">
+              We've all been there with tricky{" "}
+              <strong className="text-secondary">monitoring tools</strong> that
+              make our heads spin. Love the{" "}
+              <strong className="text-secondary">simplicity</strong> of this
+              tool!
+            </span>
           </div>
         </div>
 
@@ -60,10 +63,11 @@ function Reviews() {
               {/* </a> */}
             </div>
             <div className="divider"></div>
-            <p className="leading-relaxed">
-              1-minute monitoring interval for the Team and Enterprise plans is
-              impressive.
-            </p>
+            <span className="leading-relaxed">
+              1-minute monitoring interval for the{" "}
+              <strong className="text-secondary">Team and Enterprise </strong>{" "}
+              plans is impressive.
+            </span>
           </div>
         </div>
 
@@ -83,9 +87,9 @@ function Reviews() {
               </div>
             </div>
             <div className="divider"></div>
-            <p className="leading-relaxed">
-              Finally some app that can fix my problem.
-            </p>
+            <span className="leading-relaxed">
+              Finally some app that can <strong className="text-secondary">fix </strong> my problem.
+            </span>
           </div>
         </div>
       </div>

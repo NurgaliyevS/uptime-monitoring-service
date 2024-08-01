@@ -6,7 +6,7 @@ import { usePlausible } from "next-plausible";
 function Ads() {
   const plausible = usePlausible();
   return (
-    <section className="bg-slate-800 text-gray-300 py-44 flex flex-col overflow-hidden">
+    <section className="bg-slate-800 text-gray-300 pt-44 flex flex-col overflow-hidden">
       <div className="container max-w-7xl mx-auto">
         <div className="flex justify-center px-10 text-center mb-20">
           <h2 className="font-extrabold text-4xl lg:text-6xl tracking-tight md:-mb-4">

@@ -21,6 +21,10 @@ const links = [
     href: "/#faq",
     label: "FAQ",
   },
+  {
+    href: "/#reviews",
+    label: "Reviews"
+  }
 ];
 
 const Header = () => {

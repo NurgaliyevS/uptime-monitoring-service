@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Main from "@/components/Main";
 import Pricing from "@/components/Pricing";
+import Reviews from "@/components/Reviews";
 import TeamMembers from "@/components/TeamMembers";
 import { Lato } from "next/font/google";
 import Head from "next/head";
@@ -29,6 +30,7 @@ export default function Home() {
         <Main />
         <FeaturedOn />
         <Ads />
+        <Reviews />
         <TeamMembers />
         <Demo />
         <DownTime />

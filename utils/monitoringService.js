@@ -1,6 +1,7 @@
 import Monitor from "@/backend/monitor";
 import axios from "axios";
 import { sendEmail } from "./mailgun";
+import User from "@/backend/user";
 
 export async function checkMonitor(monitor) {
   try {
@@ -42,11 +43,76 @@ export async function checkMonitor(monitor) {
 
     let counter = 0;
 
+    const user = await User.findOne({ email: monitor.user_email });
+    const ONE_WEEK = ONE_WEEK;
+
+    console.log(user, "user");
+    
+    if (user?.variant_name && user?.variant_name.toLowerCase() === "personal") {
+      if (monitor.email_sent_count > 100 && monitor.latest_incident.started > new Date(new Date().getTime() - ONE_WEEK)) {
+        for (let email of monitor.notification_emails) {
+          await sendEmail({
+            to: email,
+            subject: `Email limit exceeded`,
+            text: `You have exceeded the email limit for your plan. Please upgrade to a higher plan to continue receiving notifications.`,
+            html: `
+              <div>
+                <p>You have exceeded the email limit for your plan. Please upgrade to a higher plan to continue receiving notifications.</p>
+              </div>
+            `,
+          });
+        }
+        return;
+      }
+    }
+
+    if (user?.variant_name && user?.variant_name.toLowerCase() === "team") {
+      if (monitor.email_sent_count > 200 && monitor.latest_incident.started > new Date(new Date().getTime() - ONE_WEEK)) {
+        for (let email of monitor.notification_emails) {
+          await sendEmail({
+            to: email,
+            subject: `Email limit exceeded`,
+            text: `You have exceeded the email limit for your plan. Please upgrade to a higher plan to continue receiving notifications.`,
+            html: `
+              <div>
+                <p>You have exceeded the email limit for your plan. Please upgrade to a higher plan to continue receiving notifications.</p>
+              </div>
+            `,
+          });
+        }
+        return;
+      }
+    }
+
+    if (user?.variant_name && user?.variant_name.toLowerCase() === "enterprise") {
+      if (monitor.email_sent_count > 500 && monitor.latest_incident.started > new Date(new Date().getTime() - ONE_WEEK)) {
+        for (let email of monitor.notification_emails) {
+          await sendEmail({
+            to: email,
+            subject: `Email limit exceeded`,
+            text: `You have exceeded the email limit for your plan. Please upgrade to a higher plan to continue receiving notifications.`,
+            html: `
+              <div>
+                <p>You have exceeded the email limit for your plan. Please upgrade to a higher plan to continue receiving notifications.</p>
+              </div>
+            `,
+          });
+        }
+        return;
+      }
+    }
+
+    if (new Date().getDate() === 1) {
+      await Monitor.findByIdAndUpdate(monitor._id, {
+        $set: { email_sent_count: 0 },
+      });
+    }
+
     for (let email of monitor.notification_emails) {
       console.error(email, "email");
 
       const date = new Date();
-      const formattedDate = date.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+      const formattedDate = date.toISOString().split("T")[0]; // Format date as YYYY-MM-DD
       const formattedTime = date.toLocaleTimeString("en-US", {
         hour: "numeric",
         minute: "numeric",
@@ -88,8 +154,6 @@ export async function checkMonitor(monitor) {
       $inc: { incidents24h: 1, failedChecks: 1 },
       $inc: { email_sent_count: counter },
     });
-
-    // TODO: Implement notification logic here (email, SMS)
   }
 }
 

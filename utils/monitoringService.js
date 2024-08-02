@@ -74,7 +74,7 @@ export async function checkMonitor(monitor) {
               lastChecked: new Date(),
               latest_incident: accidentIncident,
             },
-            $inc: { incidents24h: 1, failedChecks: 1, email_sent_count: counter },
+            $inc: { incidents24h: 1, failedChecks: 1 },
           });
           
           for (let email of monitor.notification_emails) {

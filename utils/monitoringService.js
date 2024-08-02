@@ -79,17 +79,6 @@ export async function checkMonitor(monitor) {
             `,
           });
         }
-        
-        // Update the latest_incident to track when the limit email was sent
-        await Monitor.findByIdAndUpdate(monitor._id, {
-          $set: { 
-            latest_incident: {
-              status: "limit_exceeded",
-              started: new Date(),
-              rootCause: "Email limit exceeded"
-            }
-          }
-        });
 
         return; // Skip sending the regular down notification
       }

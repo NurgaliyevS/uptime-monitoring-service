@@ -42,7 +42,6 @@ export async function checkMonitor(monitor) {
     };
 
     const user = await User.findOne({ email: monitor.user_email });
-    const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
     
     let emailLimit;
     if (user?.variant_name) {
@@ -66,10 +65,12 @@ export async function checkMonitor(monitor) {
             await sendEmail({
               to: email,
               subject: `Email limit exceeded`,
-              text: `You have exceeded the email limit for your plan. Please upgrade to a higher plan to continue receiving notifications.`,
+              text: `You have exceeded the email limit for your plan. 
+              Please upgrade to a higher plan to continue receiving notifications.`,
               html: `
                 <div>
-                  <p>You have exceeded the email limit for your plan. Please upgrade to a higher plan to continue receiving notifications.</p>
+                  <p>You have exceeded the email limit for your plan. </p>
+                  <p>Please upgrade to a higher plan to continue receiving notifications.</p>
                 </div>
               `,
             });
@@ -82,6 +83,9 @@ export async function checkMonitor(monitor) {
             },
             $inc: { incidents24h: 1, failedChecks: 1, email_sent_count: counter },
           });
+
+          // stop cronjob.org checking but not delete
+          return;
         }
         return; // Skip sending the regular down notification
       }

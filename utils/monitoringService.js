@@ -42,7 +42,7 @@ export async function checkMonitor(monitor) {
     };
 
     const user = await User.findOne({ email: monitor.user_email });
-    
+
     let emailLimit;
     if (user?.variant_name) {
       switch (user.variant_name.toLowerCase()) {
@@ -60,7 +60,7 @@ export async function checkMonitor(monitor) {
       }
 
       if (monitor.email_sent_count > emailLimit) {
-        if (monitor.latest_incident.status !== "email_limit_exceeded") {
+        if (monitor.latest_incident.status === "down") {
           for (let email of monitor.notification_emails) {
             await sendEmail({
               to: email,
@@ -75,24 +75,26 @@ export async function checkMonitor(monitor) {
               `,
             });
           }
+
+          const accidentIncident = {
+            status: "email_limit_exceeded",
+            rootCause: "Email limit exceeded",
+            started: new Date(),
+            duration: 0,
+          };
+
           await Monitor.findByIdAndUpdate(monitor._id, {
             $set: {
-              status: "email_limit_exceeded",
+              status: "down",
               lastChecked: new Date(),
-              latest_incident: {
-                status: "email_limit_exceeded",
-                rootCause: "Email limit exceeded",
-                started: new Date(),
-                duration: 0,
-              }
+              latest_incident: accidentIncident,
             },
             $inc: { incidents24h: 1, failedChecks: 1, email_sent_count: counter },
           });
 
-          // stop cronjob.org checking but not delete
           return;
         }
-        return; // Skip sending the regular down notification
+        return;
       }
     }
 
@@ -141,14 +143,16 @@ export async function checkMonitor(monitor) {
       counter++;
     }
 
-    await Monitor.findByIdAndUpdate(monitor._id, {
-      $set: {
-        status: "down",
-        lastChecked: new Date(),
-        latest_incident: newIncident,
-      },
-      $inc: { incidents24h: 1, failedChecks: 1, email_sent_count: counter },
-    });
+    if (monitor.latest_incident.status !== "email_limit_exceeded") {
+      await Monitor.findByIdAndUpdate(monitor._id, {
+        $set: {
+          status: "down",
+          lastChecked: new Date(),
+          latest_incident: newIncident,
+        },
+        $inc: { incidents24h: 1, failedChecks: 1, email_sent_count: counter },
+      });
+    }
   }
 }
 

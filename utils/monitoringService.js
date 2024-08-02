@@ -69,25 +69,25 @@ export async function checkMonitor(monitor) {
       console.log(currentTime, "currentTime");
       console.log(lastLimitEmailTime, "lastLimitEmailTime");
       console.log(monitor.email_sent_count, "monitor.email_sent_count");
-      console.log(monitor.email_sent_count < emailLimit, "monitor.email_sent_count < emailLimit");
+      console.log(monitor.email_sent_count > emailLimit, "monitor.email_sent_count < emailLimit");
       console.log((currentTime - lastLimitEmailTime) > ONE_WEEK, "(currentTime - lastLimitEmailTime) > ONE_WEEK");
-      console.log(monitor.email_sent_count < emailLimit && (currentTime - lastLimitEmailTime) > ONE_WEEK, "monitor.email_sent_count < emailLimit && (currentTime - lastLimitEmailTime) > ONE_WEEK");
-      
-      if (monitor.email_sent_count < emailLimit && 
-          (currentTime - lastLimitEmailTime) > ONE_WEEK) {
-        for (let email of monitor.notification_emails) {
-          await sendEmail({
-            to: email,
-            subject: `Email limit exceeded`,
-            text: `You have exceeded the email limit for your plan. Please upgrade to a higher plan to continue receiving notifications.`,
-            html: `
-              <div>
-                <p>You have exceeded the email limit for your plan. Please upgrade to a higher plan to continue receiving notifications.</p>
-              </div>
-            `,
-          });
-        }
 
+
+      if (monitor.email_sent_count > emailLimit) {
+        if ((currentTime - lastLimitEmailTime) > ONE_WEEK) {
+          for (let email of monitor.notification_emails) {
+            await sendEmail({
+              to: email,
+              subject: `Email limit exceeded`,
+              text: `You have exceeded the email limit for your plan. Please upgrade to a higher plan to continue receiving notifications.`,
+              html: `
+                <div>
+                  <p>You have exceeded the email limit for your plan. Please upgrade to a higher plan to continue receiving notifications.</p>
+                </div>
+              `,
+            });
+          }
+        }  
         return; // Skip sending the regular down notification
       }
     }

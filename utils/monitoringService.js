@@ -83,7 +83,7 @@ export async function checkMonitor(monitor) {
             duration: 0,
           };
 
-          await Monitor.findByIdAndUpdate(monitor._id, {
+          Monitor.findByIdAndUpdate(monitor._id, {
             $set: {
               status: "down",
               lastChecked: new Date(),

@@ -60,7 +60,7 @@ export async function checkMonitor(monitor) {
       }
 
       if (monitor.email_sent_count > emailLimit) {
-        if (monitor.status !== "down") {
+        if (monitor.status === "down") {
           const accidentIncident = {
             status: "email_limit_exceeded",
             rootCause: "Email limit exceeded",

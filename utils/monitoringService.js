@@ -64,8 +64,16 @@ export async function checkMonitor(monitor) {
 
       const currentTime = new Date().getTime();
       const lastLimitEmailTime = monitor?.latest_incident?.started?.getTime() || 0;
+
+      console.log(emailLimit, "emailLimit");
+      console.log(currentTime, "currentTime");
+      console.log(lastLimitEmailTime, "lastLimitEmailTime");
+      console.log(monitor.email_sent_count, "monitor.email_sent_count");
+      console.log(monitor.email_sent_count < emailLimit, "monitor.email_sent_count < emailLimit");
+      console.log((currentTime - lastLimitEmailTime) > ONE_WEEK, "(currentTime - lastLimitEmailTime) > ONE_WEEK");
+      console.log(monitor.email_sent_count < emailLimit && (currentTime - lastLimitEmailTime) > ONE_WEEK, "monitor.email_sent_count < emailLimit && (currentTime - lastLimitEmailTime) > ONE_WEEK");
       
-      if (monitor.email_sent_count > emailLimit && 
+      if (monitor.email_sent_count < emailLimit && 
           (currentTime - lastLimitEmailTime) > ONE_WEEK) {
         for (let email of monitor.notification_emails) {
           await sendEmail({

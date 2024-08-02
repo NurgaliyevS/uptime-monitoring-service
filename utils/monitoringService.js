@@ -41,15 +41,32 @@ export async function checkMonitor(monitor) {
       duration: 0,
     };
 
-    let counter = 0;
-
     const user = await User.findOne({ email: monitor.user_email });
-    const ONE_WEEK = ONE_WEEK;
+    const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 
     console.log(user, "user");
     
-    if (user?.variant_name && user?.variant_name.toLowerCase() === "personal") {
-      if (monitor.email_sent_count > 100 && monitor.latest_incident.started > new Date(new Date().getTime() - ONE_WEEK)) {
+    let emailLimit;
+    if (user?.variant_name) {
+      switch (user.variant_name.toLowerCase()) {
+        case "personal":
+          emailLimit = 100;
+          break;
+        case "team":
+          emailLimit = 200;
+          break;
+        case "enterprise":
+          emailLimit = 500;
+          break;
+        default:
+          emailLimit = 0; // Default to personal limit if variant is unknown
+      }
+
+      const currentTime = new Date().getTime();
+      const lastLimitEmailTime = monitor?.latest_incident?.started?.getTime() || 0;
+      
+      if (monitor.email_sent_count > emailLimit && 
+          (currentTime - lastLimitEmailTime) > ONE_WEEK) {
         for (let email of monitor.notification_emails) {
           await sendEmail({
             to: email,
@@ -62,52 +79,30 @@ export async function checkMonitor(monitor) {
             `,
           });
         }
-        return;
+        
+        // Update the latest_incident to track when the limit email was sent
+        await Monitor.findByIdAndUpdate(monitor._id, {
+          $set: { 
+            latest_incident: {
+              status: "limit_exceeded",
+              started: new Date(),
+              rootCause: "Email limit exceeded"
+            }
+          }
+        });
+
+        return; // Skip sending the regular down notification
       }
     }
 
-    if (user?.variant_name && user?.variant_name.toLowerCase() === "team") {
-      if (monitor.email_sent_count > 200 && monitor.latest_incident.started > new Date(new Date().getTime() - ONE_WEEK)) {
-        for (let email of monitor.notification_emails) {
-          await sendEmail({
-            to: email,
-            subject: `Email limit exceeded`,
-            text: `You have exceeded the email limit for your plan. Please upgrade to a higher plan to continue receiving notifications.`,
-            html: `
-              <div>
-                <p>You have exceeded the email limit for your plan. Please upgrade to a higher plan to continue receiving notifications.</p>
-              </div>
-            `,
-          });
-        }
-        return;
-      }
-    }
-
-    if (user?.variant_name && user?.variant_name.toLowerCase() === "enterprise") {
-      if (monitor.email_sent_count > 500 && monitor.latest_incident.started > new Date(new Date().getTime() - ONE_WEEK)) {
-        for (let email of monitor.notification_emails) {
-          await sendEmail({
-            to: email,
-            subject: `Email limit exceeded`,
-            text: `You have exceeded the email limit for your plan. Please upgrade to a higher plan to continue receiving notifications.`,
-            html: `
-              <div>
-                <p>You have exceeded the email limit for your plan. Please upgrade to a higher plan to continue receiving notifications.</p>
-              </div>
-            `,
-          });
-        }
-        return;
-      }
-    }
-
+    // Reset email_sent_count on first day each month
     if (new Date().getDate() === 1) {
       await Monitor.findByIdAndUpdate(monitor._id, {
         $set: { email_sent_count: 0 },
       });
     }
 
+    let counter = 0;
     for (let email of monitor.notification_emails) {
       console.error(email, "email");
 
@@ -151,8 +146,7 @@ export async function checkMonitor(monitor) {
         lastChecked: new Date(),
         latest_incident: newIncident,
       },
-      $inc: { incidents24h: 1, failedChecks: 1 },
-      $inc: { email_sent_count: counter },
+      $inc: { incidents24h: 1, failedChecks: 1, email_sent_count: counter },
     });
   }
 }

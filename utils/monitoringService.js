@@ -43,8 +43,6 @@ export async function checkMonitor(monitor) {
 
     const user = await User.findOne({ email: monitor.user_email });
     const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
-
-    console.log(user, "user");
     
     let emailLimit;
     if (user?.variant_name) {
@@ -62,19 +60,8 @@ export async function checkMonitor(monitor) {
           emailLimit = 0; // Default to personal limit if variant is unknown
       }
 
-      const currentTime = new Date().getTime();
-      const lastLimitEmailTime = monitor?.latest_incident?.started?.getTime() || 0;
-
-      console.log(emailLimit, "emailLimit");
-      console.log(currentTime, "currentTime");
-      console.log(lastLimitEmailTime, "lastLimitEmailTime");
-      console.log(monitor.email_sent_count, "monitor.email_sent_count");
-      console.log(monitor.email_sent_count > emailLimit, "monitor.email_sent_count < emailLimit");
-      console.log((currentTime - lastLimitEmailTime) > ONE_WEEK, "(currentTime - lastLimitEmailTime) > ONE_WEEK");
-
-
       if (monitor.email_sent_count > emailLimit) {
-        if ((currentTime - lastLimitEmailTime) > ONE_WEEK) {
+        if (monitor.latest_incident.status !== "email_limit_exceeded") {
           for (let email of monitor.notification_emails) {
             await sendEmail({
               to: email,
@@ -87,7 +74,15 @@ export async function checkMonitor(monitor) {
               `,
             });
           }
-        }  
+          await Monitor.findByIdAndUpdate(monitor._id, {
+            $set: {
+              status: "email_limit_exceeded",
+              lastChecked: new Date(),
+              latest_incident: newIncident,
+            },
+            $inc: { incidents24h: 1, failedChecks: 1, email_sent_count: counter },
+          });
+        }
         return; // Skip sending the regular down notification
       }
     }

@@ -61,6 +61,22 @@ export async function checkMonitor(monitor) {
 
       if (monitor.email_sent_count > emailLimit) {
         if (monitor.status !== "down") {
+          const accidentIncident = {
+            status: "email_limit_exceeded",
+            rootCause: "Email limit exceeded",
+            started: new Date(),
+            duration: 0,
+          };
+
+          await Monitor.findByIdAndUpdate(monitor._id, {
+            $set: {
+              status: "email_limit_exceeded",
+              lastChecked: new Date(),
+              latest_incident: accidentIncident,
+            },
+            $inc: { incidents24h: 1, failedChecks: 1, email_sent_count: counter },
+          });
+          
           for (let email of monitor.notification_emails) {
             await sendEmail({
               to: email,
@@ -75,22 +91,6 @@ export async function checkMonitor(monitor) {
               `,
             });
           }
-
-          const accidentIncident = {
-            status: "email_limit_exceeded",
-            rootCause: "Email limit exceeded",
-            started: new Date(),
-            duration: 0,
-          };
-
-          Monitor.findByIdAndUpdate(monitor._id, {
-            $set: {
-              status: "email_limit_exceeded",
-              lastChecked: new Date(),
-              latest_incident: accidentIncident,
-            },
-            $inc: { incidents24h: 1, failedChecks: 1, email_sent_count: counter },
-          });
 
           return;
         }

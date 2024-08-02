@@ -79,7 +79,12 @@ export async function checkMonitor(monitor) {
             $set: {
               status: "email_limit_exceeded",
               lastChecked: new Date(),
-              latest_incident: newIncident,
+              latest_incident: {
+                status: "email_limit_exceeded",
+                rootCause: "Email limit exceeded",
+                started: new Date(),
+                duration: 0,
+              }
             },
             $inc: { incidents24h: 1, failedChecks: 1, email_sent_count: counter },
           });

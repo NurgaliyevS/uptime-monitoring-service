@@ -60,7 +60,7 @@ export async function checkMonitor(monitor) {
       }
 
       if (monitor.email_sent_count > emailLimit) {
-        if (monitor.latest_incident.status === "down") {
+        if (monitor.status !== "down") {
           for (let email of monitor.notification_emails) {
             await sendEmail({
               to: email,
@@ -85,7 +85,7 @@ export async function checkMonitor(monitor) {
 
           Monitor.findByIdAndUpdate(monitor._id, {
             $set: {
-              status: "down",
+              status: "email_limit_exceeded",
               lastChecked: new Date(),
               latest_incident: accidentIncident,
             },

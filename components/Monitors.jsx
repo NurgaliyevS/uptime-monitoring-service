@@ -22,7 +22,7 @@ function Monitors() {
 
   useEffect(() => {
     const date = new Date();
-    if (date.getDate() === 3) {
+    // if (date.getDate() === 3) {
       if (monitors.length > 0) {
         const email = session?.user?.email;
         const inactiveMonitors = monitors.filter(
@@ -33,12 +33,12 @@ function Monitors() {
         if (inactiveMonitors.length > 0) {
           inactiveMonitors.forEach(async (monitor) => {
             try {
-              const response = await api.patch(`/jobs/${monitor.cronJobId}`, {
+              const response = await api.patch(`/jobs/${monitor?.cronJobId}`, {
                 job: {
                   enabled: true,
                 },
               });
-              if (response.data?.success) {
+              if (response?.data) {
                 await axios.put(`/api/core/monitors/${monitor._id}`, {
                   status: "up",
                   emal_sent_count: 0,
@@ -50,7 +50,7 @@ function Monitors() {
           });
         }
       }
-    }
+    // }
   }, [monitors]);
 
   const fetchMonitors = async () => {

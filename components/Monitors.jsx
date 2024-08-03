@@ -24,10 +24,10 @@ function Monitors() {
     const date = new Date();
     // if (date.getDate() === 3) {
       if (monitors.length > 0) {
-        const email = session?.user?.email;
+        // const email = session?.user?.email;
         const inactiveMonitors = monitors.filter(
           (monitor) =>
-            monitor.user_email === email &&
+            // monitor.user_email === email &&
             monitor.status === "email_limit_exceeded"
         );
         if (inactiveMonitors.length > 0) {

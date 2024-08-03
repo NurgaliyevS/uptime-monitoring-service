@@ -23,7 +23,7 @@ function Monitors() {
   useEffect(() => {
     const enableMonitors = async () => {
       const date = new Date();
-      if (date.getDate() === 1) {
+      if (date.getDate() === 3) {
         try {
           const response = await axios.get("/api/core/monitors");
   

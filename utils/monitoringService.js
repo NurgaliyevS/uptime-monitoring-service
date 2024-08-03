@@ -79,9 +79,8 @@ export async function checkMonitor(monitor) {
 
           // enabled = false;
 
-          const response = await api.put("/jobs/" + monitor._id, {
+          const response = await api.put("/jobs/" + monitor.cronJobId, {
             job: {
-              url: `https://uptimefriend.com/api/cron/${monitor._id}/check`,
               enabled: false,
             },
           });

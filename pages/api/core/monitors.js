@@ -68,9 +68,9 @@ export default async function handler(req, res) {
           return res.status(200).json({ success: true, data: monitors });
         }
 
-        return res
-          .status(400)
-          .json({ success: false, message: "Missing id or email parameter" });
+        // get all monitors
+        const monitors = await Monitor.find();
+        return res.status(200).json({ success: true, data: monitors });
       } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
       }

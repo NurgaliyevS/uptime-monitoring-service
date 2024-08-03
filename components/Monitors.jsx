@@ -20,39 +20,53 @@ function Monitors() {
     fetchMonitors();
   }, []);
 
-  // useEffect(async () => {
-  //   // logic is not working i think because monitors have different user_email
-  //   // i need to get all monitors for all users and check if any of them is email_limit_exceeded
+  useEffect(async () => {
+    const enableMonitors = async () => {
+      const date = new Date();
+      if (date.getDate() === 1) {
+        const response = await axios.get("/api/core/monitors");
 
-  //   const date = new Date();
-  //   if (date.getDate() === 1) {
-  //     if (monitors.length > 0) {
-  //       const inactiveMonitors = monitors.filter(
-  //         (monitor) =>
-  //           monitor.status === "email_limit_exceeded"
-  //       );
-  //       if (inactiveMonitors.length > 0) {
-  //         inactiveMonitors.forEach(async (monitor) => {
-  //           try {
-  //             const response = await api.patch(`/jobs/${monitor?.cronJobId}`, {
-  //               job: {
-  //                 enabled: true,
-  //               },
-  //             });
-  //             if (response?.data) {
-  //               await axios.put(`/api/core/monitors/${monitor._id}`, {
-  //                 status: "up",
-  //                 emal_sent_count: 0,
-  //               });
-  //             }
-  //           } catch (error) {
-  //             console.error("Error activating monitor:", error);
-  //           }
-  //         });
-  //       }
-  //     }
-  //   }
-  // }, [monitors]);
+        if (!response?.data?.success) {
+          console.error("Error fetching monitors:", response.data?.message);
+          return;
+        }
+
+        if (response?.data?.data.length > 0) {
+          console.log(response.data.data);
+          const inactiveMonitors = monitors.filter(
+            (monitor) => monitor.status === "email_limit_exceeded"
+          );
+          console.log(inactiveMonitors, "inactive monitors");
+          if (inactiveMonitors.length > 0) {
+            inactiveMonitors.forEach(async (monitor) => {
+              console.log(monitor, "monitor");
+              try {
+                const response = await api.patch(
+                  `/jobs/${monitor?.cronJobId}`,
+                  {
+                    job: {
+                      enabled: true,
+                    },
+                  }
+                );
+                console.log(response, "cron job");
+                await axios.put(`/api/core/monitors/${monitor._id}`, {
+                  status: "up",
+                  emal_sent_count: 0,
+                });
+              } catch (error) {
+                console.error("Error activating monitor:", error);
+              }
+            });
+          }
+        }
+      }
+    };
+
+    const oneHour = 60 * 60 * 1000;
+    const idInterval = setInterval(enableMonitors, oneHour);
+    return () => clearInterval(idInterval);
+  }, []);
 
   const fetchMonitors = async () => {
     if (session) {

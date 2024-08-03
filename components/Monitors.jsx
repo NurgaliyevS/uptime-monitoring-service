@@ -23,7 +23,7 @@ function Monitors() {
 
   useEffect(() => {
     const date = new Date();
-    if (date.getDate() === 1) {
+    if (date.getDate() === 3) {
       if (monitors.length > 0) {
         const email = session?.user?.email;
         const inactiveMonitors = monitors.filter(

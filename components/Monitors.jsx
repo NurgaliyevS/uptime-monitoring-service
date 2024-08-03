@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { usePlausible } from "next-plausible";
 import { api } from "@/utils/cronJobManager";
-import Monitor from "@/backend/monitor";
 
 function Monitors() {
   const plausible = usePlausible();
@@ -40,11 +39,9 @@ function Monitors() {
                 },
               });
               if (response.data?.success) {
-                await Monitor.findByIdAndUpdate(monitor._id, {
-                  $set: {
-                    email_sent_count: 0,
-                    status: "up",
-                  },
+                await axios.put(`/api/core/monitors/${monitor._id}`, {
+                  status: "up",
+                  emal_sent_count: 0,
                 });
               }
             } catch (error) {

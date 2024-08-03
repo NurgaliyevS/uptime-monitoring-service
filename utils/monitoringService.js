@@ -76,7 +76,18 @@ export async function checkMonitor(monitor) {
             },
             $inc: { incidents24h: 1, failedChecks: 1 },
           });
+
+          // enabled = false;
+
+          const response = await api.put("/jobs", {
+            job: {
+              url: `https://uptimefriend.com/api/cron/${monitor._id}/check`,
+              enabled: false,
+            },
+          });
           
+          console.log(response, 'response');
+
           for (let email of monitor.notification_emails) {
             await sendEmail({
               to: email,

@@ -3,7 +3,7 @@ import axios from "axios";
 const API_BASE_URL = "https://api.cron-job.org";
 const API_KEY = process.env.CRON_API_KEY;
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     Authorization: `Bearer ${API_KEY}`,

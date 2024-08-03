@@ -2,6 +2,7 @@ import Monitor from "@/backend/monitor";
 import axios from "axios";
 import { sendEmail } from "./mailgun";
 import User from "@/backend/user";
+import { api } from "./cronJobManager";
 
 export async function checkMonitor(monitor) {
   try {

@@ -23,7 +23,7 @@ function Monitors() {
   useEffect(() => {
     const enableMonitors = async () => {
       const date = new Date();
-      if (date.getDate() === 3) {
+      if (date.getDate() === 1) {
         try {
           const response = await axios.get("/api/core/monitors");
   
@@ -65,7 +65,7 @@ function Monitors() {
     };
   
     const oneHour = 60 * 60 * 1000;
-    const idInterval = setInterval(enableMonitors, 10000);
+    const idInterval = setInterval(enableMonitors, oneHour);
   
     return () => clearInterval(idInterval);
   }, []); // Empty dependency array ensures this effect runs once on mount  

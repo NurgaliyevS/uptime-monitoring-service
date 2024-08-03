@@ -68,36 +68,17 @@ export async function createCronJob(interval, urlOrIp, monitorId) {
   }
 }
 
-export async function updateCronJob(monitorId, interval, cronJobId) {
-  const jobUrl = `https://uptimefriend.com/api/cron/${monitorId}/check`;
-
-  console.log(interval, "interval");
-  console.log(monitorId, "monitorid");
-  console.log(cronJobId, "cronJobId");
-
+export async function updateCronJob(cronJobId) {
   try {
-    const existingJobs = await api.get("/jobs/" + monitorId);
-
-    console.log(existingJobs, "existingJobs");
-
-    if (Object.keys(existingJobs?.data).length === 0) {
-      // Update existing job
-      const jobId = existingJobs.data?.jobDetails?.jobId
-      console.log(jobId, "jobId");
-      await api.patch(`/jobs/${jobId}`, {
-        job: {
-          url: jobUrl,
-          schedule: `*/${interval} * * * *`,
-          requestMethod: 1, // POST
-          saveResponses: false,
-          enabled: true,
-        },
-      });
-      console.log(`Updated cron job for monitor ${monitorId}`);
-    }
+    const existingJob = await api.patch("/jobs/" + cronJobId, {
+      job: {
+        enabled: true
+      }
+    });
+    return existingJob?.data;
   } catch (error) {
     console.error(
-      `Error managing cron job for monitor ${monitorId}:`,
+      `Error managing cron job for monitor ${cronJobId}:`,
       error.response?.data || error.message
     );
   }

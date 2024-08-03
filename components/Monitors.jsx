@@ -44,23 +44,14 @@ function Monitors() {
             if (inactiveMonitors.length > 0) {
               inactiveMonitors.forEach(async (monitor) => {
                 try {
-                  const response = await api.patch(
-                    `/jobs/${monitor?.cronJobId}`,
-                    {
-                      job: {
-                        enabled: true,
-                      },
-                    }
-                  );
-
-                  console.log(response, 'response');
-  
-                  if (response?.data?.success) {
-                    await axios.put(`/api/core/monitors/${monitor._id}`, {
-                      status: "up",
-                      email_sent_count: 0,
-                    });
-                  }
+                  const response = await axios.put(`/api/core/monitors`, {
+                    status: "up",
+                    email_sent_count: 0,
+                    cronJobId: monitor.cronJobId,
+                    enabled: true,
+                    id: monitor._id,
+                  });  
+                  return response;
                 } catch (error) {
                   console.error("Error activating monitor:", error);
                 }
@@ -74,7 +65,7 @@ function Monitors() {
     };
   
     const oneHour = 60 * 60 * 1000;
-    const idInterval = setInterval(enableMonitors, oneHour);
+    const idInterval = setInterval(enableMonitors, 10000);
   
     return () => clearInterval(idInterval);
   }, []); // Empty dependency array ensures this effect runs once on mount  

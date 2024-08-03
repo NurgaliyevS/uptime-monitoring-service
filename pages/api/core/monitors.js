@@ -1,6 +1,6 @@
 import Monitor from "@/backend/monitor";
 import connectMongoDB from "@/backend/mongodb";
-import { createCronJob, deleteCronJob } from "@/utils/cronJobManager";
+import { createCronJob, deleteCronJob, updateCronJob } from "@/utils/cronJobManager";
 import { isDevelopment } from "@/utils/isDevelopment";
 
 async function saveMonitor(monitorData) {
@@ -80,22 +80,39 @@ export default async function handler(req, res) {
         const monitor = await saveMonitor(req.body);
         const { _id } = monitor;
         if (!isDevelopment()) {
-          const cronJobResult = await createCronJob(req.body.interval, req.body.url_or_ip, _id);
-          
+          const cronJobResult = await createCronJob(
+            req.body.interval,
+            req.body.url_or_ip,
+            _id
+          );
+
           if (cronJobResult) {
             await Monitor.findByIdAndUpdate(_id, { cronJobId: cronJobResult });
           } else {
             console.error("Failed to create cron job or get jobId");
           }
         }
-        return res.status(201).json({ success: true, data: "Added succesfully" });
+        return res
+          .status(201)
+          .json({ success: true, data: "Added succesfully" });
       } catch (error) {
         return res.status(400).json({ success: false, message: error.message });
       }
 
     case "PUT":
       try {
-        const { id, ...updateData } = req.body;
+        const { enabled, cronJobId, id, ...updateData } = req.body;
+        console.log(req.body, "req.body");
+
+        if (enabled && enabled === true) {
+          await updateCronJob(cronJobId);
+          await Monitor.findByIdAndUpdate(id, {
+            $set: { enabled: true, status: "up", email_sent_count: 0 },
+          });
+          return res
+            .status(200)
+            .json({ success: true, data: "Monitor enabled" });
+        }
         const updatedMonitor = await updateMonitor(id, updateData);
         if (!updatedMonitor) {
           return res

@@ -387,7 +387,7 @@ function AdminMonitor({ isEdit, monitor }) {
                     value={intv}
                     disabled={intv < currentLimits?.interval}
                   >
-                    {intv / 60}m{" "}
+                    {intv / 60}min{" "}
                     {intv < currentLimits?.interval ? "(Paid feature)" : ""}
                   </option>
                 ))}

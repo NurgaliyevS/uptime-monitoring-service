@@ -20,53 +20,64 @@ function Monitors() {
     fetchMonitors();
   }, []);
 
-  useEffect(async () => {
+  useEffect(() => {
     const enableMonitors = async () => {
       const date = new Date();
       if (date.getDate() === 1) {
-        const response = await axios.get("/api/core/monitors");
-
-        if (!response?.data?.success) {
-          console.error("Error fetching monitors:", response.data?.message);
-          return;
-        }
-
-        if (response?.data?.data.length > 0) {
-          console.log(response.data.data);
-          const inactiveMonitors = monitors.filter(
-            (monitor) => monitor.status === "email_limit_exceeded"
-          );
-          console.log(inactiveMonitors, "inactive monitors");
-          if (inactiveMonitors.length > 0) {
-            inactiveMonitors.forEach(async (monitor) => {
-              console.log(monitor, "monitor");
-              try {
-                const response = await api.patch(
-                  `/jobs/${monitor?.cronJobId}`,
-                  {
-                    job: {
-                      enabled: true,
-                    },
-                  }
-                );
-                console.log(response, "cron job");
-                await axios.put(`/api/core/monitors/${monitor._id}`, {
-                  status: "up",
-                  emal_sent_count: 0,
-                });
-              } catch (error) {
-                console.error("Error activating monitor:", error);
-              }
-            });
+        try {
+          const response = await axios.get("/api/core/monitors");
+  
+          if (!response?.data?.success) {
+            console.error("Error fetching monitors:", response.data?.message);
+            return;
           }
+
+          console.log(response?.data, 'response data');
+  
+          if (response?.data?.data.length > 0) {
+            const inactiveMonitors = response.data.data.filter(
+              (monitor) => monitor.status === "email_limit_exceeded"
+            );
+
+            console.log(inactiveMonitors, 'inactive monitors');
+  
+            if (inactiveMonitors.length > 0) {
+              inactiveMonitors.forEach(async (monitor) => {
+                try {
+                  const response = await api.patch(
+                    `/jobs/${monitor?.cronJobId}`,
+                    {
+                      job: {
+                        enabled: true,
+                      },
+                    }
+                  );
+
+                  console.log(response, 'response');
+  
+                  if (response?.data?.success) {
+                    await axios.put(`/api/core/monitors/${monitor._id}`, {
+                      status: "up",
+                      email_sent_count: 0,
+                    });
+                  }
+                } catch (error) {
+                  console.error("Error activating monitor:", error);
+                }
+              });
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching monitors:", error);
         }
       }
     };
-
+  
     const oneHour = 60 * 60 * 1000;
     const idInterval = setInterval(enableMonitors, oneHour);
+  
     return () => clearInterval(idInterval);
-  }, []);
+  }, []); // Empty dependency array ensures this effect runs once on mount  
 
   const fetchMonitors = async () => {
     if (session) {

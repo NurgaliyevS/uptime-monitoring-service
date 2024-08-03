@@ -20,14 +20,15 @@ function Monitors() {
     fetchMonitors();
   }, []);
 
-  useEffect(() => {
+  useEffect(async () => {
+    // logic is not working i think because monitors have different user_email
+    // i need to get all monitors for all users and check if any of them is email_limit_exceeded
+
     const date = new Date();
-    // if (date.getDate() === 3) {
+    if (date.getDate() === 1) {
       if (monitors.length > 0) {
-        // const email = session?.user?.email;
         const inactiveMonitors = monitors.filter(
           (monitor) =>
-            // monitor.user_email === email &&
             monitor.status === "email_limit_exceeded"
         );
         if (inactiveMonitors.length > 0) {
@@ -50,7 +51,7 @@ function Monitors() {
           });
         }
       }
-    // }
+    }
   }, [monitors]);
 
   const fetchMonitors = async () => {

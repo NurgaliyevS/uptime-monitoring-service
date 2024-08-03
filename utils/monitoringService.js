@@ -11,6 +11,28 @@ export async function checkMonitor(monitor) {
 
     console.log(monitor, "check monitor");
 
+    const allMonitors = await Monitor.find({ user_email: monitor.user_email });
+
+    for (let monitor of allMonitors) {
+      // if one of the monitors is email_limit_exceeded, all monitors should be disabled
+      if (monitor.status === "email_limit_exceeded") {
+        for (let monitor of allMonitors) {
+          const response = await api.patch("/jobs/" + monitor.cronJobId, {
+            job: {
+              enabled: false,
+            },
+          });
+          await Monitor.findByIdAndUpdate(monitor._id, {
+            $set: {
+              status: "email_limit_exceeded",
+              lastChecked: new Date(),
+            },
+          });
+        }
+        return;
+      }
+    }
+
     if (monitor.monitor_type === "http") {
       response = await axios.get(monitor.url_or_ip, {
         timeout: monitor.interval,
@@ -61,6 +83,22 @@ export async function checkMonitor(monitor) {
       }
 
       if (monitor.email_sent_count > emailLimit) {
+        // all monitors should be disabled and status set to email_limit_exceeded
+        const monitors = await Monitor.find({ user_email: monitor.user_email });
+        for (let monitor of monitors) {
+          const response = await api.patch("/jobs/" + monitor.cronJobId, {
+            job: {
+              enabled: false,
+            },
+          });
+          await Monitor.findByIdAndUpdate(monitor._id, {
+            $set: {
+              status: "email_limit_exceeded",
+              lastChecked: new Date(),
+            },
+          });
+        }
+
         if (monitor.status === "down") {
           const accidentIncident = {
             status: "email_limit_exceeded",
@@ -85,8 +123,8 @@ export async function checkMonitor(monitor) {
               enabled: false,
             },
           });
-          
-          console.log(response, 'response');
+
+          console.log(response, "response");
 
           for (let email of monitor.notification_emails) {
             await sendEmail({

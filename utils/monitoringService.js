@@ -79,7 +79,7 @@ export async function checkMonitor(monitor) {
 
           // enabled = false;
 
-          const response = await api.put("/jobs/" + monitor.cronJobId, {
+          const response = await api.patch("/jobs/" + monitor.cronJobId, {
             job: {
               enabled: false,
             },

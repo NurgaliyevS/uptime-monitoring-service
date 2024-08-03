@@ -6,6 +6,8 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { usePlausible } from "next-plausible";
+import { api } from "@/utils/cronJobManager";
+import Monitor from "@/backend/monitor";
 
 function Monitors() {
   const plausible = usePlausible();
@@ -18,6 +20,41 @@ function Monitors() {
   useEffect(() => {
     fetchMonitors();
   }, []);
+
+  useEffect(() => {
+    const date = new Date();
+    if (date.getDate() === 1) {
+      if (monitors.length > 0) {
+        const email = session?.user?.email;
+        const inactiveMonitors = monitors.filter(
+          (monitor) =>
+            monitor.user_email === email &&
+            monitor.status === "email_limit_exceeded"
+        );
+        if (inactiveMonitors.length > 0) {
+          inactiveMonitors.forEach(async (monitor) => {
+            try {
+              const response = await api.patch(`/jobs/${monitor.cronJobId}`, {
+                job: {
+                  enabled: true,
+                },
+              });
+              if (response.data?.success) {
+                await Monitor.findByIdAndUpdate(monitor._id, {
+                  $set: {
+                    email_sent_count: 0,
+                    status: "up",
+                  },
+                });
+              }
+            } catch (error) {
+              console.error("Error activating monitor:", error);
+            }
+          });
+        }
+      }
+    }
+  }, [monitors]);
 
   const fetchMonitors = async () => {
     if (session) {

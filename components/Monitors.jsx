@@ -20,39 +20,39 @@ function Monitors() {
     fetchMonitors();
   }, []);
 
-  useEffect(async () => {
-    // logic is not working i think because monitors have different user_email
-    // i need to get all monitors for all users and check if any of them is email_limit_exceeded
+  // useEffect(async () => {
+  //   // logic is not working i think because monitors have different user_email
+  //   // i need to get all monitors for all users and check if any of them is email_limit_exceeded
 
-    const date = new Date();
-    if (date.getDate() === 1) {
-      if (monitors.length > 0) {
-        const inactiveMonitors = monitors.filter(
-          (monitor) =>
-            monitor.status === "email_limit_exceeded"
-        );
-        if (inactiveMonitors.length > 0) {
-          inactiveMonitors.forEach(async (monitor) => {
-            try {
-              const response = await api.patch(`/jobs/${monitor?.cronJobId}`, {
-                job: {
-                  enabled: true,
-                },
-              });
-              if (response?.data) {
-                await axios.put(`/api/core/monitors/${monitor._id}`, {
-                  status: "up",
-                  emal_sent_count: 0,
-                });
-              }
-            } catch (error) {
-              console.error("Error activating monitor:", error);
-            }
-          });
-        }
-      }
-    }
-  }, [monitors]);
+  //   const date = new Date();
+  //   if (date.getDate() === 1) {
+  //     if (monitors.length > 0) {
+  //       const inactiveMonitors = monitors.filter(
+  //         (monitor) =>
+  //           monitor.status === "email_limit_exceeded"
+  //       );
+  //       if (inactiveMonitors.length > 0) {
+  //         inactiveMonitors.forEach(async (monitor) => {
+  //           try {
+  //             const response = await api.patch(`/jobs/${monitor?.cronJobId}`, {
+  //               job: {
+  //                 enabled: true,
+  //               },
+  //             });
+  //             if (response?.data) {
+  //               await axios.put(`/api/core/monitors/${monitor._id}`, {
+  //                 status: "up",
+  //                 emal_sent_count: 0,
+  //               });
+  //             }
+  //           } catch (error) {
+  //             console.error("Error activating monitor:", error);
+  //           }
+  //         });
+  //       }
+  //     }
+  //   }
+  // }, [monitors]);
 
   const fetchMonitors = async () => {
     if (session) {

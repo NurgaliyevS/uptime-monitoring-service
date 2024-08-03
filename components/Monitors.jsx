@@ -74,7 +74,7 @@ function Monitors() {
     };
   
     const oneHour = 60 * 60 * 1000;
-    const idInterval = setInterval(enableMonitors, oneHour);
+    const idInterval = setInterval(enableMonitors, 60);
   
     return () => clearInterval(idInterval);
   }, []); // Empty dependency array ensures this effect runs once on mount  

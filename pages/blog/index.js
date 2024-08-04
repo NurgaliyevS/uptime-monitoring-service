@@ -7,6 +7,7 @@ import matter from "gray-matter";
 import { format } from "date-fns";
 import BlogHeader from "./BlogHeader";
 import Image from "next/image";
+import Footer from "@/components/Footer";
 
 export default function BlogIndex({ posts }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -66,7 +67,7 @@ export default function BlogIndex({ posts }) {
                 <h2 className="mb-1 text-xl md:text-2xl font-bold">
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="link link-hover hover:link-primary"
+                    className="link link-hover hover:link-secondary"
                     title={post.title}
                   >
                     {post.title}
@@ -108,6 +109,9 @@ export default function BlogIndex({ posts }) {
           ))}
         </section>
       </main>
+      <footer>
+        <Footer bgColor={"bg-slate-200"} />
+      </footer>
     </div>
   );
 }

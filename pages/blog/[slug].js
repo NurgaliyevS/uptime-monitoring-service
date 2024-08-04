@@ -8,6 +8,93 @@ import html from "remark-html";
 import BlogHeader from "./BlogHeader";
 import Link from "next/link";
 import Image from "next/image";
+import { unified } from "unified";
+import rehypeParse from "rehype-parse";
+import rehypeRaw from "rehype-raw";
+import rehypeReact from "rehype-react";
+import React from "react";
+import Footer from "@/components/Footer";
+
+const renderAst = (content) =>
+  unified()
+    .use(rehypeParse, { fragment: true })
+    .use(rehypeRaw)
+    .use(rehypeReact, {
+      createElement: React.createElement,
+      components: {
+        h2: (props) => (
+          <section className="article">
+            <h2
+              className="text-2xl lg:text-4xl font-extrabold tracking-tight mb-4 text-base-content"
+              {...props}
+            />
+          </section>
+        ),
+        h3: (props) => (
+          <section className="article">
+            <h3
+              className="text-xl lg:text-2xl font-bold tracking-tight mb-2 text-base-content"
+              {...props}
+            />
+          </section>
+        ),
+        strong: (props) => <strong className="text-base-content" {...props} />,
+        ol: (props) => (
+          <ol
+            className="list-inside list-decimal text-base-content/90 leading-relaxed"
+            {...props}
+          />
+        ),
+        ul: (props) => (
+          <ul
+            className="list-inside list-disc text-base-content/90 leading-relaxed"
+            {...props}
+          />
+        ),
+        li: (props) => <li className="list-item" {...props} />,
+        img: (props) => {
+          return (
+            <img
+              className={`rounded-xl mt-4`}
+              {...props}
+              loading="lazy"
+            />
+          );
+        },
+        p: (props) => {
+          const content = props.children.map((child) => {
+            if (typeof child === "string") {
+              return child.split("\n").map((text, index, array) => (
+                <React.Fragment key={index}>
+                  {text}
+                  {index < array.length - 1 && <br />}
+                </React.Fragment>
+              ));
+            }
+            return child;
+          });
+
+          return (
+            <p className="text-base-content/90 leading-relaxed">{content}</p>
+          );
+        },
+        table: (props) => (
+          <div className="overflow-x-auto my-4 text-base-content border rounded-xl">
+            <table className="table" {...props} />
+          </div>
+        ),
+        th: (props) => <th className="bg-base-200" {...props} />,
+        a: (props) => (
+          <a
+            className="link link-info"
+            target="_blank"
+            rel="nofollow"
+            {...props}
+          />
+        ),
+      },
+    })
+    .processSync(content).result;
 
 export default function BlogPost({ post }) {
   console.log(post, "post");
@@ -62,12 +149,12 @@ export default function BlogPost({ post }) {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
-              class="w-5 h-5"
+              className="w-5 h-5"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M15 10a.75.75 0 01-.75.75H7.612l2.158 1.96a.75.75 0 11-1.04 1.08l-3.5-3.25a.75.75 0 010-1.08l3.5-3.25a.75.75 0 111.04 1.08L7.612 9.25h6.638A.75.75 0 0115 10z"
-                clip-rule="evenodd"
+                clipRule="evenodd"
               ></path>
             </svg>
             Back to Blog
@@ -77,7 +164,10 @@ export default function BlogPost({ post }) {
           <section className="my-12 md:my-20 max-w-screen-md">
             <div className="flex items-center gap-4 mb-6">
               {post.tags.map((tag) => (
-                <span className="badge badge-sm md:badge-md hover:badge-secondary">
+                <span
+                  key={tag}
+                  className="badge badge-sm md:badge-md hover:badge-secondary"
+                >
                   {tag}
                 </span>
               ))}
@@ -116,13 +206,15 @@ export default function BlogPost({ post }) {
                 <span className="group-hover:underline">{post.author}</span>
               </Link>
             </section>
-            <section
-              className="w-full max-md:pt-4 md:pr-20 space-y-12 md:space-y-20"
-              dangerouslySetInnerHTML={{ __html: post.contentHtml }}
-            ></section>
+            <section className="w-full max-md:pt-4 md:pr-20 space-y-12 md:space-y-20">
+              {renderAst(post.contentHtml)}
+            </section>
           </div>
         </article>
       </main>
+      <footer>
+        <Footer bgColor={"bg-slate-200"} />
+      </footer>
     </div>
   );
 }

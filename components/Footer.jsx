@@ -5,7 +5,13 @@ import { usePlausible } from "next-plausible";
 function Footer({ bgColor }) {
   const plausible = usePlausible();
   return (
-    <div className={`${bgColor ? bgColor : "bg-slate-800"} ${bgColor ? "text-base-content" : "text-gray-300"} overflow-hidden border-t ${bgColor ? "border-base-content/5" : "border-base-content/50"}`}>
+    <div
+      className={`${bgColor ? bgColor : "bg-slate-800"} ${
+        bgColor ? "text-base-content" : "text-gray-300"
+      } overflow-hidden border-t ${
+        bgColor ? "border-base-content/5" : "border-base-content/50"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-8 py-24">
         <div className="flex lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
           <div className="w-80 max-w-full flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
@@ -51,7 +57,7 @@ function Footer({ bgColor }) {
                 target="_blank"
                 title="Linkedin sabyr-nurgaliyev"
                 onClick={() => {
-                    plausible("LINKEDIN");
+                  plausible("LINKEDIN");
                 }}
               >
                 <Image
@@ -67,7 +73,7 @@ function Footer({ bgColor }) {
                 target="_blank"
                 title="ProductHunt tech_nurgaliyeev"
                 onClick={() => {
-                    plausible("PRODUCT_HUNT");
+                  plausible("PRODUCT_HUNT");
                 }}
               >
                 <Image
@@ -107,17 +113,6 @@ function Footer({ bgColor }) {
                 >
                   Contact Us
                 </Link>
-                {/* <Link
-                  className="link link-hover"
-                  href="#blog"
-                  target="_blank"
-                  title="Uptime Friend - home page"
-                  onClick={() => {
-                    plausible("BLOG");
-                  }}
-                >
-                  Blog
-                </Link> */}
                 <Link
                   className="link link-hover"
                   href="#faq"
@@ -127,6 +122,13 @@ function Footer({ bgColor }) {
                   }}
                 >
                   FAQ
+                </Link>
+                <Link
+                  className="link link-hover"
+                  href="/blog"
+                  title="Uptime Friend - blog"
+                >
+                  Blog
                 </Link>
               </div>
             </div>

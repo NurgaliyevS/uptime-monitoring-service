@@ -54,12 +54,26 @@ export default function BlogIndex({ posts }) {
         </section>
         <section className="grid lg:grid-cols-2 mb-24 md:mb-32 gap-8">
           {filteredPosts.map((post) => (
-            <article className="card bg-slate-200 rounded-2xl border border-slate-200">
-              <figure></figure>
+            <article
+              className="card bg-slate-200 rounded-2xl border border-slate-200"
+              key={post.slug}
+            >
+              <figure>
+                <img
+                  alt={post.alt}
+                  src={post.image}
+                  width={600}
+                  height={338}
+                  className="aspect-video object-center object-cover"
+                />
+              </figure>
               <div className="card-body">
                 <div className="flex flex-wrap gap-2">
                   {post.tags.map((tag) => (
-                    <span className="badge badge-sm md:badge-md hover:badge-secondary">
+                    <span
+                      className="badge badge-sm md:badge-md hover:badge-secondary"
+                      key={tag}
+                    >
                       {tag}
                     </span>
                   ))}
@@ -73,10 +87,7 @@ export default function BlogIndex({ posts }) {
                     {post.title}
                   </Link>
                 </h2>
-                {/* <p className="text-sm text-gray-500">
-                  {format(new Date(post.date), "MMMM d, yyyy")}
-                </p>
-                <p>{post.excerpt}</p> */}
+                
                 <div className="text-base-content/80 space-y-4">
                   <p>{post.excerpt}</p>
                   <div className="flex items-center gap-4 text-sm">
@@ -132,6 +143,8 @@ export async function getStaticProps() {
       excerpt: data.excerpt,
       author: data.author,
       tags: data.tags,
+      image: data.image,
+      alt: data.alt,
     };
   });
 

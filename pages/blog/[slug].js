@@ -54,11 +54,7 @@ const renderAst = (content) =>
         li: (props) => <li className="list-item" {...props} />,
         img: (props) => {
           return (
-            <img
-              className={`rounded-xl mt-4`}
-              {...props}
-              loading="lazy"
-            />
+            <img className={`rounded-xl mt-4`} {...props} loading="lazy" />
           );
         },
         p: (props) => {
@@ -97,8 +93,6 @@ const renderAst = (content) =>
     .processSync(content).result;
 
 export default function BlogPost({ post }) {
-  console.log(post, "post");
-
   return (
     <div className="mx-auto">
       <Head>
@@ -162,7 +156,7 @@ export default function BlogPost({ post }) {
         </div>
         <article>
           <section className="my-12 md:my-20 max-w-screen-md">
-            <div className="flex items-center gap-4 mb-6">
+            <div className="flex items-center gap-4 mb-6 flex-wrap">
               {post.tags.map((tag) => (
                 <span
                   key={tag}
@@ -207,6 +201,13 @@ export default function BlogPost({ post }) {
               </Link>
             </section>
             <section className="w-full max-md:pt-4 md:pr-20 space-y-12 md:space-y-20">
+              <Image
+                alt={post.alt}
+                src={post.image}
+                className="rounded-xl"
+                width={700}
+                height={500}
+              />
               {renderAst(post.contentHtml)}
             </section>
           </div>
@@ -248,6 +249,8 @@ export async function getStaticProps({ params }) {
         excerpt: data.excerpt,
         author: data.author,
         tags: data.tags,
+        image: data.image,
+        alt: data.alt,
         contentHtml,
       },
     },

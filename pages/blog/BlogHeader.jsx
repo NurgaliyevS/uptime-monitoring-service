@@ -1,56 +1,18 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
-import { handleSignIn } from "./handleSignIn";
-import { useSession } from "next-auth/react";
-import { usePlausible } from "next-plausible";
+import Link from "next/link";
+import { useState } from "react";
+import { handleSignIn } from "../../components/handleSignIn";
 
-const links = [
-  {
-    href: "/#pricing",
-    label: "Pricing",
-  },
-  // {
-  //   href: "/#reviews",
-  //   label: "Reviews",
-  // },
-  {
-    href: "/#faq",
-    label: "FAQ",
-  },
-  {
-    href: "/#reviews",
-    label: "Reviews"
-  }
-];
-
-const Header = () => {
-  const plausible = usePlausible();
-  const searchParams = useSearchParams();
+function BlogHeader() {
   const [isOpen, setIsOpen] = useState(false);
-
-  const { data: session } = useSession();
-
-  // setIsOpen(false) when the route changes (i.e: when the user clicks on a link on mobile)
-  useEffect(() => {
-    setIsOpen(false);
-  }, [searchParams]);
-
   return (
-    <div className="container max-w-7xl flex items-center flex-wrap justify-between px-8 mx-auto py-10">
-      <nav
-        className="container flex items-center justify-between mx-auto"
-        aria-label="Global"
-      >
-        {/* Your logo/name on large screens */}
+    <header className="bg-slate-200">
+      <nav className="max-w-7xl flex items-center justify-between px-8 py-3 mx-auto">
         <div className="flex lg:flex-1">
           <Link
             className="flex items-center gap-2 shrink-0 "
             href="/"
-            title="Uptime Friend - home page"
+            title="UptimeFriend.com home page"
           >
             <Image
               src={"/logo.webp"}
@@ -88,50 +50,28 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Your links on large screens */}
         <div className="hidden lg:flex lg:justify-center lg:gap-12 lg:items-center">
-          {links.map((link) => (
-            <Link
-              href={link.href}
-              key={link.href}
-              className="link link-hover"
-              title={link.label}
-              onClick={() => {
-                if (link.label === "Pricing") {
-                  plausible("PRICING");
-                }
-                if (link.label === "FAQ") {
-                  plausible("FAQ");
-                }
-              }}
-            >
-              {link.label}
-            </Link>
-          ))}
+          <Link
+            className="link link-hover text-base-content/80 hover:text-base-content active:text-base-content focus:text-base-content duration-100"
+            href="/blog"
+            title="UptimeFriend.com blog page"
+          >
+            <span className="font-extrabold text-lg">All Posts</span>
+          </Link>
         </div>
 
-        {/* CTA on large screens */}
-        {!session?.user ? (
-          <div className="hidden lg:flex lg:justify-end lg:flex-1">
-            <button className="btn btn-sm" onClick={handleSignIn}>
-              Login
-            </button>
-          </div>
-        ) : (
-          <div className="hidden lg:flex lg:justify-end lg:flex-1">
-            <Link
-              href="/admin"
-              className="btn btn-sm"
-              title="Admin page"
-              rel="nofollow"
-              onClick={() => {
-                plausible("ADMIN_PAGE");
-              }}
-            >
-              {session?.user?.email}
-            </Link>
-          </div>
-        )}
+        <div className="hidden lg:flex lg:justify-end lg:flex-1">
+          <Link
+            href="#"
+            className="btn btn-secondary md:btn-sm no-underline"
+            onClick={(e) => {
+              e.preventDefault();
+              handleSignIn(e);
+            }}
+          >
+            Get Started
+          </Link>
+        </div>
       </nav>
 
       {/* Mobile menu, show/hide based on menu state. */}
@@ -183,46 +123,33 @@ const Header = () => {
           <div className="flow-root mt-6">
             <div className="py-4">
               <div className="flex flex-col gap-y-4 items-start">
-                {links.map((link) => (
-                  <Link
-                    href={link.href}
-                    key={link.href}
-                    className="link link-hover"
-                    title={link.label}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+                <Link
+                  className="link link-hover"
+                  href="/blog"
+                  title="UptimeFriend.com blog page"
+                >
+                  All Posts
+                </Link>
               </div>
             </div>
             <div className="divider"></div>
-            {/* Your CTA on small screens */}
-            {!session?.user ? (
-              <div className="flex flex-col">
-                <button
-                  className="btn btn-sm w-full btn-neutral"
-                  onClick={handleSignIn}
-                >
-                  Login
-                </button>
-              </div>
-            ) : (
-              <div className="flex flex-col">
-                <Link
-                  href="/admin"
-                  className="btn btn-sm w-full btn-neutral"
-                  title="Admin page"
-                  rel="nofollow"
-                >
-                  {session?.user?.email}
-                </Link>
-              </div>
-            )}
+            <div className="flex flex-col">
+              <Link
+                href="#"
+                className="btn btn-secondary md:btn-sm btn-full no-underline"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSignIn(e);
+                }}
+              >
+                Get Started
+              </Link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </header>
   );
-};
+}
 
-export default Header;
+export default BlogHeader;

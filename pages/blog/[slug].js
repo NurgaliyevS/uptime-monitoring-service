@@ -115,20 +115,18 @@ export default function BlogPost({ post }) {
         <meta property="og:type" content="article" />
         <meta property="article:published_time" content={post.date} />
         <script type="application/ld+json">
-          {`
-            {
-              "@context": "https://schema.org",
-              "@type": "BlogPosting",
-              "headline": "${post.title}",
-              "datePublished": "${post.date}",
-              "dateModified": "${post.date}",
-              "author": {
-                "@type": "Person",
-                "name": "${post.author}"
-              },
-              "description": "${post.excerpt}"
-            }
-          `}
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: post.title,
+            datePublished: post.date,
+            dateModified: post.date,
+            author: {
+              "@type": "Person",
+              name: post.author,
+            },
+            description: post.excerpt,
+          })}
         </script>
       </Head>
       <BlogHeader />

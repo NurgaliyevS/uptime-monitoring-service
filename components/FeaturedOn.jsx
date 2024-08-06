@@ -87,7 +87,7 @@ function FeaturedOn() {
         </svg>
       </Link>
       <Link
-        href="#Reddit"
+        href="https://www.reddit.com/user/Prior-Inflation8755/comments/1ehd7ov/monitor_your_website_and_server/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button"
         target="_blank"
         title="Featured on Reddit - UptimeFriend"
         className="cursor-not-allowed"
@@ -149,7 +149,7 @@ function FeaturedOn() {
         </svg>
       </Link>
       <Link
-        href="#X"
+        href="https://x.com/tech_nurgaliyev/status/1817879943688180101"
         target="_blank"
         title="Featured on X - UptimeFriend"
         className="cursor-not-allowed"

@@ -93,6 +93,19 @@ const renderAst = (content) =>
     .processSync(content).result;
 
 export default function BlogPost({ post }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.title,
+    "datePublished": post.date,
+    "dateModified": post.date,
+    "author": {
+      "@type": "Person",
+      "name": post.author,
+    },
+    "description": post.excerpt,
+  };
+
   return (
     <div className="mx-auto">
       <Head>
@@ -114,20 +127,10 @@ export default function BlogPost({ post }) {
         />
         <meta property="og:type" content="article" />
         <meta property="article:published_time" content={post.date} />
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            headline: post.title,
-            datePublished: post.date,
-            dateModified: post.date,
-            author: {
-              "@type": "Person",
-              name: post.author,
-            },
-            description: post.excerpt,
-          })}
-        </script>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </Head>
       <BlogHeader />
       <main className="min-h-screen max-w-6xl mx-auto p-8">

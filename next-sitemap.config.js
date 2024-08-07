@@ -14,7 +14,7 @@ module.exports = {
     filenames.forEach((filename) => {
       result.push({
         loc: `/blog/${filename.replace(".md", "")}`,
-        changefreq: "weekly",
+        changefreq: "daily",
         priority: 0.7,
       });
     });

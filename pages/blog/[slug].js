@@ -14,6 +14,7 @@ import rehypeRaw from "rehype-raw";
 import rehypeReact from "rehype-react";
 import React from "react";
 import Footer from "@/components/Footer";
+import remarkGfm from 'remark-gfm';
 
 const renderAst = (content) =>
   unified()
@@ -76,14 +77,18 @@ const renderAst = (content) =>
         },
         table: (props) => (
           <div className="overflow-x-auto my-4 text-base-content border rounded-xl">
-            <table className="table" {...props} />
+            <table className="table w-full" {...props} />
           </div>
         ),
-        th: (props) => <th className="bg-base-200" {...props} />,
+        thead: (props) => <thead {...props} />,
+        tbody: (props) => <tbody {...props} />,
+        tr: (props) => <tr className="border-b" {...props} />,
+        th: (props) => <th className="bg-base-200 px-4 py-2 text-left font-bold" {...props} />,
+        td: (props) => <td className="px-4 py-2" {...props} />,
         a: (props) => (
           <a
             className="link link-info"
-            target="_blank"
+            // target="_blank"
             rel="nofollow"
             {...props}
           />
@@ -96,14 +101,14 @@ export default function BlogPost({ post }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": post.title,
-    "datePublished": post.date,
-    "dateModified": post.date,
-    "author": {
+    headline: post.title,
+    datePublished: post.date,
+    dateModified: post.date,
+    author: {
       "@type": "Person",
-      "name": post.author,
+      name: post.author,
     },
-    "description": post.excerpt,
+    description: post.excerpt,
   };
 
   return (
@@ -238,7 +243,10 @@ export async function getStaticProps({ params }) {
   const fileContents = fs.readFileSync(filePath, "utf8");
 
   const { data, content } = matter(fileContents);
-  const processedContent = await remark().use(html).process(content);
+  const processedContent = await remark()
+    .use(html)
+    .use(remarkGfm)
+    .process(content);
   const contentHtml = processedContent.toString();
 
   return {

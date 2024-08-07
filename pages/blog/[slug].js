@@ -16,6 +16,13 @@ import React from "react";
 import Footer from "@/components/Footer";
 import remarkGfm from 'remark-gfm';
 
+const generateId = (text) => {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)+/g, '');
+};
+
 const renderAst = (content) =>
   unified()
     .use(rehypeParse, { fragment: true })
@@ -26,6 +33,7 @@ const renderAst = (content) =>
         h2: (props) => (
           <section className="article">
             <h2
+              id={generateId(props.children[0])}
               className="text-2xl lg:text-4xl font-extrabold tracking-tight mb-4 text-base-content"
               {...props}
             />
@@ -34,6 +42,7 @@ const renderAst = (content) =>
         h3: (props) => (
           <section className="article">
             <h3
+              id={generateId(props.children[0])}
               className="text-xl lg:text-2xl font-bold tracking-tight mb-2 text-base-content"
               {...props}
             />

@@ -1,6 +1,6 @@
 ---
 title: "10 Website Uptime Monitoring Tips for Small Businesses"
-date: "2024-08-07"
+date: "2024-08-10"
 excerpt: "Learn essential tips for monitoring your website's uptime to ensure smooth operations and customer satisfaction."
 author: "Sabyr Nurgaliyev"
 tags:

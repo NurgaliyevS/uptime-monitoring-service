@@ -125,7 +125,7 @@ function Footer({ bgColor }) {
                 </Link>
                 <Link
                   className="link link-hover"
-                  href="/blog"
+                  href="https://uptimefriend.com/blog"
                   title="Uptime Friend - blog"
                 >
                   Blog

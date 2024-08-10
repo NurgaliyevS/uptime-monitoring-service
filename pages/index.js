@@ -22,6 +22,7 @@ export default function Home() {
     <>
       <Head>
         <title>Monitor your website, and server | UptimeFriend.com</title>
+        <link rel="canonical" href="https://uptimefriend.com" />
       </Head>
       <header className={lato.className}>
         <Header />

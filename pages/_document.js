@@ -67,8 +67,6 @@ export default function Document() {
           name="twitter:image"
           content="https://uptimefriend.com/twitter.png"
         />
-
-        <link rel="canonical" href="https://uptimefriend.com/" />
         <link
           rel="icon"
           type="image/png"

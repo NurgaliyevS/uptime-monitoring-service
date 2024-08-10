@@ -1,6 +1,6 @@
 ---
 title: "How to check if website is down ?"
-date: "2024-08-04"
+date: "2024-08-10"
 excerpt: "You have two options. Check it manually. Check it automatically."
 author: "Sabyr Nurgaliyev"
 tags:

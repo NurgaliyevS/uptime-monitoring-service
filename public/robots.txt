@@ -4,8 +4,5 @@ Disallow: /admin
 Disallow: /blocked
 Allow: /
 
-# Host
-Host: https://uptimefriend.com
-
 # Sitemaps
 Sitemap: https://uptimefriend.com/sitemap.xml

@@ -5,6 +5,13 @@ const fs = require('fs');
 module.exports = {
   siteUrl: "https://uptimefriend.com",
   generateRobotsTxt: true,
+  robotsTxtOptions: {
+    policies: [
+      { userAgent: '*', disallow: '/blocked/' },
+      { userAgent: '*', disallow: '/admin/' },
+      { userAgent: '*', allow: '/' },
+    ],
+  },
   exclude: ["/admin", "/admin/*", "/blocked"],
   additionalPaths: async (config) => {
     const result = [];

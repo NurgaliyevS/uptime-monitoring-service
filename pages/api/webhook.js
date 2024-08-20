@@ -29,22 +29,65 @@ export default async function handler(req, res) {
       const body = JSON.parse(rawBody);
       const eventType = req.headers["x-event-name"];
 
-      console.log(eventType, "eventType");
+      console.log(body, 'body');
 
-      await connectMongoDB();
+      // Handle the event
+      if (eventType === "order_created") {
+        const isSuccessful = body.data.attributes.status === "paid";
+        const userStatus = body.data.attributes.first_order_item.variant_name;
+        const receiptLink = body.data.attributes.urls.receipt;
+        const variantId = body.data.attributes.first_order_item.variant_id;
+        const userIdAuthorized = body?.meta?.custom_data?.user_id;
+        const emailAuthorized = body?.meta?.custom_data?.email;
 
-      // Handle subscription events
-      switch (eventType) {
-        case "subscription_created":
-        case "subscription_updated":
-        case "subscription_resumed":
-          await handleActiveSubscription(body);
-          break;
-        case "subscription_expired":
-          await handleInactiveSubscription(body);
-          break;
-        default:
-          console.log(`Unhandled event type: ${eventType}`);
+        await connectMongoDB();
+
+        if (emailAuthorized && typeof emailAuthorized === 'string' && emailAuthorized.length > 3) {
+          const email = await User.findOne({
+            email: emailAuthorized,
+          });
+          if (email) {
+            email.user_status = isSuccessful ? userStatus || "paid" : "unpaid";
+            email.receipt_link = receiptLink;
+            email.variant_id = variantId;
+            await email.save();
+            res.status(200).json({ message: "Webhook received" });
+            return;
+          } else {
+            const newUser = new User({
+              name: body.data.attributes.user_name,
+              email: emailAuthorized,
+              user_status: isSuccessful ? userStatus || "paid" : "unpaid",
+              receipt_link: receiptLink,
+              variant_id: variantId,
+            });
+            await newUser.save();
+            res.status(200).json({ message: "Webhook received" });
+            return;
+          }
+        }
+
+        // find by email
+        const user = await User.findOne({
+          email: body.data.attributes.user_email,
+        });
+
+        if (user) {
+          user.user_status = isSuccessful ? userStatus || "paid" : "unpaid";
+          user.receipt_link = receiptLink;
+          user.variant_id = variantId;
+          await user.save();
+        } else {
+          // create new user
+          const newUser = new User({
+            name: body.data.attributes.user_name,
+            email: body.data.attributes.user_email,
+            user_status: isSuccessful ? userStatus || "paid" : "unpaid",
+            receipt_link: receiptLink,
+            variant_id: variantId,
+          });
+          await newUser.save();
+        }
       }
 
       res.status(200).json({ message: "Webhook received" });
@@ -55,70 +98,5 @@ export default async function handler(req, res) {
   } else {
     res.setHeader("Allow", "POST");
     res.status(405).end("Method Not Allowed");
-  }
-}
-
-async function handleActiveSubscription(body) {
-  const {
-    status,
-    user_email,
-    user_name,
-    variant_name,
-    urls: { customer_portal },
-    renews_at,
-    ends_at
-  } = body.data.attributes;
-
-  console.log(customer_portal, "customer_portal");
-  console.log(renews_at, "renews_at");
-  console.log(variant_name, "variant_name");
-  console.log(status, 'status');
-  console.log(ends_at, 'ends_at');
-
-  const user = await User.findOne({ email: user_email });
-
-  if (status === "cancelled") {
-    user.user_status = status;
-    user.variant_name = "free";
-    user.subscription_renews_at = null;
-    user.ends_at = ends_at;
-    await user.save();
-    return;
-  }
-
-  if (user) {
-    user.user_status = status;
-    user.variant_name = variant_name;
-    user.customer_portal_url = customer_portal;
-    user.subscription_renews_at = renews_at;
-    user.ends_at = ends_at;
-    await user.save();
-  } else {
-    const newUser = new User({
-      user_status: status,
-      variant_name: variant_name,
-      name: user_name,
-      email: user_email,
-      customer_portal_url: customer_portal,
-      subscription_renews_at: renews_at,
-      ends_at: ends_at
-    });
-    await newUser.save();
-  }
-}
-
-async function handleInactiveSubscription(body) {
-  const { user_email, status, handleInactiveSubscription } = body.data.attributes;
-
-  const user = await User.findOne({ email: user_email });
-
-  if (user) {
-    user.user_status = status;
-    user.variant_name = "free";
-    user.subscription_renews_at = null;
-    user.ends_at = handleInactiveSubscription;
-    await user.save();
-  } else {
-    console.log(`User not found for email: ${user_email}`);
   }
 }

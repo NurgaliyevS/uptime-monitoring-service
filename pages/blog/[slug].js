@@ -14,13 +14,13 @@ import rehypeRaw from "rehype-raw";
 import rehypeReact from "rehype-react";
 import React from "react";
 import Footer from "@/components/Footer";
-import remarkGfm from 'remark-gfm';
+import remarkGfm from "remark-gfm";
 
 const generateId = (text) => {
   return text
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)+/g, '');
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)+/g, "");
 };
 
 const renderAst = (content) =>
@@ -92,7 +92,12 @@ const renderAst = (content) =>
         thead: (props) => <thead {...props} />,
         tbody: (props) => <tbody {...props} />,
         tr: (props) => <tr className="border-b" {...props} />,
-        th: (props) => <th className="bg-base-200 px-4 py-2 text-left font-bold" {...props} />,
+        th: (props) => (
+          <th
+            className="bg-base-200 px-4 py-2 text-left font-bold"
+            {...props}
+          />
+        ),
         td: (props) => <td className="px-4 py-2" {...props} />,
         a: (props) => (
           <a
@@ -123,7 +128,7 @@ export default function BlogPost({ post }) {
   return (
     <div className="mx-auto">
       <Head>
-        <title>{post.title} | UptimeFriend Blog</title>
+        <title>{post.title + " | UptimeFriend Blog"}</title>
         <meta name="description" content={post.excerpt} />
         <meta name="keywords" content={post.tags.join(", ")} />
         <link

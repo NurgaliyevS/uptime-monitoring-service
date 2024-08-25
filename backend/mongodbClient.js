@@ -10,22 +10,40 @@ if (!uri) {
 }
 
 const options = {
-  useNewUrlParser: true,
   useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 30000,
+  socketTimeoutMS: 45000,
+  connectTimeoutMS: 30000,
+  keepAlive: true,
 };
 
 let client;
 let clientPromise;
 
+const connectWithRetry = async (retries = 5) => {
+  try {
+    client = new MongoClient(uri, options);
+    await client.connect();
+    console.log('MongoDB connected successfully');
+    return client;
+  } catch (error) {
+    if (retries > 0) {
+      console.log(`MongoDB connection failed. Retrying... (${retries} attempts left)`);
+      await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 5 seconds before retrying
+      return connectWithRetry(retries - 1);
+    }
+    console.error('MongoDB connection failed after multiple attempts:', error);
+    throw error;
+  }
+};
+
 if (isDevelopment()) {
   if (!global._mongoClientPromise) {
-    client = new MongoClient(uri, options);
-    global._mongoClientPromise = client.connect();
+    global._mongoClientPromise = connectWithRetry();
   }
   clientPromise = global._mongoClientPromise;
 } else {
-  client = new MongoClient(uri, options);
-  clientPromise = client.connect();
+  clientPromise = connectWithRetry();
 }
 
 export default clientPromise;

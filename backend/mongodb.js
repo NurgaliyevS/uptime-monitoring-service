@@ -20,15 +20,16 @@ const connectMongoDB = async () => {
   }
 
   try {
+    console.log('Attempting to connect to MongoDB...');
     const db = await mongoose.connect(uri, {
-      useNewUrlParser: true,
       useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000,
       ...(isDevelopment() && {
         authSource: "admin",
       }),
     });
     isConnected = db.connections[0].readyState;
-    console.log("MongoDB connected");
+    console.log('MongoDB connected successfully');
   } catch (error) {
     console.log(error);
   }

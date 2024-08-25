@@ -30,8 +30,14 @@ export const authOptions = {
         ]
       : []),
   ],
-  adapter: MongoDBAdapter(clientPromise),
-
+  adapter: (() => {
+    try {
+      return MongoDBAdapter(clientPromise);
+    } catch (error) {
+      console.error('Failed to create MongoDB adapter:', error);
+      return null;
+    }
+  })(),
   callbacks: {
     session: async ({ session, token }) => {
       if (session?.user) {
@@ -46,6 +52,7 @@ export const authOptions = {
   theme: {
     logo: `https://uptimefriend.com/logoAndName200x50.png`,
   },
+  debug: true, // Enable debug mode for more detailed logs
 };
 
 export default NextAuth(authOptions);

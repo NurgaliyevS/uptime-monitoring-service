@@ -20,5 +20,6 @@ export const customConfig = {
     supportEmail: "nurgasab@uptimefriend.com",
     // When someone replies to supportEmail sent by the app, forward it to the email below (otherwise it's lost). If you set supportEmail to empty, this will be ignored.
     forwardRepliesTo: "nurgasab@gmail.com",
+    // 
   },
 };

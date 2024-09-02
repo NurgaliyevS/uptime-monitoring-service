@@ -5,7 +5,7 @@ import path from "path";
 import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
-import BlogHeader from "./BlogHeader";
+import BlogHeader from "../../components/BlogHeader";
 import Link from "next/link";
 import Image from "next/image";
 import { unified } from "unified";

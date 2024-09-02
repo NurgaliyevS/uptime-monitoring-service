@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { handleSignIn } from "../../components/handleSignIn";
+import { handleSignIn } from "./handleSignIn";
 
 function BlogHeader() {
   const [isOpen, setIsOpen] = useState(false);

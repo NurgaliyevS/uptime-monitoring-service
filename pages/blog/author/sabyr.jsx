@@ -1,5 +1,5 @@
 import Footer from "@/components/Footer";
-import BlogHeader from "../BlogHeader";
+import BlogHeader from "../../../components/BlogHeader";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";

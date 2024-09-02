@@ -13,10 +13,6 @@ export default function Document() {
           name="keywords"
           content="website monitoring, web monitoring, site downtime, website monitoring tools, website uptime monitoring, website monitoring services, site monitoring, server uptime, uptime web hosting, uptime robot alternative"
         />
-        <meta
-          name="description"
-          content="Start monitoring in 30 seconds. Get notified by email, and SMS. Monitor your website, and server."
-        />
         <meta charSet="UTF-8" />
         <meta name="robots" content="index, follow" />
         <meta name="googlebot" content="index, follow" />

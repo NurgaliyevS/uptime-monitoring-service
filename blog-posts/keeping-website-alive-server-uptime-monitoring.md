@@ -6,7 +6,7 @@ author: "Sabyr Nurgaliyev"
 tags:
   ["check website uptime", "server uptime monitoring", "server uptime monitoring tools", "server uptime software"]
 image: "/blog/check-website-uptime-now.webp"
-alt: "A dashboard displaying server uptime metrics and monitoring tools"
+alt: "A dashboard displaying server uptime metrics and monitoring tools."
 ---
 
 # Keeping Your Website Alive: The Importance of Server Uptime Monitoring

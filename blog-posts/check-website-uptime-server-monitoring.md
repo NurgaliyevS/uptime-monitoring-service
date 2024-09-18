@@ -1,6 +1,6 @@
 ---
 title: "How to Effectively Check Website Uptime with Server Uptime Monitoring Tools"
-date: "2024-09-17"
+date: "2024-09-18"
 excerpt: "Learn how to monitor and maintain your website’s uptime using the best server uptime monitoring tools and software. Ensure your site stays online with real-time alerts and detailed performance insights."
 author: "Sabyr Nurgaliyev"
 tags:

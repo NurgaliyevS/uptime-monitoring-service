@@ -141,4 +141,4 @@ If you’re looking for an all-in-one monitoring solution, don’t forget to che
 - [UptimeRobot](https://uptimerobot.com)
 - [Pingdom](https://www.pingdom.com)
 - [StatusCake](https://www.statuscake.com)
-- [UptimeFriend](http://uptimefriend.com/)
+- [UptimeFriend](https://uptimefriend.com/)

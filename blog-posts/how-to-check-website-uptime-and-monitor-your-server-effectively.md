@@ -5,7 +5,7 @@ excerpt: "Learn how to effectively check website uptime and monitor your server 
 author: "Sabyr Nurgaliyev"
 tags:
   ["check website uptime", "server uptime monitoring", "uptime monitoring tools"]
-image: "/blog/example.webp"
+image: "/blog/server-uptime-monitoring-dashboard.webp"
 alt: "Website uptime and server monitoring tools"
 ---
 

@@ -126,7 +126,9 @@ function Footer({ bgColor }) {
                 </Link>
                 <Link
                   className="link link-hover"
-                  href={isDevelopment() ? "/blog" : "https://uptimefriend.com/blog"}
+                  href={
+                    isDevelopment() ? "/blog" : "https://uptimefriend.com/blog"
+                  }
                   title="Uptime Friend - blog"
                 >
                   Blog
@@ -140,9 +142,42 @@ function Footer({ bgColor }) {
               <div className="flex flex-col justify-center items-center md:items-start gap-2 mb-10 text-sm">
                 <Link
                   className="link link-hover"
+                  href="https://environmentaljobboards.com"
+                  target="_blank"
+                  title="Environmental Job Boards - home page"
+                  onClick={() => {
+                    plausible("ENVIRONMENTAL_JOB_BOARDS");
+                  }}
+                >
+                  Environmental Job Boards
+                </Link>
+                <Link
+                  className="link link-hover"
+                  href="https://subpage.io/"
+                  target="_blank"
+                  title="SubPage - home page"
+                  onClick={() => {
+                    plausible("SUBPAGE");
+                  }}
+                >
+                  SubPage
+                </Link>
+                <Link
+                  className="link link-hover"
+                  href="https://pregnantmeal.com/"
+                  target="_blank"
+                  title="Pregnant Meal - home page"
+                  onClick={() => {
+                    plausible("PREGNANT_MEAL");
+                  }}
+                >
+                  Pregnant Meal
+                </Link>
+                <Link
+                  className="link link-hover"
                   href="https://tripplanss.com/"
                   target="_blank"
-                  title="Uptime Friend - home page"
+                  title="TripPlanss - home page"
                   onClick={() => {
                     plausible("TRIPPLANSS");
                   }}
@@ -151,9 +186,9 @@ function Footer({ bgColor }) {
                 </Link>
                 <Link
                   className="link link-hover"
-                  href="http://weeealth.com/"
+                  href="https://weeealth.com/"
                   target="_blank"
-                  title="Uptime Friend - home page"
+                  title="Weeealth - home page"
                   onClick={() => {
                     plausible("WEEEALTH");
                   }}

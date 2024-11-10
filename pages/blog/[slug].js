@@ -66,20 +66,40 @@ const renderAst = (content) =>
             />
           </section>
         ),
+        h4: (props) => (
+          <section className="article">
+            <h4
+              id={generateId(props.children[0])}
+              className="text-lg lg:text-xl font-bold tracking-tight mb-2 text-base-content"
+              {...props}
+            />
+          </section>
+        ),
+        h5: (props) => (
+          <section className="article">
+            <h5
+              id={generateId(props.children[0])}
+              className="text-base-content/90 font-bold tracking-tight mb-2 text-base-content"
+              {...props}
+            />
+          </section>
+        ),
         strong: (props) => <strong className="text-base-content" {...props} />,
         ol: (props) => (
           <ol
-            className="list-inside list-decimal text-base-content/90 leading-relaxed"
+            className="list-decimal text-base-content/90 leading-relaxed pl-5"
             {...props}
           />
         ),
         ul: (props) => (
           <ul
-            className="list-inside list-disc text-base-content/90 leading-relaxed"
+            className="list-disc text-base-content/90 leading-relaxed pl-5"
             {...props}
           />
         ),
-        li: (props) => <li className="list-item" {...props} />,
+        li: (props) => (
+          <li className="list-item pl-1 marker:mr-2">{props.children}</li>
+        ),
         img: (props) => {
           return (
             <img className={`rounded-xl mt-4`} {...props} loading="lazy" />
@@ -125,6 +145,7 @@ const renderAst = (content) =>
             {...props}
           />
         ),
+        hr: (props) => null,
       },
     })
     .processSync(content).result;

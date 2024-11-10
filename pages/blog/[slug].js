@@ -17,7 +17,25 @@ import Footer from "@/components/Footer";
 import remarkGfm from "remark-gfm";
 
 const generateId = (text) => {
-  return text
+  // Handle cases where text might be a React element or non-string
+  if (typeof text !== 'string') {
+    // If text is an array (React children), try to extract string content
+    if (Array.isArray(text)) {
+      text = text.map(child => 
+        typeof child === 'string' ? child : 
+        child?.props?.children ? child.props.children : ''
+      ).join('');
+    } else if (text?.props?.children) {
+      // Handle React elements
+      text = text.props.children;
+    } else {
+      // If we can't extract meaningful text, return empty string
+      return '';
+    }
+  }
+  
+  // Convert to string explicitly and generate ID
+  return String(text)
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)+/g, "");

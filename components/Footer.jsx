@@ -142,6 +142,14 @@ function Footer({ bgColor }) {
               <div className="flex flex-col justify-center items-center md:items-start gap-2 mb-10 text-sm">
                 <Link
                   className="link link-hover"
+                  href="https://mvpagency.org/"
+                  target="_blank"
+                  title="MVPAgency - home page"
+                >
+                  MVPAgency
+                </Link>
+                <Link
+                  className="link link-hover"
                   href="https://environmentaljobboards.com"
                   target="_blank"
                   title="Environmental Job Boards - home page"

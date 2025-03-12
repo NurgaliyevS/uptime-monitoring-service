@@ -150,14 +150,30 @@ function Footer({ bgColor }) {
                 </Link>
                 <Link
                   className="link link-hover"
-                  href="https://environmentaljobboards.com"
+                  href="https://pregnantmeal.com/"
                   target="_blank"
-                  title="Environmental Job Boards - home page"
+                  title="Pregnant Meal - home page"
                   onClick={() => {
-                    plausible("ENVIRONMENTAL_JOB_BOARDS");
+                    plausible("PREGNANT_MEAL");
                   }}
                 >
-                  Environmental Job Boards
+                  Pregnant Meal
+                </Link>
+                <Link
+                  className="link link-hover"
+                  href="https://redditagency.com/"
+                  target="_blank"
+                  title="Reddit Agency - home page"
+                >
+                  Reddit Agency
+                </Link>
+                <Link
+                  className="link link-hover"
+                  href="https://bestwebsitegames.com/"
+                  target="_blank"
+                  title="Best Website Games - home page"
+                >
+                  Best Website Games
                 </Link>
                 <Link
                   className="link link-hover"
@@ -169,17 +185,6 @@ function Footer({ bgColor }) {
                   }}
                 >
                   SubPage
-                </Link>
-                <Link
-                  className="link link-hover"
-                  href="https://pregnantmeal.com/"
-                  target="_blank"
-                  title="Pregnant Meal - home page"
-                  onClick={() => {
-                    plausible("PREGNANT_MEAL");
-                  }}
-                >
-                  Pregnant Meal
                 </Link>
                 <Link
                   className="link link-hover"
@@ -202,6 +207,17 @@ function Footer({ bgColor }) {
                   }}
                 >
                   Weeealth
+                </Link>
+                <Link
+                  className="link link-hover"
+                  href="https://environmentaljobboards.com"
+                  target="_blank"
+                  title="Environmental Job Boards - home page"
+                  onClick={() => {
+                    plausible("ENVIRONMENTAL_JOB_BOARDS");
+                  }}
+                >
+                  Environmental Job Boards
                 </Link>
               </div>
             </div>

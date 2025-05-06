@@ -80,7 +80,7 @@ function Sabyr({ posts }) {
                 />
               </Link>
               <Link
-                href="https://www.linkedin.com/in/sabyr-nurgaliyev-43b4a822a/"
+                href="https://www.linkedin.com/in/sabyr-n-43b4a822a/"
                 target="_blank"
                 title="Linkedin sabyr-nurgaliyev"
                 onClick={() => {
